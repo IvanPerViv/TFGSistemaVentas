@@ -44,8 +44,8 @@ public class V_principal extends javax.swing.JFrame {
     private void initComponents() {
 
         escritorio = new javax.swing.JDesktopPane();
-        FondoLogo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        FondoLogo = new javax.swing.JLabel();
         barraSupHerra = new javax.swing.JMenuBar();
         BH_usuarios = new javax.swing.JMenu();
         i_CrearUsuario = new javax.swing.JMenuItem();
@@ -60,23 +60,23 @@ public class V_principal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu Principal");
-        setMinimumSize(null);
+        setMaximumSize(new java.awt.Dimension(1200, 820));
+        setMinimumSize(new java.awt.Dimension(1200, 820));
+        setPreferredSize(new java.awt.Dimension(1200, 820));
         setResizable(false);
 
-        escritorio.setBackground(new java.awt.Color(102, 153, 255));
-
-        FondoLogo.setBackground(new java.awt.Color(204, 204, 204));
-        FondoLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/fondosisitema.jpg"))); // NOI18N
-        FondoLogo.setMaximumSize(null);
-        FondoLogo.setMinimumSize(null);
-        FondoLogo.setPreferredSize(null);
-        escritorio.add(FondoLogo);
-        FondoLogo.setBounds(460, 160, 310, 260);
+        escritorio.setBackground(new java.awt.Color(139, 183, 240));
 
         jLabel1.setFont(new java.awt.Font("Rockwell", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("<Nombre Usuario>");
         escritorio.add(jLabel1);
         jLabel1.setBounds(10, 10, 176, 22);
+
+        FondoLogo.setBackground(new java.awt.Color(204, 204, 204));
+        FondoLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/Fondo.jpg"))); // NOI18N
+        escritorio.add(FondoLogo);
+        FondoLogo.setBounds(430, 110, 390, 320);
 
         barraSupHerra.setBackground(new java.awt.Color(255, 255, 255));
         barraSupHerra.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -179,13 +179,13 @@ public class V_principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 1219, Short.MAX_VALUE)
+            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(escritorio, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 813, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         pack();
