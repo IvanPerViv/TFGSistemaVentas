@@ -1,9 +1,12 @@
 package Ventanas;
 
+import ModeloBD.Conexiones;
+import ModeloBD.Usuarios;
 import com.sun.tools.javac.Main;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.net.URL;
+import java.util.Objects;
+import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 import javax.swing.UIManager;
 
@@ -11,17 +14,18 @@ import javax.swing.UIManager;
  * @author Iván Pérez
  */
 public class V_login extends javax.swing.JFrame {
+
     protected Image imagenIconito;
-    
+
     public V_login() {
         initComponents();
         //imagenIconito = getIconImage();
         setLocationRelativeTo(null);
-        
     }
-    
+
     /**
      * Metodo que carga una imagen para establecerla como icono del programa.
+     *
      * @return imagen del icono del programa.
      */
     @Override
@@ -30,8 +34,7 @@ public class V_login extends javax.swing.JFrame {
         Image iconito = Toolkit.getDefaultToolkit().getImage(imageResource);
         return iconito;
     }
-    
-    
+
     public void tema() {
         try {
             UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatLightLaf());
@@ -40,8 +43,7 @@ public class V_login extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(V_login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -49,7 +51,6 @@ public class V_login extends javax.swing.JFrame {
         Pnel_conexion = new javax.swing.JPanel();
         usuarioText = new javax.swing.JTextField();
         passText = new javax.swing.JPasswordField();
-        comboUser = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -72,9 +73,6 @@ public class V_login extends javax.swing.JFrame {
         passText.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         passText.setForeground(new java.awt.Color(153, 153, 153));
         passText.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-        comboUser.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        comboUser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Empleado", "Administrador" }));
 
         jLabel1.setBackground(new java.awt.Color(255, 204, 51));
         jLabel1.setForeground(new java.awt.Color(255, 204, 51));
@@ -125,7 +123,6 @@ public class V_login extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(passText, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jSeparator2)
-                                .addComponent(comboUser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(Pnel_conexionLayout.createSequentialGroup()
                         .addGap(109, 109, 109)
@@ -153,11 +150,9 @@ public class V_login extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(comboUser, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(66, 66, 66)
                 .addComponent(BotonLogin)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
@@ -194,22 +189,37 @@ public class V_login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLoginActionPerformed
-        String usuario, pass;
-        usuario = usuarioText.getText();
-        pass = passText.getText();
-        String itemSeleecionado = (String)comboUser.getSelectedItem();
-        
-        if(usuario.equals("ivan") && itemSeleecionado.equals("Administrador") ){
-            new V_principal(itemSeleecionado, usuario).setVisible(true);
-        }
-        
-        if(usuario.equals("ivan") && itemSeleecionado.equals("Empleado") ){
-            new V_principal(itemSeleecionado, usuario).setVisible(true);
-        }
-        
+
+        String nombre = usuarioText.getText();
+        String pass = passText.getText();
+
+//String itemSeleecionado = (String) comboUser.getSelectedItem();
+//        if (usuario.equals("ivan") && itemSeleecionado.equals("Administrador")) {
+//            new V_principal(itemSeleecionado, usuario).setVisible(true);
+//        }
+//
+//        if (usuario.equals("ivan") && itemSeleecionado.equals("Empleado")) {
+//            new V_principal(itemSeleecionado, usuario).setVisible(true);
+//        }
+        Conexiones objConexiones = new Conexiones();
+        Usuarios objUsuarios = objConexiones.recuperarDatosUsuarios(nombre, pass);
+        if (!Objects.isNull(objUsuarios)) {
+            if (nombre.equals(objUsuarios.getNombre()) && pass.equals(objUsuarios.getContraseña())) {
+
+                new V_principal(objUsuarios.getRol_trabajador(), nombre).setVisible(true);
+                dispose();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario incorrecto.", "ERROR!", JOptionPane.ERROR_MESSAGE);
+            }
+        }else {
+                JOptionPane.showMessageDialog(this, "Creedenciales incorrectas.", "ERROR!", JOptionPane.ERROR_MESSAGE);
+            }
+
+
     }//GEN-LAST:event_BotonLoginActionPerformed
 
-    public static void main(String args[]) { 
+    public static void main(String args[]) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -223,7 +233,6 @@ public class V_login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonLogin;
     private javax.swing.JPanel Pnel_conexion;
-    private javax.swing.JComboBox<String> comboUser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

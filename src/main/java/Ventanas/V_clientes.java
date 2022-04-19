@@ -331,6 +331,7 @@ public class V_clientes extends javax.swing.JInternalFrame {
         bloquearBotones(true);
         botonNuevo.setEnabled(false);
         botonActualizar.setEnabled(false);
+        TFNombre.requestFocus(); //Obtener Foco 
 
     }//GEN-LAST:event_botonNuevoActionPerformed
 

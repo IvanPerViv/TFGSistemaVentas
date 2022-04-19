@@ -183,6 +183,7 @@ public class V_ventas extends javax.swing.JInternalFrame {
 
         botonBuscarCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_botonesGenerales/buscar.png"))); // NOI18N
         botonBuscarCliente.setText("Cliente");
+        botonBuscarCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botonBuscarCliente.setFocusable(false);
         botonBuscarCliente.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botonBuscarCliente.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -260,6 +261,7 @@ public class V_ventas extends javax.swing.JInternalFrame {
 
         botonNuevo4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_botonesGenerales/buscar.png"))); // NOI18N
         botonNuevo4.setText("Articulo");
+        botonNuevo4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botonNuevo4.setFocusable(false);
         botonNuevo4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botonNuevo4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);

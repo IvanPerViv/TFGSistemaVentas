@@ -7,9 +7,9 @@ import java.io.IOException;
  *
  * @author Iván Pérez
  */
-public class Properties {
+public class Propert {
 
-    public final String RUTAPROPERTIES = "./src/main/java/Main/config.properties";
+    public final String RUTAPROPERTIES = "./src/main/java/Utils/config.properties";
     public final String URL = cargaProperties("url");
     public final String BBDD = cargaProperties("bbddname");
     public final String USER = cargaProperties("username");

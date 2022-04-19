@@ -13,7 +13,7 @@ public class V_principal extends javax.swing.JFrame {
         jLabel1.setText(nombreUsuario);
         //setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
-
+  
     public void comprobacionUsuario(String a) {
         if (!a.equals("Administrador")) {
             i_CrearUsuario.disable();

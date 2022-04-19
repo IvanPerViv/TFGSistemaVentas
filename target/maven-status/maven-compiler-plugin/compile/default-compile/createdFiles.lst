@@ -1,7 +1,6 @@
 Ventanas\V_principal$4.class
 Ventanas\V_ventas$3.class
 Ventanas\V_ventas.class
-Utils\Properties.class
 Ventanas\V_login$1.class
 Ventanas\V_clientes$1.class
 Ventanas\V_principal$7.class
@@ -12,9 +11,12 @@ Ventanas\V_principal$3.class
 Ventanas\V_clientes$2.class
 Ventanas\V_ventas$2.class
 Ventanas\V_principal$6.class
+Utils\Propert.class
 Ventanas\V_articulos$2.class
 Ventanas\V_ventas$1.class
 Ventanas\V_ventas$5.class
+ModeloBD\Conexiones.class
+ModeloBD\Usuarios.class
 Ventanas\V_principal$2.class
 Ventanas\V_principal.class
 Ventanas\V_ventas$4.class
