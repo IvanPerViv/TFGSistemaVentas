@@ -53,10 +53,10 @@ public class V_articulos extends javax.swing.JInternalFrame {
         txtCantidad = new javax.swing.JLabel();
         TFCantidad = new javax.swing.JTextField();
         PANEL_buscar_cliente = new javax.swing.JPanel();
-        TFBuscar = new javax.swing.JTextField();
-        botonBuscarClientes = new javax.swing.JButton();
         buscadorArticulos = new javax.swing.JScrollPane();
         tablaArticulos = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        TFBuscar = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -194,8 +194,6 @@ public class V_articulos extends javax.swing.JInternalFrame {
 
         PANEL_buscar_cliente.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
 
-        botonBuscarClientes.setText("Mostrar Todos");
-
         tablaArticulos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
@@ -209,27 +207,36 @@ public class V_articulos extends javax.swing.JInternalFrame {
         ));
         buscadorArticulos.setViewportView(tablaArticulos);
 
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        jLabel1.setText("Buscar por palabras: ");
+
+        TFBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFBuscarKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout PANEL_buscar_clienteLayout = new javax.swing.GroupLayout(PANEL_buscar_cliente);
         PANEL_buscar_cliente.setLayout(PANEL_buscar_clienteLayout);
         PANEL_buscar_clienteLayout.setHorizontalGroup(
             PANEL_buscar_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PANEL_buscar_clienteLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_buscar_clienteLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(PANEL_buscar_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buscadorArticulos, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
-                    .addGroup(PANEL_buscar_clienteLayout.createSequentialGroup()
-                        .addComponent(TFBuscar)
+                .addGroup(PANEL_buscar_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PANEL_buscar_clienteLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
                         .addGap(10, 10, 10)
-                        .addComponent(botonBuscarClientes)))
+                        .addComponent(TFBuscar))
+                    .addComponent(buscadorArticulos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE))
                 .addGap(15, 15, 15))
         );
         PANEL_buscar_clienteLayout.setVerticalGroup(
             PANEL_buscar_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_buscar_clienteLayout.createSequentialGroup()
-                .addGroup(PANEL_buscar_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(PANEL_buscar_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(TFBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonBuscarClientes))
-                .addGap(5, 5, 5)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addComponent(buscadorArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
@@ -276,6 +283,10 @@ public class V_articulos extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_botonCancelarActionPerformed
 
+    private void TFBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFBuscarKeyReleased
+
+    }//GEN-LAST:event_TFBuscarKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PANEL_buscar_cliente;
@@ -287,13 +298,13 @@ public class V_articulos extends javax.swing.JInternalFrame {
     private javax.swing.JTextField TFPrecio;
     private javax.swing.JToolBar barraHerramientasClientes;
     private javax.swing.JButton botonActualizar;
-    private javax.swing.JButton botonBuscarClientes;
     private javax.swing.JButton botonCancelar;
     private javax.swing.JButton botonEliminar;
     private javax.swing.JButton botonGuardar;
     private javax.swing.JButton botonImprimir;
     private javax.swing.JButton botonNuevo;
     private javax.swing.JScrollPane buscadorArticulos;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;

@@ -1,5 +1,6 @@
 Ventanas\V_principal$4.class
 Ventanas\V_ventas$3.class
+Ventanas\V_clientes$4.class
 Ventanas\V_ventas.class
 Ventanas\V_login$1.class
 Ventanas\V_clientes$1.class
@@ -18,6 +19,7 @@ Ventanas\V_ventas$5.class
 ModeloBD\Conexiones.class
 ModeloBD\Usuarios.class
 Ventanas\V_principal$2.class
+Ventanas\V_clientes$3.class
 Ventanas\V_principal.class
 Ventanas\V_ventas$4.class
 Ventanas\V_principal$5.class

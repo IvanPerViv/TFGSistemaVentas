@@ -25,7 +25,6 @@ public class V_login extends javax.swing.JFrame {
 
     /**
      * Metodo que carga una imagen para establecerla como icono del programa.
-     *
      * @return imagen del icono del programa.
      */
     @Override
@@ -189,7 +188,6 @@ public class V_login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLoginActionPerformed
-
         String nombre = usuarioText.getText();
         String pass = passText.getText();
 
@@ -205,16 +203,15 @@ public class V_login extends javax.swing.JFrame {
         Usuarios objUsuarios = objConexiones.recuperarDatosUsuarios(nombre, pass);
         if (!Objects.isNull(objUsuarios)) {
             if (nombre.equals(objUsuarios.getNombre()) && pass.equals(objUsuarios.getContraseña())) {
-
                 new V_principal(objUsuarios.getRol_trabajador(), nombre).setVisible(true);
                 dispose();
 
             } else {
                 JOptionPane.showMessageDialog(this, "Usuario incorrecto.", "ERROR!", JOptionPane.ERROR_MESSAGE);
             }
-        }else {
-                JOptionPane.showMessageDialog(this, "Creedenciales incorrectas.", "ERROR!", JOptionPane.ERROR_MESSAGE);
-            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Creedenciales incorrectas.", "ERROR!", JOptionPane.ERROR_MESSAGE);
+        }
 
 
     }//GEN-LAST:event_BotonLoginActionPerformed
