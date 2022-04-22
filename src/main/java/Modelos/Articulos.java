@@ -8,13 +8,22 @@ public class Articulos {
     int cod_articulo;
     String nombre_producto;
     double precio_compra;
-    int stock;
+    int stock, IVA;
 
-    public Articulos(int cod_articulo, String nombre_producto, double precio_compra, int stock) {
+    public Articulos(int cod_articulo, String nombre_producto, double precio_compra, int IVA, int stock) {
         this.cod_articulo = cod_articulo;
         this.nombre_producto = nombre_producto;
         this.precio_compra = precio_compra;
+        this.IVA = IVA;
         this.stock = stock;
+    }
+
+    public int getIVA() {
+        return IVA;
+    }
+
+    public void setIVA(int IVA) {
+        this.IVA = IVA;
     }
 
     public int getCod_articulo() {

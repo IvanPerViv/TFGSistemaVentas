@@ -3,6 +3,7 @@ package Ventanas;
 import Modelos.Articulos;
 import Conexiones.Con_articulos;
 import Conexiones.Conexion;
+import Utils.generarCodigos;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -20,6 +21,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         initComponents();
         bloquearBotones(false);
         cargaDeDatosArticulos(DATOVACIO);
+        TFCodigo.setEnabled(false);
     }
 
     public void bloquearBotones(boolean bloquear) {
@@ -27,30 +29,40 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         botonGuardar.setEnabled(bloquear);
         botonActualizar.setEnabled(bloquear);
 
-        txtCodigo.setEnabled(bloquear);
         TFCodigo.setEnabled(bloquear);
-        txtNombre.setEnabled(bloquear);
         TFNombre.setEnabled(bloquear);
-        txtPrecio.setEnabled(bloquear);
         TFPrecio.setEnabled(bloquear);
-        txtCantidad.setEnabled(bloquear);
-        TFCantidad.setEnabled(bloquear);
+        TFStock.setEditable(bloquear);
+        TFIva.setEnabled(bloquear);
     }
 
     public void limpiarDatos() {
         TFCodigo.setText("");
         TFNombre.setText("");
         TFPrecio.setText("");
-        TFCantidad.setText("");
+        TFIva.setText("");
+        TFIva.setText("");
+    }
+
+    protected void generarCodigoArticulo() {
+        Con_articulos con = new Con_articulos();
+        int codArticulo = con.codigoArticulos();
+        if (codArticulo != 0) {
+            generarCodigos objGenCod = new generarCodigos();
+            int numero = objGenCod.generarCod(codArticulo);
+            TFCodigo.setText(String.valueOf(numero));
+        } else {
+            TFCodigo.setText("1");
+        }
     }
 
     protected void cargaDeDatosArticulos(String buscar) {
 
-        String[] nombreTablas = {"Codigo", "Producto", "Precio", "Stock"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
+        String[] nombreTablas = {"Codigo", "Producto", "Precio", "IVA", "Stock"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         DefaultTableModel art = new DefaultTableModel(null, nombreTablas);
         tablaArticulos.setModel(art);
 
-        Object[] fila = new Object[4];
+        Object[] fila = new Object[5];
 
         ArrayList<Articulos> artArry = new ArrayList<Articulos>();
         artArry = objArticulo.mostrarArticulosYBusqueda(buscar);
@@ -59,7 +71,8 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
             fila[0] = artArry.get(i).getCod_articulo();
             fila[1] = artArry.get(i).getNombre_producto();
             fila[2] = artArry.get(i).getPrecio_compra();
-            fila[3] = artArry.get(i).getStock();
+            fila[3] = artArry.get(i).getIVA();
+            fila[4] = artArry.get(i).getStock();
             art.addRow(fila);
         }
     }
@@ -77,8 +90,6 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         botonEliminar = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         txtSeparacion1 = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JToolBar.Separator();
-        botonImprimir = new javax.swing.JButton();
         PANEL_detalle_cliente = new javax.swing.JPanel();
         txtCodigo = new javax.swing.JLabel();
         TFCodigo = new javax.swing.JTextField();
@@ -86,8 +97,10 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         TFNombre = new javax.swing.JTextField();
         txtPrecio = new javax.swing.JLabel();
         TFPrecio = new javax.swing.JTextField();
-        txtCantidad = new javax.swing.JLabel();
-        TFCantidad = new javax.swing.JTextField();
+        txtIva = new javax.swing.JLabel();
+        TFIva = new javax.swing.JTextField();
+        TFStock = new javax.swing.JTextField();
+        txtStock = new javax.swing.JLabel();
         PANEL_buscar_cliente = new javax.swing.JPanel();
         buscadorArticulos = new javax.swing.JScrollPane();
         tablaArticulos = new javax.swing.JTable();
@@ -99,7 +112,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         setTitle("Articulos");
         setMaximumSize(null);
         setMinimumSize(null);
-        setPreferredSize(new java.awt.Dimension(584, 580));
+        setPreferredSize(new java.awt.Dimension(646, 570));
 
         barraHerramientasClientes.setFloatable(false);
         barraHerramientasClientes.setRollover(true);
@@ -174,15 +187,6 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
 
         txtSeparacion1.setText("                                                                ");
         barraHerramientasClientes.add(txtSeparacion1);
-        barraHerramientasClientes.add(jSeparator2);
-
-        botonImprimir.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        botonImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_botonesGenerales/imprimir.png"))); // NOI18N
-        botonImprimir.setText("Imprimir");
-        botonImprimir.setFocusable(false);
-        botonImprimir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botonImprimir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        barraHerramientasClientes.add(botonImprimir);
 
         PANEL_detalle_cliente.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detalle Articulos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
 
@@ -190,13 +194,16 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         txtCodigo.setText("Código:");
 
         txtNombre.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        txtNombre.setText("Nombre del Producto:");
+        txtNombre.setText("Descripción del Producto:");
 
         txtPrecio.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtPrecio.setText("Precio de Compra:");
 
-        txtCantidad.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        txtCantidad.setText("Cantidad:");
+        txtIva.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        txtIva.setText("IVA:");
+
+        txtStock.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        txtStock.setText("Stock:");
 
         javax.swing.GroupLayout PANEL_detalle_clienteLayout = new javax.swing.GroupLayout(PANEL_detalle_cliente);
         PANEL_detalle_cliente.setLayout(PANEL_detalle_clienteLayout);
@@ -204,20 +211,28 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
             PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TFCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                        .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtPrecio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                            .addComponent(TFPrecio, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(TFCantidad)))
-                    .addComponent(TFNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15))
+                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TFCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
+                                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtPrecio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                                    .addComponent(TFPrecio, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(15, 15, 15)
+                                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(TFIva)
+                                    .addComponent(txtIva, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
+                                .addGap(15, 15, 15)
+                                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(TFStock)
+                                    .addComponent(txtStock, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))))
+                        .addGap(115, 115, 115))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_detalle_clienteLayout.createSequentialGroup()
+                        .addComponent(TFNombre)
+                        .addGap(15, 15, 15))))
         );
         PANEL_detalle_clienteLayout.setVerticalGroup(
             PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,9 +252,14 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
                         .addGap(0, 0, 0)
                         .addComponent(TFPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(TFCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtIva, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
+                                .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)))
+                        .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TFIva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TFStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(15, 15, 15))
         );
 
@@ -283,7 +303,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1)
                         .addGap(10, 10, 10)
                         .addComponent(TFBuscar))
-                    .addComponent(buscadorArticulos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE))
+                    .addComponent(buscadorArticulos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE))
                 .addGap(15, 15, 15))
         );
         PANEL_buscar_clienteLayout.setVerticalGroup(
@@ -302,21 +322,21 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(barraHerramientasClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(PANEL_detalle_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(PANEL_buscar_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(barraHerramientasClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(PANEL_detalle_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(PANEL_buscar_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(barraHerramientasClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
+                .addGap(10, 10, 10)
                 .addComponent(PANEL_detalle_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
+                .addGap(10, 10, 10)
                 .addComponent(PANEL_buscar_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
@@ -329,6 +349,8 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         bloquearBotones(true);
         botonNuevo.setEnabled(false);
         botonActualizar.setEnabled(false);
+        generarCodigoArticulo();
+        TFNombre.requestFocus();
 
     }//GEN-LAST:event_botonNuevoActionPerformed
 
@@ -347,23 +369,29 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         // BOTON GUARDAR //
         int cod_art = Integer.parseInt(TFCodigo.getText());
         String nombreProc = TFNombre.getText();
-        int stock = Integer.parseInt(TFCantidad.getText());
+        int stock = Integer.parseInt(TFStock.getText());
+        int iva = Integer.parseInt(TFIva.getText());
         double precioArticulo = Double.valueOf(TFPrecio.getText());
 
         Con_articulos con = new Con_articulos();
-        boolean comprobacion = con.ingresoDeArticulos(cod_art, nombreProc, precioArticulo, stock);
+        boolean comprobacion = con.ingresoDeArticulos(cod_art, nombreProc, precioArticulo, iva, stock);
 
         if (comprobacion == true) {
             JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "", JOptionPane.INFORMATION_MESSAGE);
             cargaDeDatosArticulos(DATOVACIO);
+            bloquearBotones(false);
+            botonNuevo.setEnabled(true);
         }
     }//GEN-LAST:event_botonGuardarActionPerformed
 
     private void botonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarActionPerformed
         // BOTON ACTUALIZAR //
         int codigoUser = Integer.parseInt(TFCodigo.getText());
-        String nombreArt = TFNombre.getText(), precioArt = TFPrecio.getText(), stockArt = TFCantidad.getText();
-        boolean comprobacion = objArticulo.actualizarArticulos(codigoUser, nombreArt, precioArt, stockArt);
+        String nombreArt = TFNombre.getText(),
+                precioArt = TFPrecio.getText(),
+                iva = TFIva.getText(),
+                stockArt = TFStock.getText();
+        boolean comprobacion = objArticulo.actualizarArticulos(codigoUser, nombreArt, precioArt, iva, stockArt);
 
         if (comprobacion != true) {
             JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "", JOptionPane.INFORMATION_MESSAGE);
@@ -392,7 +420,8 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         TFCodigo.setText(tablaArticulos.getValueAt(filaSelecionada, 0).toString());
         TFNombre.setText(tablaArticulos.getValueAt(filaSelecionada, 1).toString());
         TFPrecio.setText(tablaArticulos.getValueAt(filaSelecionada, 2).toString());
-        TFCantidad.setText(tablaArticulos.getValueAt(filaSelecionada, 3).toString());
+        TFIva.setText(tablaArticulos.getValueAt(filaSelecionada, 3).toString());
+        TFStock.setText(tablaArticulos.getValueAt(filaSelecionada, 4).toString());
 
     }//GEN-LAST:event_tablaArticulosMouseClicked
 
@@ -401,27 +430,27 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
     private javax.swing.JPanel PANEL_buscar_cliente;
     private javax.swing.JPanel PANEL_detalle_cliente;
     private javax.swing.JTextField TFBuscar;
-    private javax.swing.JTextField TFCantidad;
     private javax.swing.JTextField TFCodigo;
+    private javax.swing.JTextField TFIva;
     private javax.swing.JTextField TFNombre;
     private javax.swing.JTextField TFPrecio;
+    private javax.swing.JTextField TFStock;
     private javax.swing.JToolBar barraHerramientasClientes;
     private javax.swing.JButton botonActualizar;
     private javax.swing.JButton botonCancelar;
     private javax.swing.JButton botonEliminar;
     private javax.swing.JButton botonGuardar;
-    private javax.swing.JButton botonImprimir;
     private javax.swing.JButton botonNuevo;
     private javax.swing.JScrollPane buscadorArticulos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JToolBar.Separator jSeparator1;
-    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JTable tablaArticulos;
-    private javax.swing.JLabel txtCantidad;
     private javax.swing.JLabel txtCodigo;
+    private javax.swing.JLabel txtIva;
     private javax.swing.JLabel txtNombre;
     private javax.swing.JLabel txtPrecio;
     private javax.swing.JLabel txtSeparacion1;
+    private javax.swing.JLabel txtStock;
     // End of variables declaration//GEN-END:variables
 }

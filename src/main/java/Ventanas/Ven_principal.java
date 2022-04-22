@@ -56,8 +56,9 @@ public class Ven_principal extends javax.swing.JFrame {
         BH_consultas = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
         BH_ventas = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         BH_ayuda = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
@@ -149,40 +150,32 @@ public class Ven_principal extends javax.swing.JFrame {
         });
         barraSupHerra.add(BH_articulos);
 
-        BH_consultas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/consulta.png"))); // NOI18N
-        BH_consultas.setText("Consultas");
+        BH_consultas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/Pedidos.png"))); // NOI18N
+        BH_consultas.setText("Pedidos");
         BH_consultas.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         BH_consultas.setMinimumSize(new java.awt.Dimension(150, 50));
         BH_consultas.setPreferredSize(new java.awt.Dimension(150, 50));
-        BH_consultas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                BH_consultasMouseClicked(evt);
-            }
-        });
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/clientesBusc.png"))); // NOI18N
-        jMenuItem1.setText("Clientes");
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/Crear.png"))); // NOI18N
+        jMenuItem1.setText("Crear");
         jMenuItem1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem1.setPreferredSize(new java.awt.Dimension(250, 50));
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         BH_consultas.add(jMenuItem1);
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/articuloBusc.png"))); // NOI18N
-        jMenuItem2.setText("Articulos");
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/Listar.png"))); // NOI18N
+        jMenuItem2.setText("Listar");
         jMenuItem2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem2.setPreferredSize(new java.awt.Dimension(250, 50));
         BH_consultas.add(jMenuItem2);
-
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/ventasBusq.png"))); // NOI18N
-        jMenuItem4.setText("Ventas");
-        jMenuItem4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenuItem4.setPreferredSize(new java.awt.Dimension(250, 50));
-        BH_consultas.add(jMenuItem4);
 
         barraSupHerra.add(BH_consultas);
 
@@ -196,6 +189,21 @@ public class Ven_principal extends javax.swing.JFrame {
                 BH_ventasMouseClicked(evt);
             }
         });
+
+        jMenuItem4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/Albaran.png"))); // NOI18N
+        jMenuItem4.setText("Albaranes");
+        jMenuItem4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem4.setPreferredSize(new java.awt.Dimension(250, 50));
+        BH_ventas.add(jMenuItem4);
+
+        jMenuItem5.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/Factura2.png"))); // NOI18N
+        jMenuItem5.setText("Facturas");
+        jMenuItem5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem5.setPreferredSize(new java.awt.Dimension(250, 50));
+        BH_ventas.add(jMenuItem5);
+
         barraSupHerra.add(BH_ventas);
 
         BH_ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/ayuda.png"))); // NOI18N
@@ -247,18 +255,19 @@ public class Ven_principal extends javax.swing.JFrame {
     }//GEN-LAST:event_BH_articulosMouseClicked
 
     private void BH_ventasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BH_ventasMouseClicked
-        Ven_ventas vVentas = new Ven_ventas();
+        Ven_pedidos vVentas = new Ven_pedidos();
         mostarVentana(vVentas);
     }//GEN-LAST:event_BH_ventasMouseClicked
-
-    private void BH_consultasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BH_consultasMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BH_consultasMouseClicked
 
     private void i_CrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_i_CrearUsuarioActionPerformed
         Ven_crear_usuario vCrearUser = new Ven_crear_usuario();
         mostarVentana(vCrearUser);
     }//GEN-LAST:event_i_CrearUsuarioActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        Ven_pedidos vPedidos = new Ven_pedidos();
+        mostarVentana(vPedidos);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu BH_articulos;
@@ -277,6 +286,7 @@ public class Ven_principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }

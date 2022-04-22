@@ -6,16 +6,18 @@ package Modelos;
  */
 public class Clientes {
     int cod_cliente;
-    String nombre, apellidos, telefono, codigo_postal, dirrecion, ciudad, email;
+    String nombre, pais_fiscal, nombre_comercial, id_fiscal, codigo_postal, dirrecion, ciudad, telefono, email;
 
-    public Clientes(int cod_cliente, String nombre, String apellidos, String telefono, String codigo_postal, String dirrecion, String ciudad, String email) {
+    public Clientes(int cod_cliente, String nombre, String pais_fiscal, String nombre_comercial, String id_fiscal, String codigo_postal, String dirrecion, String ciudad, String telefono, String email) {
         this.cod_cliente = cod_cliente;
         this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.telefono = telefono;
+        this.pais_fiscal = pais_fiscal;
+        this.nombre_comercial = nombre_comercial;
+        this.id_fiscal = id_fiscal;
         this.codigo_postal = codigo_postal;
         this.dirrecion = dirrecion;
         this.ciudad = ciudad;
+        this.telefono = telefono;
         this.email = email;
     }
 
@@ -35,20 +37,28 @@ public class Clientes {
         this.nombre = nombre;
     }
 
-    public String getApellidos() {
-        return apellidos;
+    public String getPais_fiscal() {
+        return pais_fiscal;
     }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
+    public void setPais_fiscal(String pais_fiscal) {
+        this.pais_fiscal = pais_fiscal;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public String getNombre_comercial() {
+        return nombre_comercial;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setNombre_comercial(String nombre_comercial) {
+        this.nombre_comercial = nombre_comercial;
+    }
+
+    public String getId_fiscal() {
+        return id_fiscal;
+    }
+
+    public void setId_fiscal(String id_fiscal) {
+        this.id_fiscal = id_fiscal;
     }
 
     public String getCodigo_postal() {
@@ -75,6 +85,14 @@ public class Clientes {
         this.ciudad = ciudad;
     }
 
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -82,6 +100,6 @@ public class Clientes {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     
 }
