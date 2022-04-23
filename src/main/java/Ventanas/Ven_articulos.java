@@ -123,6 +123,9 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         botonNuevo.setText("Nuevo");
         botonNuevo.setFocusable(false);
         botonNuevo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonNuevo.setMaximumSize(new java.awt.Dimension(60, 60));
+        botonNuevo.setMinimumSize(new java.awt.Dimension(60, 60));
+        botonNuevo.setPreferredSize(new java.awt.Dimension(60, 60));
         botonNuevo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         botonNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,6 +139,9 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         botonCancelar.setText("Cancelar");
         botonCancelar.setFocusable(false);
         botonCancelar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonCancelar.setMaximumSize(new java.awt.Dimension(60, 60));
+        botonCancelar.setMinimumSize(new java.awt.Dimension(60, 60));
+        botonCancelar.setPreferredSize(new java.awt.Dimension(60, 60));
         botonCancelar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         botonCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,6 +156,9 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         botonGuardar.setText("Guardar");
         botonGuardar.setFocusable(false);
         botonGuardar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonGuardar.setMaximumSize(new java.awt.Dimension(60, 60));
+        botonGuardar.setMinimumSize(new java.awt.Dimension(60, 60));
+        botonGuardar.setPreferredSize(new java.awt.Dimension(60, 60));
         botonGuardar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         botonGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,6 +172,9 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         botonActualizar.setText("Actualizar");
         botonActualizar.setFocusable(false);
         botonActualizar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonActualizar.setMaximumSize(new java.awt.Dimension(60, 60));
+        botonActualizar.setMinimumSize(new java.awt.Dimension(60, 60));
+        botonActualizar.setPreferredSize(new java.awt.Dimension(60, 60));
         botonActualizar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         botonActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,6 +188,9 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         botonEliminar.setText("Eliminar");
         botonEliminar.setFocusable(false);
         botonEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonEliminar.setMaximumSize(new java.awt.Dimension(60, 60));
+        botonEliminar.setMinimumSize(new java.awt.Dimension(60, 60));
+        botonEliminar.setPreferredSize(new java.awt.Dimension(60, 60));
         botonEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         botonEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -254,9 +269,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
                     .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
                         .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtIva, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                                .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)))
+                            .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(TFIva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(TFStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))

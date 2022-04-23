@@ -138,7 +138,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         setTitle("Clientes");
         setMaximumSize(null);
         setMinimumSize(null);
-        setPreferredSize(new java.awt.Dimension(712, 626));
+        setPreferredSize(new java.awt.Dimension(711, 629));
 
         barraHerramientasClientes.setFloatable(false);
         barraHerramientasClientes.setRollover(true);
@@ -149,6 +149,9 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         botonNuevo.setText("Nuevo");
         botonNuevo.setFocusable(false);
         botonNuevo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonNuevo.setMaximumSize(new java.awt.Dimension(60, 60));
+        botonNuevo.setMinimumSize(new java.awt.Dimension(60, 60));
+        botonNuevo.setPreferredSize(new java.awt.Dimension(60, 60));
         botonNuevo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         botonNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -162,6 +165,9 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         botonCancelar.setText("Cancelar");
         botonCancelar.setFocusable(false);
         botonCancelar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonCancelar.setMaximumSize(new java.awt.Dimension(60, 60));
+        botonCancelar.setMinimumSize(new java.awt.Dimension(60, 60));
+        botonCancelar.setPreferredSize(new java.awt.Dimension(60, 60));
         botonCancelar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         botonCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,6 +182,9 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         botonGuardar.setText("Guardar");
         botonGuardar.setFocusable(false);
         botonGuardar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonGuardar.setMaximumSize(new java.awt.Dimension(60, 60));
+        botonGuardar.setMinimumSize(new java.awt.Dimension(60, 60));
+        botonGuardar.setPreferredSize(new java.awt.Dimension(60, 60));
         botonGuardar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         botonGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,6 +198,9 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         botonActualizar.setText("Actualizar");
         botonActualizar.setFocusable(false);
         botonActualizar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonActualizar.setMaximumSize(new java.awt.Dimension(60, 60));
+        botonActualizar.setMinimumSize(new java.awt.Dimension(60, 60));
+        botonActualizar.setPreferredSize(new java.awt.Dimension(60, 60));
         botonActualizar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         botonActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -202,6 +214,9 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         botonEliminar.setText("Eliminar");
         botonEliminar.setFocusable(false);
         botonEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonEliminar.setMaximumSize(new java.awt.Dimension(60, 60));
+        botonEliminar.setMinimumSize(new java.awt.Dimension(60, 60));
+        botonEliminar.setPreferredSize(new java.awt.Dimension(60, 60));
         botonEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         botonEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -262,10 +277,8 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
                                     .addComponent(TFEmail)
                                     .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
                                         .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                                                .addComponent(txtCp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGap(15, 15, 15))
-                                            .addComponent(TFCp))
+                                            .addComponent(TFCp)
+                                            .addComponent(txtCp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(15, 15, 15)
                                         .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtDirrec, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -428,7 +441,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
                 .addComponent(PANEL_detalle_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(PANEL_buscar_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();

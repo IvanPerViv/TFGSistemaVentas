@@ -7,10 +7,11 @@ import javax.swing.*;
  */
 public class Ven_principal extends javax.swing.JFrame {
 
-    public Ven_principal(String rolUsuario, String nombreUsuario) {
+    public Ven_principal(String rolUsuario, String nomUser) {
         initComponents();
         comprobacionUsuario(rolUsuario);
-        jLabel1.setText(nombreUsuario);
+        nombreUsuario.setText(nomUser);
+        rol_usuario.setText(rolUsuario);
         //setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
   
@@ -44,7 +45,11 @@ public class Ven_principal extends javax.swing.JFrame {
     private void initComponents() {
 
         escritorio = new javax.swing.JDesktopPane();
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        rol_usuario = new javax.swing.JLabel();
+        nombreUsuario = new javax.swing.JLabel();
         barraSupHerra = new javax.swing.JMenuBar();
         BH_usuarios = new javax.swing.JMenu();
         i_CrearUsuario = new javax.swing.JMenuItem();
@@ -64,16 +69,58 @@ public class Ven_principal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu Principal");
-        setMinimumSize(new java.awt.Dimension(1200, 820));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setMaximumSize(null);
+        setMinimumSize(new java.awt.Dimension(1200, 740));
         setResizable(false);
 
         escritorio.setBackground(new java.awt.Color(139, 183, 240));
 
-        jLabel1.setFont(new java.awt.Font("Rockwell", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("<Nombre Usuario>");
-        escritorio.add(jLabel1);
-        jLabel1.setBounds(10, 10, 176, 22);
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel1.setText("Usuario:");
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel2.setText("Privilegios:");
+
+        rol_usuario.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        rol_usuario.setForeground(new java.awt.Color(51, 51, 51));
+        rol_usuario.setText("<rol_usuario>");
+
+        nombreUsuario.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        nombreUsuario.setForeground(new java.awt.Color(51, 51, 51));
+        nombreUsuario.setText("<Nombre_usuario>");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel1)
+                .addGap(5, 5, 5)
+                .addComponent(nombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(jLabel2)
+                .addGap(5, 5, 5)
+                .addComponent(rol_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(rol_usuario)
+                        .addComponent(jLabel2)
+                        .addComponent(nombreUsuario)))
+                .addGap(10, 10, 10))
+        );
 
         barraSupHerra.setBackground(new java.awt.Color(255, 255, 255));
         barraSupHerra.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -224,12 +271,14 @@ public class Ven_principal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 813, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+                .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -282,11 +331,15 @@ public class Ven_principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem i_cerrarSesion;
     private javax.swing.JMenuItem i_salir;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JLabel nombreUsuario;
+    private javax.swing.JLabel rol_usuario;
     // End of variables declaration//GEN-END:variables
 }

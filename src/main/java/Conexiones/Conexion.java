@@ -12,7 +12,6 @@ public class Conexion extends javax.swing.JFrame {
     protected Connection con;
     protected PreparedStatement pst;
     protected Propert prop;
-    protected String query = "SELECT nombre, contraseña, rol_trabajador FROM `usuarios` WHERE nombre = ? and contraseña = ?";
 
     public Conexion() {
         prop = new Propert();
