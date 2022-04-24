@@ -382,9 +382,9 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         // BOTON GUARDAR //
         int cod_art = Integer.parseInt(TFCodigo.getText());
         String nombreProc = TFNombre.getText();
-        int stock = Integer.parseInt(TFStock.getText());
-        int iva = Integer.parseInt(TFIva.getText());
         double precioArticulo = Double.valueOf(TFPrecio.getText());
+        int iva = Integer.parseInt(TFIva.getText());
+        int stock = Integer.parseInt(TFStock.getText());
 
         Con_articulos con = new Con_articulos();
         boolean comprobacion = con.ingresoDeArticulos(cod_art, nombreProc, precioArticulo, iva, stock);
@@ -392,6 +392,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         if (comprobacion == true) {
             JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "", JOptionPane.INFORMATION_MESSAGE);
             cargaDeDatosArticulos(DATOVACIO);
+            limpiarDatos();
             bloquearBotones(false);
             botonNuevo.setEnabled(true);
         }

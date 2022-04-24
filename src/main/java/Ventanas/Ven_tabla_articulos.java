@@ -5,21 +5,18 @@ import Modelos.Articulos;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
-
-
-
 public class Ven_tabla_articulos extends javax.swing.JInternalFrame {
 
     protected DefaultTableModel mostrarClientes;
     protected final String DATOVACIO = "";
     protected final Con_articulos objConexionClientes = new Con_articulos();
-    protected String codigo = "";
-    
+    protected static String codigo;
+
     public Ven_tabla_articulos() {
         initComponents();
         cargaDeDatosArticulos(DATOVACIO);
     }
-    
+
     protected void cargaDeDatosArticulos(String buscar) {
 
         String[] nombreTablas = {"Codigo", "Producto", "Precio", "IVA", "Stock"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
@@ -54,9 +51,10 @@ public class Ven_tabla_articulos extends javax.swing.JInternalFrame {
         informacion2 = new javax.swing.JLabel();
 
         setClosable(true);
+        setTitle("Listado articulos");
 
         informacion.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        informacion.setText("Articulos");
+        informacion.setText("ARTICULOS");
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel1.setText("Buscar por palabras: ");
@@ -138,9 +136,14 @@ public class Ven_tabla_articulos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_TFBuscarKeyReleased
 
     private void tablaArtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaArtMouseClicked
+        int fila = tablaArt.getSelectedRow();
         if (evt.getClickCount() == 1) {
-            codigo = (tablaArt.getValueAt(tablaArt.getSelectedRow(), 0).toString());
-            System.out.println(codigo);
+            Ven_pedidos.TFCodProd.setText(tablaArt.getValueAt(fila, 0).toString());
+            Ven_pedidos.TFNombreProc.setText(tablaArt.getValueAt(fila, 1).toString());
+            Ven_pedidos.TFPrecio.setText(tablaArt.getValueAt(fila, 2).toString());
+            Ven_pedidos.TFIva.setText(tablaArt.getValueAt(fila, 3).toString());
+            Ven_pedidos.TFStock.setText(tablaArt.getValueAt(fila, 4).toString());
+
             dispose();
         }
     }//GEN-LAST:event_tablaArtMouseClicked

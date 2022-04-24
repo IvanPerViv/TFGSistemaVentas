@@ -2,6 +2,7 @@ package Ventanas;
 
 import Conexiones.Con_clientes;
 import Modelos.Clientes;
+import static Ventanas.Ven_pedidos.TFDir;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -11,8 +12,7 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
     protected DefaultTableModel mostrarClientes;
     protected final String DATOVACIO = "";
     protected final Con_clientes objConexionClientes = new Con_clientes();
-    protected String codigo = "";
-
+    protected static String codigo;
 
     public Ven_tabla_cliente() {
         initComponents();
@@ -142,9 +142,13 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_TFBuscarKeyReleased
 
     private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
+        int fila = tablaClientes.getSelectedRow();
         if (evt.getClickCount() == 1) {
-            codigo = (tablaClientes.getValueAt(tablaClientes.getSelectedRow(), 0).toString());
-            System.out.println(codigo);
+            Ven_pedidos.TFCodClie.setText(tablaClientes.getValueAt(fila, 0).toString());
+            Ven_pedidos.TFNombreC.setText(tablaClientes.getValueAt(fila, 1).toString());
+            Ven_pedidos.TFDir.setText(tablaClientes.getValueAt(fila, 6).toString()+ " , "+ tablaClientes.getValueAt(fila, 7).toString()+ " "+tablaClientes.getValueAt(fila, 8).toString());
+            Ven_pedidos.TFTel.setText(tablaClientes.getValueAt(fila, 8).toString());
+            
             dispose();
         }
 

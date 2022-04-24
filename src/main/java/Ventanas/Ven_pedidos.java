@@ -2,11 +2,18 @@ package Ventanas;
 
 import Conexiones.Con_clientes;
 import Conexiones.Con_articulos;
+import Conexiones.Con_pedidos;
 import Modelos.Articulos;
 import Modelos.Clientes;
+import Utils.generarCodigos;
 import static Ventanas.Ven_principal.escritorio;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author Iván Pérez
@@ -20,6 +27,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         initComponents();
         bloquearCampos(false);
         bloquearBotones(false);
+        cargaDeDatosArticulos("");
     }
 
     protected void bloquearCampos(boolean bloquear) {
@@ -51,36 +59,96 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         botonEliminarProc.setEnabled(bloquear);
     }
 
-    protected void generarNumeroPedido() {
+    protected void limpiar() {
+        bloquearBotones(true);
 
+        TFCodClie.setText("");
+        TFNombreC.setText("");
+        TFDir.setText("");
+        TFTel.setText("");
+
+        TFCodProd.setText("");
+        TFPrecio.setText("");
+        TFNombreProc.setText("");
+        TFIva.setText("");
+        TFStock.setText("");
+        TFCantidad.setText("");
     }
 
-    protected void cargarCamposClientes(String datos) {
-        ArrayList<Clientes> arraylistClie;
-        arraylistClie = objConexionClientes.mostrarClientesYBusqueda(datos);
+    protected void limpiarArticulos() {
+        TFCodProd.setText("");
+        TFPrecio.setText("");
+        TFNombreProc.setText("");
+        TFIva.setText("");
+        TFStock.setText("");
+        TFCantidad.setText("");
+    }
 
-        for (Clientes cliente : arraylistClie) {
-            TFCodClie.setText(Integer.toString(cliente.getCod_cliente()));
-            TFNombreC.setText(cliente.getNombre_comercial());
-            TFDir.setText(cliente.getDirrecion() + " , " + cliente.getCiudad() + " "+ cliente.getCodigo_postal());
-            TFTel.setText(cliente.getTelefono());
+    protected void generarCodigoArticulo() {
+        Con_pedidos con = new Con_pedidos();
+        int codArticulo = con.codigoPedidos();
+        if (codArticulo != 0) {
+            generarCodigos objGenCod = new generarCodigos();
+            int numero = objGenCod.generarCod(codArticulo);
+            TFnumPedido.setText(String.valueOf(numero));
+        } else {
+            TFnumPedido.setText("1");
         }
     }
-    
-     protected void cargarCamposArticulos(String datos) {
-        ArrayList<Articulos> arraylistArtciulos;
-        arraylistArtciulos = objConexionArticulos.mostrarArticulosYBusqueda(datos);
 
-        for (Articulos articulos : arraylistArtciulos) {
-            TFCodProd.setText(Integer.toString(articulos.getCod_articulo()));
-            TFNombreProc.setText(articulos.getNombre_producto());
-            TFIva.setText(Integer.toString(articulos.getIVA()));
-            TFStock.setText(Integer.toString(articulos.getStock()));
+    public String fechaactual() {
+        Date fecha = new Date();
+        SimpleDateFormat formatofecha = new SimpleDateFormat("dd/MM/YYYY");
+        return formatofecha.format(fecha);
+    }
+
+    protected void cargaDeDatosArticulos(String buscar) {
+        String[] nombreTablas = {"Codigo", "Producto", "Cantidad", "Precio", "IVA"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
+        DefaultTableModel proc = new DefaultTableModel(null, nombreTablas);
+        tablaPedidos.setModel(proc);
+    }
+
+    protected void calcularPedido() {
+        double IVA=0, total=0, subtotal=0, precio, totalArticulo=0;
+        String prec, cant, iva;
+        int cantidad;
+
+        
+       
+
+        for (int i = 0; i < tablaPedidos.getRowCount(); i++) {
+            cant = tablaPedidos.getValueAt(i, 2).toString();
+            prec = tablaPedidos.getValueAt(i, 3).toString();
+            iva = tablaPedidos.getValueAt(i, 4).toString();
+            
+            
+            precio=Double.parseDouble(prec);
+            cantidad=Integer.parseInt(cant);
+            IVA=Double.parseDouble(iva);
+            
+            totalArticulo = cantidad * precio;
+            subtotal = subtotal +totalArticulo;
+            IVA = calcularIva(subtotal, IVA);
+            total = subtotal + IVA;
         }
+        TFSubtotal.setText(Double.toString(subtotal));
+        TFTotal.setText(Double.toString(Math.rint(total)));
+    }
+
+    public double calcularIva(double cantidad, double iva) {
+        double total;
+        return total = (cantidad * iva) / 100;
+    }
+
+    public boolean comprobacionJTextField(JTextField campo) {
+        boolean comprobacion = true;
+        if (campo.getText().trim().equals("")) {
+            comprobacion = false;
+        }
+        return comprobacion;
     }
 
     @SuppressWarnings("unchecked")
-
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -104,7 +172,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         BotonBuscarCliente = new javax.swing.JButton();
         PANEL_carrito = new javax.swing.JPanel();
         listadoVentas = new javax.swing.JScrollPane();
-        tablaVentas = new javax.swing.JTable();
+        tablaPedidos = new javax.swing.JTable();
         botonAgregarProc = new javax.swing.JButton();
         botonEliminarProc = new javax.swing.JButton();
         txtCod = new javax.swing.JLabel();
@@ -183,6 +251,11 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         botonCalcular.setMaximumSize(new java.awt.Dimension(160, 40));
         botonCalcular.setMinimumSize(new java.awt.Dimension(160, 40));
         botonCalcular.setPreferredSize(new java.awt.Dimension(160, 40));
+        botonCalcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCalcularActionPerformed(evt);
+            }
+        });
         barraHerramientas1.add(botonCalcular);
 
         botonRealizarPedido.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
@@ -200,18 +273,26 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         txtCodigo.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtCodigo.setText("Código:");
 
+        TFCodClie.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+
         txtNombreS.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtNombreS.setText("Nombre Comerical:");
+
+        TFNombreC.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         txtDir.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtDir.setText("Dirrección:");
 
+        TFDir.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+
         txtCodigo1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtCodigo1.setText("Télefono:");
 
+        TFTel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_pedidos/buscarClie.png"))); // NOI18N
 
-        BotonBuscarCliente.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        BotonBuscarCliente.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         BotonBuscarCliente.setText("Buscar");
         BotonBuscarCliente.setToolTipText("Buscar Cliente");
         BotonBuscarCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -240,12 +321,12 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                     .addComponent(txtDir, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
                 .addGroup(PANEL_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtCodigo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtCodigo1, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
                     .addComponent(TFTel))
                 .addGap(15, 15, 15)
-                .addGroup(PANEL_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(BotonBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(PANEL_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(BotonBuscarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(15, 15, 15))
         );
         PANEL_clienteLayout.setVerticalGroup(
@@ -279,7 +360,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
 
         PANEL_carrito.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Productos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
 
-        tablaVentas.setModel(new javax.swing.table.DefaultTableModel(
+        tablaPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -287,7 +368,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
 
             }
         ));
-        listadoVentas.setViewportView(tablaVentas);
+        listadoVentas.setViewportView(tablaPedidos);
 
         botonAgregarProc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_pedidos/mas.png"))); // NOI18N
         botonAgregarProc.setToolTipText("Agregar Producto");
@@ -297,6 +378,11 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         botonAgregarProc.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_pedidos/mas2.png"))); // NOI18N
         botonAgregarProc.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_pedidos/mas2.png"))); // NOI18N
         botonAgregarProc.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_pedidos/mas2.png"))); // NOI18N
+        botonAgregarProc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAgregarProcActionPerformed(evt);
+            }
+        });
 
         botonEliminarProc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_pedidos/menos.png"))); // NOI18N
         botonEliminarProc.setToolTipText("Eliminar");
@@ -306,9 +392,20 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         botonEliminarProc.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_pedidos/menos2.png"))); // NOI18N
         botonEliminarProc.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_pedidos/menos2.png"))); // NOI18N
         botonEliminarProc.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_pedidos/menos2.png"))); // NOI18N
+        botonEliminarProc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEliminarProcActionPerformed(evt);
+            }
+        });
 
         txtCod.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtCod.setText("Código:");
+
+        TFCodProd.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+
+        TFPrecio.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+
+        TFStock.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         txtCantidad.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtCantidad.setText("Stock:");
@@ -316,8 +413,19 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         txtCantidad2.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtCantidad2.setText("IVA:");
 
+        TFIva.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+
+        TFCantidad.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        TFCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFCantidadKeyReleased(evt);
+            }
+        });
+
         txtCantidad1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtCantidad1.setText("Cantidad:");
+
+        TFNombreProc.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         txtNombre.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtNombre.setText("Descripción del Producto:");
@@ -327,7 +435,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_pedidos/busProc.png"))); // NOI18N
 
-        botonBuscarProducto.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        botonBuscarProducto.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         botonBuscarProducto.setText("Buscar");
         botonBuscarProducto.setToolTipText("Buscar Productos");
         botonBuscarProducto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -349,7 +457,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                         .addContainerGap())
                     .addGroup(PANEL_carritoLayout.createSequentialGroup()
                         .addGroup(PANEL_carritoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(listadoVentas)
+                            .addComponent(listadoVentas, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_carritoLayout.createSequentialGroup()
                                 .addGroup(PANEL_carritoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -359,11 +467,10 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                                 .addGroup(PANEL_carritoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(TFNombreProc)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_carritoLayout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
                                         .addGroup(PANEL_carritoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(txtCantidad2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(TFIva, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(240, 240, 240)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(PANEL_carritoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(TFStock)
                                             .addComponent(txtCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)))
@@ -375,17 +482,13 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                                         .addComponent(TFPrecio)
                                         .addComponent(txtCantidad1, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
                                     .addComponent(TFCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(15, 15, 15)
                         .addGroup(PANEL_carritoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(PANEL_carritoLayout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addGroup(PANEL_carritoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(botonAgregarProc, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(botonEliminarProc, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_carritoLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(PANEL_carritoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(botonBuscarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(botonAgregarProc, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(botonEliminarProc, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_carritoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(botonBuscarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(15, 15, 15))))
         );
         PANEL_carritoLayout.setVerticalGroup(
@@ -454,8 +557,12 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         informacion2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         informacion2.setText("Nº de pedido:");
 
+        TFnumPedido.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+
         informacion4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         informacion4.setText("Fecha:");
+
+        TFDate.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -464,38 +571,44 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(barraHerramientas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(PANEL_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(PANEL_carrito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(informacion2, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(TFDate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(informacion4, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(barraHerramientas1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(barraHerramientas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(PANEL_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(PANEL_carrito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel28)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(TFSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(TFTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(8, 8, 8)))
-                .addGap(0, 12, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(informacion2, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(TFDate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(informacion4, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(barraHerramientas1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel28)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(TFSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(TFTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(8, 8, 8)))
+                        .addGap(0, 1, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(5, 5, 5)
+                .addComponent(barraHerramientas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -508,8 +621,6 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(barraHerramientas1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(barraHerramientas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(informacion2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -532,30 +643,78 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     private void botonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoActionPerformed
         // BOTON NUEVO //
         bloquearBotones(true);
+        generarCodigoArticulo();
+        fechaactual();
+        TFDate.setText(fechaactual());
     }//GEN-LAST:event_botonNuevoActionPerformed
 
     private void botonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLimpiarActionPerformed
         // BOTON LIMPIAR //
-
+        limpiar();
     }//GEN-LAST:event_botonLimpiarActionPerformed
 
     private void BotonBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarClienteActionPerformed
         // BOTON BUSCAR CLIENTE
         Ven_tabla_cliente objTabClie = new Ven_tabla_cliente();
         Ven_principal.escritorio.add(objTabClie).setVisible(true);
-
-        String codigo = objTabClie.codigo;
-        cargarCamposClientes(codigo);
+        TFCantidad.setEnabled(true);
     }//GEN-LAST:event_BotonBuscarClienteActionPerformed
 
     private void botonBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarProductoActionPerformed
         Ven_tabla_articulos objTablaArticulos = new Ven_tabla_articulos();
         Ven_principal.escritorio.add(objTablaArticulos).setVisible(true);
-
-        String codigo = objTablaArticulos.codigo;
-        cargarCamposArticulos(codigo);
         TFCantidad.setEnabled(true);
     }//GEN-LAST:event_botonBuscarProductoActionPerformed
+
+    private void botonAgregarProcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarProcActionPerformed
+        // Agregar Datos
+
+        if (comprobacionJTextField(TFCodClie) == true && comprobacionJTextField(TFNombreProc) == true
+                && comprobacionJTextField(TFCantidad) == true && comprobacionJTextField(TFPrecio) == true && comprobacionJTextField(TFIva) == true) {
+            if (tablaPedidos.getRowCount() >= 0) {
+                DefaultTableModel datosPedidos = (DefaultTableModel) tablaPedidos.getModel();
+                Object[] pedidos = {
+                    TFCodClie.getText(),
+                    TFNombreProc.getText(),
+                    TFCantidad.getText(),
+                    TFPrecio.getText(),
+                    TFIva.getText()};
+                datosPedidos.addRow(pedidos);
+                calcularPedido();
+                limpiarArticulos();
+            }
+        }
+
+
+    }//GEN-LAST:event_botonAgregarProcActionPerformed
+
+    private void botonEliminarProcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarProcActionPerformed
+        DefaultTableModel modelo = (DefaultTableModel) tablaPedidos.getModel();
+        int fila = tablaPedidos.getSelectedRow();
+
+        if (fila >= 0) {
+            modelo.removeRow(fila);
+        } else {
+            JOptionPane.showMessageDialog(this, "No has selecionado ninguna fila.", "", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+    }//GEN-LAST:event_botonEliminarProcActionPerformed
+
+    public void comprobarStock() {
+        int stock = Integer.parseInt(TFStock.getText());
+        int cantidad = Integer.parseInt(TFCantidad.getText());
+        if (cantidad > stock) {
+            JOptionPane.showMessageDialog(this, "No cuenta con el stock apropiado.", "", JOptionPane.INFORMATION_MESSAGE);
+            TFCantidad.setText("");
+        }
+    }
+    private void TFCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFCantidadKeyReleased
+        comprobarStock();
+    }//GEN-LAST:event_TFCantidadKeyReleased
+
+    private void botonCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCalcularActionPerformed
+        calcularPedido();
+    }//GEN-LAST:event_botonCalcularActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -563,17 +722,17 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     private javax.swing.JPanel PANEL_carrito;
     private javax.swing.JPanel PANEL_cliente;
     private javax.swing.JTextField TFCantidad;
-    private javax.swing.JTextField TFCodClie;
-    private javax.swing.JTextField TFCodProd;
+    public static javax.swing.JTextField TFCodClie;
+    public static javax.swing.JTextField TFCodProd;
     private javax.swing.JTextField TFDate;
     public static javax.swing.JTextField TFDir;
-    private javax.swing.JTextField TFIva;
-    private javax.swing.JTextField TFNombreC;
-    private javax.swing.JTextField TFNombreProc;
-    private javax.swing.JTextField TFPrecio;
-    private javax.swing.JTextField TFStock;
+    public static javax.swing.JTextField TFIva;
+    public static javax.swing.JTextField TFNombreC;
+    public static javax.swing.JTextField TFNombreProc;
+    public static javax.swing.JTextField TFPrecio;
+    public static javax.swing.JTextField TFStock;
     private javax.swing.JTextField TFSubtotal;
-    private javax.swing.JTextField TFTel;
+    public static javax.swing.JTextField TFTel;
     private javax.swing.JTextField TFTotal;
     private javax.swing.JTextField TFnumPedido;
     private javax.swing.JToolBar barraHerramientas;
@@ -594,7 +753,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JScrollPane listadoVentas;
-    private javax.swing.JTable tablaVentas;
+    private javax.swing.JTable tablaPedidos;
     private javax.swing.JLabel txtCantidad;
     private javax.swing.JLabel txtCantidad1;
     private javax.swing.JLabel txtCantidad2;

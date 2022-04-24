@@ -26,7 +26,7 @@ public class Con_articulos {
             pst.setInt(1, cod_articulo);
             pst.setString(2, nombre_producto);
             pst.setDouble(3, precio_compra);
-             pst.setDouble(4, iva);
+            pst.setDouble(4, iva);
             pst.setInt(5, stock);
 
             comprobacion = pst.executeUpdate();
@@ -45,14 +45,14 @@ public class Con_articulos {
             System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
         }
     }
-    
+
     public boolean actualizarArticulos(int cod_art, String nomProc, String precioCompra, String iva, String stock) {
         int comprobacion = 0;
         String query = "UPDATE `articulos` set cod_articulo ='" + cod_art
                 + "',nombre_producto='" + nomProc
                 + "',precio_compra='" + precioCompra
-                + "',IVA='" + iva 
-                + "',stock='" + stock 
+                + "',IVA='" + iva
+                + "',stock='" + stock
                 + "' WHERE cod_articulo='" + cod_art + "'";
 
         try (PreparedStatement pst = con.prepareStatement(query)) {
@@ -73,9 +73,9 @@ public class Con_articulos {
                     int cod = rs.getInt(1);
                     String nombrePoc = rs.getString(2);
                     double precioCompra = rs.getDouble(3);
-                    int iva = rs.getInt(5);
+                    int iva = rs.getInt(4);
                     int stock = rs.getInt(5);
-                    art.add(new Articulos(cod, nombrePoc, precioCompra,iva, stock));
+                    art.add(new Articulos(cod, nombrePoc, precioCompra, iva, stock));
                 }
             }
         } catch (SQLException ex) {
@@ -83,7 +83,7 @@ public class Con_articulos {
         }
         return art;
     }
-    
+
     public int codigoArticulos() {
         String query = "select max(cod_articulo) from `articulos`";
         int codigo = 0;
@@ -98,4 +98,22 @@ public class Con_articulos {
         }
         return codigo;
     }
+
+    public boolean actualizarStock(int stock, int cantidad, int codigoArt) {
+        String query = "UPDATE articulos SET stock = stock - ? WHERE cod_articulo = ? ";
+        int comprobacion = 0;
+        if (stock > cantidad) {
+            try (PreparedStatement pst = con.prepareStatement(query)) {
+                pst.setInt(1, cantidad);
+                pst.setInt(2, codigoArt);
+                comprobacion = pst.executeUpdate();
+            } catch (SQLException ex) {
+                System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+            }
+
+        }
+        return comprobacion > 0;
+
+    }
+
 }

@@ -1,6 +1,7 @@
 Ventanas\Ven_clientes$3.class
 Ventanas\Ven_pedidos$3.class
 Ventanas\Ven_articulos$4.class
+Ventanas\Ven_tabla_articulos$1.class
 Conexiones\Conexion.class
 Modelos\Articulos.class
 Ventanas\Ven_articulos$1.class
@@ -25,6 +26,7 @@ Ventanas\Ven_principal$4.class
 Utils\Propert.class
 Ventanas\Ven_tabla_articulos.class
 Modelos\Clientes.class
+Ventanas\Ven_pedidos$5.class
 Ventanas\Ven_tabla_cliente$2.class
 Ventanas\Ven_principal$6.class
 Ventanas\Ven_principal$2.class
@@ -40,9 +42,11 @@ Ventanas\Ven_articulos$6.class
 Ventanas\Ven_principal$5.class
 Ventanas\Ven_clientes$4.class
 Ventanas\Ven_articulos$5.class
+Ventanas\Ven_pedidos$6.class
 Ventanas\Ven_principal$3.class
 Ventanas\Ven_login$2.class
 Ventanas\Ven_clientes$7.class
 Ventanas\Ven_articulos$2.class
+Ventanas\Ven_tabla_articulos$2.class
 Ventanas\Ven_clientes.class
 Ventanas\Ven_tabla_cliente$1.class
