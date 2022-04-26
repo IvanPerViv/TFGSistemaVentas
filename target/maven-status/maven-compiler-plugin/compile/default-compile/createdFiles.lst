@@ -3,6 +3,8 @@ Ventanas\Ven_pedidos$3.class
 Ventanas\Ven_articulos$4.class
 Ventanas\Ven_tabla_articulos$1.class
 Conexiones\Conexion.class
+Ventanas\Ven_principal$8.class
+Ventanas\Ven_pedidos$7.class
 Modelos\Articulos.class
 Ventanas\Ven_articulos$1.class
 Ventanas\Ven_login.class
@@ -13,10 +15,12 @@ Ventanas\Ven_pedidos$4.class
 Ventanas\Ven_crear_usuario.class
 Modelos\Usuarios.class
 Ventanas\Ven_articulos$3.class
+Ventanas\Ven_tabla_pedidos_listados$2.class
 Ventanas\Ven_clientes$2.class
 Modelos\Pedidos.class
 Utils\generarCodigos.class
 Ventanas\Ven_pedidos$2.class
+Ventanas\Ven_pedidos$8.class
 Ventanas\Ven_principal$7.class
 Ventanas\Ven_tabla_cliente.class
 Ventanas\Ven_articulos$7.class
@@ -44,9 +48,11 @@ Ventanas\Ven_clientes$4.class
 Ventanas\Ven_articulos$5.class
 Ventanas\Ven_pedidos$6.class
 Ventanas\Ven_principal$3.class
+Ventanas\Ven_tabla_pedidos_listados.class
 Ventanas\Ven_login$2.class
 Ventanas\Ven_clientes$7.class
 Ventanas\Ven_articulos$2.class
+Ventanas\Ven_tabla_pedidos_listados$1.class
 Ventanas\Ven_tabla_articulos$2.class
 Ventanas\Ven_clientes.class
 Ventanas\Ven_tabla_cliente$1.class

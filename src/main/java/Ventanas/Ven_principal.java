@@ -222,6 +222,11 @@ public class Ven_principal extends javax.swing.JFrame {
         jMenuItem2.setText("Listar");
         jMenuItem2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem2.setPreferredSize(new java.awt.Dimension(250, 50));
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         BH_consultas.add(jMenuItem2);
 
         barraSupHerra.add(BH_consultas);
@@ -317,6 +322,11 @@ public class Ven_principal extends javax.swing.JFrame {
         Ven_pedidos vPedidos = new Ven_pedidos();
         mostarVentana(vPedidos);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        Ven_tabla_pedidos_listados vPedidosListado = new Ven_tabla_pedidos_listados();
+        mostarVentana(vPedidosListado);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu BH_articulos;
