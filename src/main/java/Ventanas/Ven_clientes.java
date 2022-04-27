@@ -19,25 +19,25 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
 
     public Ven_clientes() {
         initComponents();
-        bloquearBotones(false);
+        bloquear(false);
         cargaDeDatosClientes(DATOVACIO);
         TFCodigo.setEnabled(false);
     }
 
-    protected void bloquearBotones(boolean bloquear) {
-        botonCancelar.setEnabled(bloquear);
-        botonGuardar.setEnabled(bloquear);
-        botonActualizar.setEnabled(bloquear);
+    protected void bloquear(boolean blockeo) {
+        botonCancelar.setEnabled(blockeo);
+        botonGuardar.setEnabled(blockeo);
+        botonActualizar.setEnabled(blockeo);
 
-        TFNombre.setEnabled(bloquear);
-        TFPaisEmisor.setEnabled(bloquear);
-        TFNombreComercial.setEnabled(bloquear);
-        TFIdentificacionFiscal.setEnabled(bloquear);
-        TFCp.setEnabled(bloquear);
-        TFDir.setEnabled(bloquear);
-        TFCiudad.setEnabled(bloquear);
-        TFTelef.setEnabled(bloquear);
-        TFEmail.setEnabled(bloquear);
+        TFNombre.setEnabled(blockeo);
+        TFPaisEmisor.setEnabled(blockeo);
+        TFNombreComercial.setEnabled(blockeo);
+        TFIdentificacionFiscal.setEnabled(blockeo);
+        TFCp.setEnabled(blockeo);
+        TFDir.setEnabled(blockeo);
+        TFCiudad.setEnabled(blockeo);
+        TFTelef.setEnabled(blockeo);
+        TFEmail.setEnabled(blockeo);
 
     }
 
@@ -449,13 +449,13 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
         // BOTON CANCELAR //
-        bloquearBotones(false);
+        bloquear(false);
         botonNuevo.setEnabled(true);
     }//GEN-LAST:event_botonCancelarActionPerformed
 
     private void botonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoActionPerformed
         // BOTON NUEVO //
-        bloquearBotones(true);
+        bloquear(true);
         limpiarDatos();
         botonNuevo.setEnabled(false);
         botonActualizar.setEnabled(false);
@@ -482,7 +482,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "", JOptionPane.INFORMATION_MESSAGE);
             cargaDeDatosClientes(DATOVACIO);
             limpiarDatos();
-            bloquearBotones(false);
+            bloquear(false);
             botonNuevo.setEnabled(true);
         }
     }//GEN-LAST:event_botonGuardarActionPerformed
@@ -502,9 +502,8 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_botonEliminarActionPerformed
 
     private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
-        // CLICK DOS VECES TABLA
         int filaSelecionada = tablaClientes.rowAtPoint(evt.getPoint());
-        bloquearBotones(true);
+        bloquear(true);
         botonGuardar.setEnabled(false);
         TFCodigo.setText(tablaClientes.getValueAt(filaSelecionada, 0).toString());
         TFNombre.setText(tablaClientes.getValueAt(filaSelecionada, 1).toString());
@@ -521,7 +520,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
 
     private void botonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarActionPerformed
         //BOTON MODIFICAR
-        bloquearBotones(true);
+        bloquear(true);
         String nombre = TFNombre.getText(),
                 paisFiscal = TFPaisEmisor.getText(),
                 nombreComercial = TFNombreComercial.getText(),
@@ -536,7 +535,8 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         if (comprobacion != true) {
             JOptionPane.showMessageDialog(this, "Datos actualizados.", "", JOptionPane.INFORMATION_MESSAGE);
             cargaDeDatosClientes(DATOVACIO);
-            bloquearBotones(false);
+            bloquear(false);
+            limpiarDatos();
         }
     }//GEN-LAST:event_botonActualizarActionPerformed
 

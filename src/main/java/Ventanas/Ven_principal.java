@@ -12,6 +12,7 @@ public class Ven_principal extends javax.swing.JFrame {
         comprobacionUsuario(rolUsuario);
         nombreUsuario.setText(nomUser);
         rol_usuario.setText(rolUsuario);
+        setLocationRelativeTo(null);
         //setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
   
@@ -45,6 +46,7 @@ public class Ven_principal extends javax.swing.JFrame {
     private void initComponents() {
 
         escritorio = new javax.swing.JDesktopPane();
+        jLabel3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -71,27 +73,27 @@ public class Ven_principal extends javax.swing.JFrame {
         setTitle("Menu Principal");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMaximumSize(null);
-        setMinimumSize(new java.awt.Dimension(1200, 740));
+        setMinimumSize(new java.awt.Dimension(1200, 800));
         setResizable(false);
 
-        escritorio.setBackground(new java.awt.Color(139, 183, 240));
+        escritorio.setBackground(new java.awt.Color(40, 43, 53));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/fondito.png"))); // NOI18N
+        escritorio.add(jLabel3);
+        jLabel3.setBounds(410, 260, 370, 130);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
         jLabel1.setText("Usuario:");
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Privilegios:");
 
         rol_usuario.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        rol_usuario.setForeground(new java.awt.Color(51, 51, 51));
         rol_usuario.setText("<rol_usuario>");
 
         nombreUsuario.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        nombreUsuario.setForeground(new java.awt.Color(51, 51, 51));
         nombreUsuario.setText("<Nombre_usuario>");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -107,7 +109,7 @@ public class Ven_principal extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(5, 5, 5)
                 .addComponent(rol_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(504, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,7 +124,6 @@ public class Ven_principal extends javax.swing.JFrame {
                 .addGap(10, 10, 10))
         );
 
-        barraSupHerra.setBackground(new java.awt.Color(255, 255, 255));
         barraSupHerra.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         barraSupHerra.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         barraSupHerra.setPreferredSize(new java.awt.Dimension(100, 60));
@@ -236,11 +237,6 @@ public class Ven_principal extends javax.swing.JFrame {
         BH_ventas.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         BH_ventas.setMinimumSize(new java.awt.Dimension(150, 50));
         BH_ventas.setPreferredSize(new java.awt.Dimension(150, 50));
-        BH_ventas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                BH_ventasMouseClicked(evt);
-            }
-        });
 
         jMenuItem4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/Albaran.png"))); // NOI18N
@@ -275,13 +271,13 @@ public class Ven_principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 1200, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(escritorio)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
+                .addComponent(escritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -307,11 +303,6 @@ public class Ven_principal extends javax.swing.JFrame {
         Ven_articulos vArticulos = new Ven_articulos();
         mostarVentana(vArticulos);
     }//GEN-LAST:event_BH_articulosMouseClicked
-
-    private void BH_ventasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BH_ventasMouseClicked
-        Ven_pedidos vVentas = new Ven_pedidos();
-        mostarVentana(vVentas);
-    }//GEN-LAST:event_BH_ventasMouseClicked
 
     private void i_CrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_i_CrearUsuarioActionPerformed
         Ven_crear_usuario vCrearUser = new Ven_crear_usuario();
@@ -342,6 +333,7 @@ public class Ven_principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem i_salir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;

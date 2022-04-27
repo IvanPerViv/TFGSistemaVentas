@@ -37,9 +37,6 @@ public class Con_pedidos {
         return codigo;
     }
 
-    
-    
-    
     public boolean ingresoPedidos(int cod_pedido, int cantidad, double precio, int iva, double precio_subtotal, double precio_total, String estado, int codClie) {
         String query = "INSERT INTO `pedidos`(cod_pedido,cantidad, precio, iva, precio_sub, precio_total, estado,cod_cliente )"
                 + "VALUES (?,?,?,?,?,?,?,?)";
@@ -52,7 +49,7 @@ public class Con_pedidos {
             pst.setDouble(5, precio_subtotal);
             pst.setDouble(6, precio_total);
             pst.setString(7, estado);
-             pst.setInt(8, codClie);
+            pst.setInt(8, codClie);
 
             comprobacion = pst.executeUpdate();
         } catch (SQLException ex) {
@@ -73,10 +70,10 @@ public class Con_pedidos {
                     double precio = rs.getDouble(3);
                     int iva = rs.getInt(4);
                     double precio_sub = rs.getDouble(5);
-                    double precio_total= rs.getDouble(6);
+                    double precio_total = rs.getDouble(6);
                     String estado = rs.getString(7);
                     int cod_cliente = rs.getInt(8);
-                    clie.add(new Pedidos(cod_pedido, cantidad, precio, iva, precio_sub, precio_total,estado,cod_cliente));
+                    clie.add(new Pedidos(cod_pedido, cantidad, precio, iva, precio_sub, precio_total, estado, cod_cliente));
 
                 }
             }
@@ -84,6 +81,37 @@ public class Con_pedidos {
             System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
         }
         return clie;
+    }
+
+    //SELECT * FROM `pedidos` INNER JOIN clientes USING(cod_cliente);
+    //SELECT nombre_comercial FROM `pedidos` INNER JOIN clientes on pedidos.cod_pedido = clientes.cod_cliente where clientes.cod_cliente = '2';
+    public String mostrarCodPedido(int buscar) {
+        String query = "SELECT nombre_comercial FROM `pedidos` INNER JOIN clientes on pedidos.cod_pedido = clientes.cod_cliente where clientes.cod_cliente = '" + buscar + "'";
+        String resultado = "";
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    resultado = rs.getString(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+        }
+        return resultado;
+    }
+    
+    
+     public boolean actualizarPedidos(int cod_pedido,String valor) {
+        int comprobacion = 0;
+        String query = "UPDATE `pedidos` set estado ='" + valor
+                + "' WHERE cod_pedido='" + cod_pedido + "'";
+
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+        }
+        return comprobacion > 0;
     }
 
 }

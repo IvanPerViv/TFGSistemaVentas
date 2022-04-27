@@ -29,7 +29,6 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         botonGuardar.setEnabled(bloquear);
         botonActualizar.setEnabled(bloquear);
 
-        TFCodigo.setEnabled(bloquear);
         TFNombre.setEnabled(bloquear);
         TFPrecio.setEnabled(bloquear);
         TFStock.setEditable(bloquear);
@@ -411,6 +410,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "", JOptionPane.INFORMATION_MESSAGE);
             cargaDeDatosArticulos(DATOVACIO);
             limpiarDatos();
+            bloquearBotones(false);
         }
 
     }//GEN-LAST:event_botonActualizarActionPerformed

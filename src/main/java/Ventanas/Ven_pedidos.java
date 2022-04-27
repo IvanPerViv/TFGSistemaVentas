@@ -707,7 +707,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         // Boton realizar pedido //
         int Seleccionada = tablaPedidos.getRowCount();
         if (Seleccionada == 0) {
-            JOptionPane.showMessageDialog(this, "No existe ninguna dato.", "", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No existe ninguna dato.", "Información", JOptionPane.INFORMATION_MESSAGE);
         } else {
 
             Con_pedidos objConPedidos = new Con_pedidos();
@@ -726,7 +726,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
             double precio_total = Double.parseDouble(TFTotal.getText());
             String estado = "Pendiente";
 
-            boolean comprobacion = objConPedidos.ingresoPedidos(Integer.parseInt(TFnumPedido.getText()), cantidad, precio, iva, precio_sub, precio_total, estado,codClie);
+            boolean comprobacion = objConPedidos.ingresoPedidos(Integer.parseInt(TFnumPedido.getText()), cantidad, precio, iva, precio_sub, precio_total, estado, codClie);
             if (comprobacion == true) {
                 JOptionPane.showMessageDialog(this, "Pedido realizado con exito.", "", JOptionPane.INFORMATION_MESSAGE);
             }
