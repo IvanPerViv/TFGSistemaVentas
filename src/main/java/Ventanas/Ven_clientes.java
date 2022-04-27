@@ -72,7 +72,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         datosClientes = new DefaultTableModel(null, nombreTablas);
         tablaClientes.setModel(datosClientes);
 
-        Object[] fila = new Object[10];
+        Object[] fila = new Object[nombreTablas.length];
 
         ArrayList<Clientes> clieArray = new ArrayList<Clientes>();
         clieArray = objConexionClientes.mostrarClientesYBusqueda(buscar);
@@ -470,12 +470,13 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         String nombre = TFNombre.getText(),
                 paisFiscal = TFPaisEmisor.getText(),
                 nombreComercial = TFNombreComercial.getText(),
-                idFiscal = TFIdentificacionFiscal.getText(),
-                cod_postal = TFCp.getText(),
-                dirrecion = TFDir.getText(),
+                email = TFEmail.getText(),
                 ciudad = TFCiudad.getText(),
-                telefono = TFTelef.getText(),
-                email = TFEmail.getText();
+                dirrecion = TFDir.getText();
+        int idFiscal = Integer.parseInt(TFIdentificacionFiscal.getText()),
+                cod_postal = Integer.parseInt(TFCp.getText()),
+                telefono = Integer.parseInt(TFTelef.getText());
+
         boolean comprobacion = objConexionClientes.ingresoClientes(codigoUser, nombre, paisFiscal, nombreComercial, idFiscal, cod_postal, dirrecion, ciudad, telefono, email);
 
         if (comprobacion == true) {
@@ -524,18 +525,19 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         String nombre = TFNombre.getText(),
                 paisFiscal = TFPaisEmisor.getText(),
                 nombreComercial = TFNombreComercial.getText(),
-                idFiscal = TFIdentificacionFiscal.getText(),
-                cod_postal = TFCp.getText(),
-                dirrecion = TFDir.getText(),
+                email = TFEmail.getText(),
                 ciudad = TFCiudad.getText(),
-                telefono = TFTelef.getText(),
-                email = TFEmail.getText();
+                dirrecion = TFDir.getText();
+        int idFiscal = Integer.parseInt(TFIdentificacionFiscal.getText()),
+                cod_postal = Integer.parseInt(TFCp.getText()),
+                telefono = Integer.parseInt(TFTelef.getText());
         boolean comprobacion = objConexionClientes.actualizarClientes(Integer.parseInt(TFCodigo.getText()), nombre, paisFiscal, nombreComercial, idFiscal, cod_postal, dirrecion, ciudad, telefono, email);
 
         if (comprobacion != true) {
             JOptionPane.showMessageDialog(this, "Datos actualizados.", "", JOptionPane.INFORMATION_MESSAGE);
             cargaDeDatosClientes(DATOVACIO);
             bloquear(false);
+            botonNuevo.setEnabled(true);
             limpiarDatos();
         }
     }//GEN-LAST:event_botonActualizarActionPerformed

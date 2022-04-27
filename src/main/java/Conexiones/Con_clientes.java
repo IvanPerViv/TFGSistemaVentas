@@ -22,7 +22,7 @@ public class Con_clientes {
      *
      * @return boolean si los datos han sido metidos.
      */
-    public boolean ingresoClientes(int cod_cliente, String nombre, String pais_fiscal, String nombre_comercial, String id_fiscal, String cod_postal, String dir, String ciudad, String telf, String email) {
+    public boolean ingresoClientes(int cod_cliente, String nombre, String pais_fiscal, String nombre_comercial, int id_fiscal, int cod_postal, String dir, String ciudad, int telf, String email) {
         String query = "INSERT INTO `clientes` (cod_cliente, nombre, pais_fiscal, nombre_comercial, id_fiscal, codigo_postal, dirrecion, ciudad, telefono, email)"
                 + "VALUES (?,?,?,?,?,?,?,?,?,?)";
         int comprobacion = 0;
@@ -32,11 +32,11 @@ public class Con_clientes {
             pst.setString(2, nombre);
             pst.setString(3, pais_fiscal);
             pst.setString(4, nombre_comercial);
-            pst.setString(5, id_fiscal);
-            pst.setString(6, cod_postal);
+            pst.setInt(5, id_fiscal);
+            pst.setInt(6, cod_postal);
             pst.setString(7, dir);
             pst.setString(8, ciudad);
-            pst.setString(9, telf);
+            pst.setInt(9, telf);
             pst.setString(10, email);
 
             comprobacion = pst.executeUpdate();
@@ -56,7 +56,7 @@ public class Con_clientes {
         }
     }
 
-    public boolean actualizarClientes(int cod_cliente, String nombre, String pais_fiscal, String nombre_comercial, String id_fiscal, String cod_postal, String dir, String ciudad, String telf, String email) {
+    public boolean actualizarClientes(int cod_cliente, String nombre, String pais_fiscal, String nombre_comercial, int id_fiscal, int cod_postal, String dir, String ciudad, int telf, String email) {
         int comprobacion = 0;
         String query = "UPDATE `clientes` set cod_cliente ='" + cod_cliente
                 + "',nombre='" + nombre

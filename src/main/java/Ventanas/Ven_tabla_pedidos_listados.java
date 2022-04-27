@@ -19,19 +19,20 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
     }
 
     protected void cargaDeDatosPedidos(String buscar) {
-        String[] nombreTablas = {"Código", "Nombre Cliente", "Total", "Estado"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
+        String[] nombreTablas = {"Código", "Nombre Cliente", "Subtotal","Total", "Estado"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         mostrarPedidos = new DefaultTableModel(null, nombreTablas);
         tablaPedidos.setModel(mostrarPedidos);
 
         ArrayList<Pedidos> pedidosArr = new ArrayList<Pedidos>();
         pedidosArr = objConPedidos.mostrarPedidos(buscar);
 
-        Object[] fila = new Object[4];
+        Object[] fila = new Object[nombreTablas.length];
         for (int i = 0; i < pedidosArr.size(); i++) {
             fila[0] = pedidosArr.get(i).getCod_pedido();
             fila[1] = objConPedidos.mostrarCodPedido(pedidosArr.get(i).getCod_cliente());
-            fila[2] = pedidosArr.get(i).getPrecio_total();
-            fila[3] = pedidosArr.get(i).getEstado();
+            fila[2] = pedidosArr.get(i).getPrecio_subtotal();
+            fila[3] = pedidosArr.get(i).getPrecio_total();
+            fila[4] = pedidosArr.get(i).getEstado();
             System.out.println(fila[1]);
             mostrarPedidos.addRow(fila);
         }
@@ -58,7 +59,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         txtEstado1 = new javax.swing.JLabel();
         botonActualizarPedido = new javax.swing.JButton();
         txtTotal1 = new javax.swing.JLabel();
-        TFTotalPedido1 = new javax.swing.JTextField();
+        TFSubTotalPedido = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -96,7 +97,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
 
         TFCodPedido.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         TFCodPedido.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        TFCodPedido.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        TFCodPedido.setBorder(null);
         TFCodPedido.setEnabled(false);
         TFCodPedido.setFocusable(false);
         TFCodPedido.setOpaque(false);
@@ -109,7 +110,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
 
         TFNombreCliente.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         TFNombreCliente.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        TFNombreCliente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        TFNombreCliente.setBorder(null);
         TFNombreCliente.setEnabled(false);
         TFNombreCliente.setFocusable(false);
         TFNombreCliente.setOpaque(false);
@@ -119,7 +120,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
 
         TFTotalPedido.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         TFTotalPedido.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        TFTotalPedido.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        TFTotalPedido.setBorder(null);
         TFTotalPedido.setEnabled(false);
         TFTotalPedido.setFocusable(false);
         TFTotalPedido.setOpaque(false);
@@ -128,11 +129,6 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         txtEstado.setText("Estado Pedido");
 
         jComboEstadoPedido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "Pagado" }));
-        jComboEstadoPedido.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboEstadoPedidoActionPerformed(evt);
-            }
-        });
 
         txtEstado1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtEstado1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -149,12 +145,12 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         txtTotal1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtTotal1.setText("Subtotal");
 
-        TFTotalPedido1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        TFTotalPedido1.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        TFTotalPedido1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        TFTotalPedido1.setEnabled(false);
-        TFTotalPedido1.setFocusable(false);
-        TFTotalPedido1.setOpaque(false);
+        TFSubTotalPedido.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        TFSubTotalPedido.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        TFSubTotalPedido.setBorder(null);
+        TFSubTotalPedido.setEnabled(false);
+        TFSubTotalPedido.setFocusable(false);
+        TFSubTotalPedido.setOpaque(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -170,7 +166,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(TFNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(TFTotalPedido1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(TFSubTotalPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(TFTotalPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -238,15 +234,13 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
                             .addComponent(TFNombreCliente)
                             .addComponent(TFCodPedido)
-                            .addComponent(TFTotalPedido1, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
-                        .addContainerGap(26, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jComboEstadoPedido)
-                                .addComponent(botonActualizarPedido))
-                            .addComponent(TFTotalPedido))
-                        .addGap(24, 24, 24))))
+                            .addComponent(TFSubTotalPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboEstadoPedido)
+                            .addComponent(botonActualizarPedido))
+                        .addComponent(TFTotalPedido)))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -260,8 +254,9 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         int filaSelecionada = tablaPedidos.rowAtPoint(evt.getPoint());
         TFCodPedido.setText(tablaPedidos.getValueAt(filaSelecionada, 0).toString());
         TFNombreCliente.setText(tablaPedidos.getValueAt(filaSelecionada, 1).toString());
-        TFTotalPedido.setText(tablaPedidos.getValueAt(filaSelecionada, 2).toString());
-        estado = tablaPedidos.getValueAt(filaSelecionada, 3).toString();
+        TFSubTotalPedido.setText(tablaPedidos.getValueAt(filaSelecionada, 2).toString());
+        TFTotalPedido.setText(tablaPedidos.getValueAt(filaSelecionada, 3).toString());
+        estado = tablaPedidos.getValueAt(filaSelecionada, 4).toString();
 
     }//GEN-LAST:event_tablaPedidosMouseClicked
 
@@ -269,17 +264,13 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_botonActualizarPedidoActionPerformed
 
-    private void jComboEstadoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboEstadoPedidoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboEstadoPedidoActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField TFBuscar;
     public static javax.swing.JTextField TFCodPedido;
     public static javax.swing.JTextField TFNombreCliente;
+    public static javax.swing.JTextField TFSubTotalPedido;
     public static javax.swing.JTextField TFTotalPedido;
-    public static javax.swing.JTextField TFTotalPedido1;
     private javax.swing.JButton botonActualizarPedido;
     private javax.swing.JScrollPane buscadorPedidos;
     private javax.swing.JLabel informacion;

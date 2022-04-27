@@ -61,7 +61,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         DefaultTableModel art = new DefaultTableModel(null, nombreTablas);
         tablaArticulos.setModel(art);
 
-        Object[] fila = new Object[5];
+        Object[] fila = new Object[nombreTablas.length];
 
         ArrayList<Articulos> artArry = new ArrayList<Articulos>();
         artArry = objArticulo.mostrarArticulosYBusqueda(buscar);
