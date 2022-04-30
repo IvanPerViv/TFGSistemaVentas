@@ -1,5 +1,6 @@
 package Ventanas;
 
+import Conexiones.Con_articulos;
 import Conexiones.Con_familias_articulos;
 import Modelos.FamiliaArticulos;
 import Utils.generarCodigos;
@@ -10,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 public class Ven_articulos_familia extends javax.swing.JInternalFrame {
 
     protected Con_familias_articulos objFamilias = new Con_familias_articulos();
+    protected Con_articulos objArticulo = new Con_articulos();
 
     public Ven_articulos_familia() {
         initComponents();
@@ -69,18 +71,18 @@ public class Ven_articulos_familia extends javax.swing.JInternalFrame {
         botonActualizar = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         txtSeparacion1 = new javax.swing.JLabel();
-        PANEL_buscar_cliente = new javax.swing.JPanel();
+        Panel_familia = new javax.swing.JPanel();
+        txtCodigo = new javax.swing.JLabel();
+        TFCodigo = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JLabel();
+        TFNombreFamilia = new javax.swing.JTextField();
+        Panel_buscar_Familia = new javax.swing.JPanel();
         buscadorArticulos = new javax.swing.JScrollPane();
         tablaFamilias = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         TFBuscar = new javax.swing.JTextField();
         informacion2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        txtCodigo = new javax.swing.JLabel();
-        TFCodigo = new javax.swing.JTextField();
-        txtNombre = new javax.swing.JLabel();
-        TFNombreFamilia = new javax.swing.JTextField();
 
         setClosable(true);
         setTitle("Familia Producto");
@@ -158,7 +160,42 @@ public class Ven_articulos_familia extends javax.swing.JInternalFrame {
         txtSeparacion1.setText("                                                                ");
         barraHerramientasClientes.add(txtSeparacion1);
 
-        PANEL_buscar_cliente.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
+        Panel_familia.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Familia", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
+
+        txtCodigo.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        txtCodigo.setText("Código:");
+
+        txtNombre.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        txtNombre.setText("Familia:");
+
+        javax.swing.GroupLayout Panel_familiaLayout = new javax.swing.GroupLayout(Panel_familia);
+        Panel_familia.setLayout(Panel_familiaLayout);
+        Panel_familiaLayout.setHorizontalGroup(
+            Panel_familiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Panel_familiaLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(Panel_familiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(TFNombreFamilia, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TFCodigo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15))
+        );
+        Panel_familiaLayout.setVerticalGroup(
+            Panel_familiaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(Panel_familiaLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(TFCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(TFNombreFamilia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
+        );
+
+        Panel_buscar_Familia.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
 
         tablaFamilias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -185,6 +222,7 @@ public class Ven_articulos_familia extends javax.swing.JInternalFrame {
         informacion2.setText("Clic para seleccionar");
 
         jButton1.setText("Enviar");
+        jButton1.setToolTipText("Selecionar categoria");
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -192,72 +230,37 @@ public class Ven_articulos_familia extends javax.swing.JInternalFrame {
             }
         });
 
-        javax.swing.GroupLayout PANEL_buscar_clienteLayout = new javax.swing.GroupLayout(PANEL_buscar_cliente);
-        PANEL_buscar_cliente.setLayout(PANEL_buscar_clienteLayout);
-        PANEL_buscar_clienteLayout.setHorizontalGroup(
-            PANEL_buscar_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_buscar_clienteLayout.createSequentialGroup()
+        javax.swing.GroupLayout Panel_buscar_FamiliaLayout = new javax.swing.GroupLayout(Panel_buscar_Familia);
+        Panel_buscar_Familia.setLayout(Panel_buscar_FamiliaLayout);
+        Panel_buscar_FamiliaLayout.setHorizontalGroup(
+            Panel_buscar_FamiliaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_buscar_FamiliaLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(PANEL_buscar_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(PANEL_buscar_clienteLayout.createSequentialGroup()
+                .addGroup(Panel_buscar_FamiliaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(Panel_buscar_FamiliaLayout.createSequentialGroup()
                         .addComponent(informacion2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PANEL_buscar_clienteLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Panel_buscar_FamiliaLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(10, 10, 10)
                         .addComponent(TFBuscar))
                     .addComponent(buscadorArticulos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(15, 15, 15))
         );
-        PANEL_buscar_clienteLayout.setVerticalGroup(
-            PANEL_buscar_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_buscar_clienteLayout.createSequentialGroup()
-                .addGroup(PANEL_buscar_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+        Panel_buscar_FamiliaLayout.setVerticalGroup(
+            Panel_buscar_FamiliaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_buscar_FamiliaLayout.createSequentialGroup()
+                .addGroup(Panel_buscar_FamiliaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(TFBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addComponent(buscadorArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
-                .addGroup(PANEL_buscar_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(Panel_buscar_FamiliaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(informacion2, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
                     .addComponent(jButton1))
                 .addGap(5, 5, 5))
-        );
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Familia", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
-
-        txtCodigo.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        txtCodigo.setText("Código:");
-
-        txtNombre.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        txtNombre.setText("Familia:");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(TFNombreFamilia, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TFCodigo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(TFCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
-                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(TFNombreFamilia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -266,16 +269,11 @@ public class Ven_articulos_familia extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(barraHerramientasClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(PANEL_buscar_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(barraHerramientasClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(Panel_familia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Panel_buscar_Familia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
@@ -284,9 +282,9 @@ public class Ven_articulos_familia extends javax.swing.JInternalFrame {
                 .addGap(0, 0, 0)
                 .addComponent(barraHerramientasClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Panel_familia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
-                .addComponent(PANEL_buscar_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Panel_buscar_Familia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
 
@@ -353,18 +351,15 @@ public class Ven_articulos_familia extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // boton enviar informacion
-        ArrayList<FamiliaArticulos> artFamilia = new ArrayList<FamiliaArticulos>();
-        artFamilia = objFamilias.mostrarArticulosYBusqueda("");
-        
-        for (FamiliaArticulos a : artFamilia) {
-            Ven_articulos.comboFamilia.addItem(a.getNombreFamilia());
-        }
+        int fila = tablaFamilias.getSelectedRow();
+        Ven_articulos.TFFamilia.setText(tablaFamilias.getValueAt(fila, 1).toString());
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel PANEL_buscar_cliente;
+    private javax.swing.JPanel Panel_buscar_Familia;
+    private javax.swing.JPanel Panel_familia;
     private javax.swing.JTextField TFBuscar;
     private javax.swing.JTextField TFCodigo;
     private javax.swing.JTextField TFNombreFamilia;
@@ -377,7 +372,6 @@ public class Ven_articulos_familia extends javax.swing.JInternalFrame {
     private javax.swing.JLabel informacion2;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JTable tablaFamilias;

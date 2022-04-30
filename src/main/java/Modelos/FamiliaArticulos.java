@@ -12,6 +12,9 @@ public class FamiliaArticulos {
         this.codFamilia = codFamilia;
         this.nombreFamilia = nombreFamilia;
     }
+     public FamiliaArticulos(){
+         
+     }
 
     public int getCodFamilia() {
         return codFamilia;

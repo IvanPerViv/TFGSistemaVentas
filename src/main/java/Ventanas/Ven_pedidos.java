@@ -5,6 +5,7 @@ import Conexiones.Con_articulos;
 import Conexiones.Con_pedidos;
 import Modelos.Articulos;
 import Modelos.Clientes;
+import Utils.Comprobaciones;
 import Utils.generarCodigos;
 import static Ventanas.Ven_principal.escritorio;
 import java.text.DateFormat;
@@ -28,7 +29,8 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
 
     protected final Con_clientes objConexionClientes = new Con_clientes();
     protected final Con_articulos objConexionArticulos = new Con_articulos();
-
+    protected final Comprobaciones objComprobaciones = new Comprobaciones();
+    
     public Ven_pedidos() {
         initComponents();
         bloquearCampos(false);
@@ -140,14 +142,6 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     public double calcularIva(double cantidad, double iva) {
         double total;
         return total = (cantidad * iva) / 100;
-    }
-
-    public int comprobacionJTextField(JTextField campo) {
-        int comprobacion = 1;
-        if (campo.getText().trim().equals("")) {
-            comprobacion = 0;
-        }
-        return comprobacion;
     }
 
     public boolean verificacionCodigoPedido(String datoAEvaluar) {
@@ -658,8 +652,8 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
 
     private void botonAgregarProcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarProcActionPerformed
         // Agregar Datos
-        if (comprobacionJTextField(TFCodClie) != 0 && comprobacionJTextField(TFNombreProc) != 0
-                && comprobacionJTextField(TFCantidad) != 0 && comprobacionJTextField(TFPrecio) != 0 && comprobacionJTextField(TFIva) != 0) {
+        if (objComprobaciones.comprobacionJTextField(TFCodClie) != 0 && objComprobaciones.comprobacionJTextField(TFNombreProc) != 0
+                && objComprobaciones.comprobacionJTextField(TFCantidad) != 0 && objComprobaciones.comprobacionJTextField(TFPrecio) != 0 && objComprobaciones.comprobacionJTextField(TFIva) != 0) {
             if (verificacionCodigoPedido(TFNombreProc.getText())) {
                 DefaultTableModel datosPedidos = (DefaultTableModel) tablaPedidos.getModel();
                 Object[] pedidos = {

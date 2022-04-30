@@ -53,6 +53,7 @@ Modelos\Clientes.class
 Ventanas\Ven_tabla_cliente$2.class
 Ventanas\Ven_principal$6.class
 Ventanas\Ven_tabla_pedidos_listados$3.class
+Utils\Comprobaciones.class
 Ventanas\Ven_articulos.class
 Ventanas\Ven_pedidos.class
 Ventanas\Ven_login$1.class

@@ -1,11 +1,14 @@
 package Ventanas;
 
+import Utils.Comprobaciones;
 import javax.swing.*;
 
 /**
  * @author Iván Pérez
  */
 public class Ven_principal extends javax.swing.JFrame {
+
+    protected Comprobaciones objComprobaciones = new Comprobaciones();
 
     public Ven_principal(String rolUsuario, String nomUser) {
         initComponents();
@@ -15,27 +18,16 @@ public class Ven_principal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         //setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
-  
-    public void comprobacionUsuario(String a) {
-        if (!a.equals("Administrador")) {
-            i_CrearUsuario.disable();
-            i_CrearUsuario.setVisible(false);
-        }
-    }
 
-    public boolean comprobacionVentanaAbierta(JInternalFrame frame) {
-        JInternalFrame[] ventansActivas = escritorio.getAllFrames();
-        for (int i = 0; i < ventansActivas.length; i++) {
-            if (frame.getClass().isInstance(ventansActivas[i])) {
-                JOptionPane.showMessageDialog(this, "La ventana esta en uso.", "Información", JOptionPane.INFORMATION_MESSAGE);
-                return true;
-            }
+    public void comprobacionUsuario(String usuario) {
+        if (!usuario.equals("Administrador")) {
+            i_CrearUser.disable();
+            i_CrearUser.setVisible(false);
         }
-        return false;
     }
 
     public void mostarVentana(JInternalFrame frame) {
-        if (comprobacionVentanaAbierta(frame) != true) {
+        if (objComprobaciones.comprobacionVentanaAbierta(frame) != true) {
             escritorio.add(frame);
             frame.show();
         }
@@ -54,11 +46,15 @@ public class Ven_principal extends javax.swing.JFrame {
         nombreUsuario = new javax.swing.JLabel();
         barraSupHerra = new javax.swing.JMenuBar();
         BH_usuarios = new javax.swing.JMenu();
-        i_CrearUsuario = new javax.swing.JMenuItem();
+        i_CrearUser = new javax.swing.JMenuItem();
         i_cerrarSesion = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         i_salir = new javax.swing.JMenuItem();
         BH_clientes = new javax.swing.JMenu();
+        BH_ciudades = new javax.swing.JMenu();
+        i_pais = new javax.swing.JMenuItem();
+        i_provincia = new javax.swing.JMenuItem();
+        i_ciudad = new javax.swing.JMenuItem();
         BH_articulos = new javax.swing.JMenu();
         BH_consultas = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -134,18 +130,18 @@ public class Ven_principal extends javax.swing.JFrame {
         BH_usuarios.setMinimumSize(new java.awt.Dimension(130, 50));
         BH_usuarios.setPreferredSize(new java.awt.Dimension(130, 50));
 
-        i_CrearUsuario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        i_CrearUsuario.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        i_CrearUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/CrearUser.png"))); // NOI18N
-        i_CrearUsuario.setText("Crear Usuario");
-        i_CrearUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        i_CrearUsuario.setPreferredSize(new java.awt.Dimension(250, 50));
-        i_CrearUsuario.addActionListener(new java.awt.event.ActionListener() {
+        i_CrearUser.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        i_CrearUser.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        i_CrearUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/CrearUser.png"))); // NOI18N
+        i_CrearUser.setText("Crear Usuario");
+        i_CrearUser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        i_CrearUser.setPreferredSize(new java.awt.Dimension(250, 50));
+        i_CrearUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                i_CrearUsuarioActionPerformed(evt);
+                i_CrearUserActionPerformed(evt);
             }
         });
-        BH_usuarios.add(i_CrearUsuario);
+        BH_usuarios.add(i_CrearUser);
 
         i_cerrarSesion.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_DOWN_MASK));
         i_cerrarSesion.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
@@ -186,6 +182,49 @@ public class Ven_principal extends javax.swing.JFrame {
             }
         });
         barraSupHerra.add(BH_clientes);
+
+        BH_ciudades.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/Ciudades.png"))); // NOI18N
+        BH_ciudades.setText("Ciudades");
+        BH_ciudades.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        BH_ciudades.setPreferredSize(new java.awt.Dimension(150, 50));
+
+        i_pais.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        i_pais.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/Pais.png"))); // NOI18N
+        i_pais.setText("Pais");
+        i_pais.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        i_pais.setPreferredSize(new java.awt.Dimension(250, 50));
+        i_pais.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                i_paisActionPerformed(evt);
+            }
+        });
+        BH_ciudades.add(i_pais);
+
+        i_provincia.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        i_provincia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/prov.png"))); // NOI18N
+        i_provincia.setText("Provincia");
+        i_provincia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        i_provincia.setPreferredSize(new java.awt.Dimension(250, 50));
+        i_provincia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                i_provinciaActionPerformed(evt);
+            }
+        });
+        BH_ciudades.add(i_provincia);
+
+        i_ciudad.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        i_ciudad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/ciudad.png"))); // NOI18N
+        i_ciudad.setText("Ciudad");
+        i_ciudad.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        i_ciudad.setPreferredSize(new java.awt.Dimension(250, 50));
+        i_ciudad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                i_ciudadActionPerformed(evt);
+            }
+        });
+        BH_ciudades.add(i_ciudad);
+
+        barraSupHerra.add(BH_ciudades);
 
         BH_articulos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/articulos.png"))); // NOI18N
         BH_articulos.setText("Articulos");
@@ -304,32 +343,52 @@ public class Ven_principal extends javax.swing.JFrame {
         mostarVentana(vArticulos);
     }//GEN-LAST:event_BH_articulosMouseClicked
 
-    private void i_CrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_i_CrearUsuarioActionPerformed
-        Ven_crear_usuario vCrearUser = new Ven_crear_usuario();
-        mostarVentana(vCrearUser);
-    }//GEN-LAST:event_i_CrearUsuarioActionPerformed
-
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         Ven_pedidos vPedidos = new Ven_pedidos();
         mostarVentana(vPedidos);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        Ven_tabla_pedidos_listados vPedidosListado = new Ven_tabla_pedidos_listados();
-        mostarVentana(vPedidosListado);
+        Ven_clientes_pais vPais = new Ven_clientes_pais();
+        mostarVentana(vPais);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void i_provinciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_i_provinciaActionPerformed
+        Ven_clientes_prov vProv = new Ven_clientes_prov();
+        mostarVentana(vProv);
+    }//GEN-LAST:event_i_provinciaActionPerformed
+
+    private void i_ciudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_i_ciudadActionPerformed
+        Ven_clientes_ciudad vCiudad = new Ven_clientes_ciudad();
+        mostarVentana(vCiudad);
+    }//GEN-LAST:event_i_ciudadActionPerformed
+
+    private void i_paisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_i_paisActionPerformed
+        Ven_clientes_pais vPais = new Ven_clientes_pais();
+        mostarVentana(vPais);
+    }//GEN-LAST:event_i_paisActionPerformed
+
+    private void i_CrearUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_i_CrearUserActionPerformed
+        Ven_crear_usuario vCrearUser = new Ven_crear_usuario();
+        mostarVentana(vCrearUser);
+    }//GEN-LAST:event_i_CrearUserActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu BH_articulos;
     private javax.swing.JMenu BH_ayuda;
+    private javax.swing.JMenu BH_ciudades;
     private javax.swing.JMenu BH_clientes;
     private javax.swing.JMenu BH_consultas;
     private javax.swing.JMenu BH_usuarios;
     private javax.swing.JMenu BH_ventas;
     private javax.swing.JMenuBar barraSupHerra;
     public static javax.swing.JDesktopPane escritorio;
+    private javax.swing.JMenuItem i_CrearUser;
     private javax.swing.JMenuItem i_CrearUsuario;
     private javax.swing.JMenuItem i_cerrarSesion;
+    private javax.swing.JMenuItem i_ciudad;
+    private javax.swing.JMenuItem i_pais;
+    private javax.swing.JMenuItem i_provincia;
     private javax.swing.JMenuItem i_salir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
