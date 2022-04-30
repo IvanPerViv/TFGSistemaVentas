@@ -6,32 +6,27 @@ package Modelos;
  */
 public class Pedidos {
 
-    int cod_pedido;
-    int cantidad;
-    double precio;
-    int iva;
-    double precio_subtotal;
-    double precio_total;
+    int codPedido, cantidad,iva, codCliente;
+    double precio, precioSubtotal, precioTotal;
     String estado;
-    int cod_cliente;
 
     public Pedidos(int cod_pedido, int cantidad, double precio, int iva, double precio_subtotal, double precio_total, String estado, int cod_cliente) {
-        this.cod_pedido = cod_pedido;
+        this.codPedido = cod_pedido;
         this.cantidad = cantidad;
         this.precio = precio;
         this.iva = iva;
-        this.precio_subtotal = precio_subtotal;
-        this.precio_total = precio_total;
+        this.precioSubtotal = precio_subtotal;
+        this.precioTotal = precio_total;
         this.estado = estado;
-        this.cod_cliente = cod_cliente;
+        this.codCliente = cod_cliente;
     }
 
     public int getCod_pedido() {
-        return cod_pedido;
+        return codPedido;
     }
 
     public void setCod_pedido(int cod_pedido) {
-        this.cod_pedido = cod_pedido;
+        this.codPedido = cod_pedido;
     }
 
     public int getCantidad() {
@@ -59,19 +54,19 @@ public class Pedidos {
     }
 
     public double getPrecio_subtotal() {
-        return precio_subtotal;
+        return precioSubtotal;
     }
 
     public void setPrecio_subtotal(double precio_subtotal) {
-        this.precio_subtotal = precio_subtotal;
+        this.precioSubtotal = precio_subtotal;
     }
 
     public double getPrecio_total() {
-        return precio_total;
+        return precioTotal;
     }
 
     public void setPrecio_total(double precio_total) {
-        this.precio_total = precio_total;
+        this.precioTotal = precio_total;
     }
 
     public String getEstado() {
@@ -83,11 +78,11 @@ public class Pedidos {
     }
 
     public int getCod_cliente() {
-        return cod_cliente;
+        return codCliente;
     }
 
     public void setCod_cliente(int cod_cliente) {
-        this.cod_cliente = cod_cliente;
+        this.codCliente = cod_cliente;
     }
 
 }

@@ -4,23 +4,33 @@ package Modelos;
  * @author Iván Pérez
  */
 public class Usuarios {
-     protected int cod_usuario;
-     protected String nombre, apellidos, contraseña, rol_trabajador;
 
-    public Usuarios(int cod_usuarios, String nombre, String apellidos, String contraseña, String rol_trabajador) {
-        this.cod_usuario = cod_usuarios;
+    protected int codUsuario, rol;
+    protected String usuario, nombre, apellidos, contraseña;
+
+    public Usuarios(int cod_usuario, String usuario, String nombre, String apellidos, String contraseña, int rol) {
+        this.codUsuario = cod_usuario;
+        this.usuario = usuario;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.contraseña = contraseña;
-        this.rol_trabajador = rol_trabajador;
+        this.rol = rol;
     }
 
-    public int getCod_usuarios() {
-        return cod_usuario;
+    public int getCod_usuario() {
+        return codUsuario;
     }
 
-    public void setCod_usuarios(int cod_usuarios) {
-        this.cod_usuario = cod_usuarios;
+    public void setCod_usuario(int cod_usuario) {
+        this.codUsuario = cod_usuario;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public String getNombre() {
@@ -47,12 +57,12 @@ public class Usuarios {
         this.contraseña = contraseña;
     }
 
-    public String getRol_trabajador() {
-        return rol_trabajador;
+    public int getRol() {
+        return rol;
     }
 
-    public void setRol_trabajador(String rol_trabajador) {
-        this.rol_trabajador = rol_trabajador;
+    public void setRol(int rol) {
+        this.rol = rol;
     }
-    
+
 }

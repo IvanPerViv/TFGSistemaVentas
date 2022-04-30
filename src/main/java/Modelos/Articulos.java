@@ -5,17 +5,26 @@ package Modelos;
  */
 public class Articulos {
 
-    int cod_articulo;
-    String nombre_producto;
-    double precio_compra;
-    int stock, IVA;
+    int codArticulo;
+    String nombreProducto;
+    double precioCompra;
+    int stock, IVA, familia;
 
-    public Articulos(int cod_articulo, String nombre_producto, double precio_compra, int IVA, int stock) {
-        this.cod_articulo = cod_articulo;
-        this.nombre_producto = nombre_producto;
-        this.precio_compra = precio_compra;
+    public Articulos(int cod_articulo, String nombre_producto, int familia, double precio_compra, int IVA, int stock) {
+        this.codArticulo = cod_articulo;
+        this.nombreProducto = nombre_producto;
+        this.familia = familia;
+        this.precioCompra = precio_compra;
         this.IVA = IVA;
         this.stock = stock;
+    }
+
+    public int getFamilia() {
+        return familia;
+    }
+
+    public void setFamilia(int familia) {
+        this.familia = familia;
     }
 
     public int getIVA() {
@@ -27,27 +36,27 @@ public class Articulos {
     }
 
     public int getCod_articulo() {
-        return cod_articulo;
+        return codArticulo;
     }
 
     public void setCod_articulo(int cod_articulo) {
-        this.cod_articulo = cod_articulo;
+        this.codArticulo = cod_articulo;
     }
 
     public String getNombre_producto() {
-        return nombre_producto;
+        return nombreProducto;
     }
 
     public void setNombre_producto(String nombre_producto) {
-        this.nombre_producto = nombre_producto;
+        this.nombreProducto = nombre_producto;
     }
 
     public double getPrecio_compra() {
-        return precio_compra;
+        return precioCompra;
     }
 
     public void setPrecio_compra(double precio_compra) {
-        this.precio_compra = precio_compra;
+        this.precioCompra = precio_compra;
     }
 
     public int getStock() {

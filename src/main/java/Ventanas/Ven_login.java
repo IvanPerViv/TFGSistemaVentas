@@ -26,6 +26,7 @@ public class Ven_login extends javax.swing.JFrame {
 
     /**
      * Metodo que carga una imagen para establecerla como icono del programa.
+     *
      * @return imagen del icono del programa.
      */
     @Override
@@ -203,7 +204,7 @@ public class Ven_login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLoginActionPerformed
-        String nombre = usuarioText.getText();
+        String usuario = usuarioText.getText();
         String pass = passText.getText();
 
 //String itemSeleecionado = (String) comboUser.getSelectedItem();
@@ -215,12 +216,13 @@ public class Ven_login extends javax.swing.JFrame {
 //            new V_principal(itemSeleecionado, usuario).setVisible(true);
 //        }
         Con_usuarios objUsers = new Con_usuarios();
-        Usuarios objUsuarios = objUsers.recuperarDatosUsuarios(nombre, pass);
-        if (!Objects.isNull(objUsuarios)) {
-            if (nombre.equals(objUsuarios.getNombre()) && pass.equals(objUsuarios.getContraseña())) {
-                new Ven_principal(objUsuarios.getRol_trabajador(), nombre).setVisible(true);
-                dispose();
+        Usuarios objUsuarios = objUsers.recuperarDatosUsuarios(usuario, pass);
+        String rolUsuario = objUsers.mostrarCodUsuario(objUsuarios.getRol());
 
+        if (!Objects.isNull(objUsuarios)) {
+            if (usuario.equals(objUsuarios.getUsuario()) && pass.equals(objUsuarios.getContraseña())) {
+                new Ven_principal(rolUsuario, usuario).setVisible(true);
+                dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Usuario incorrecto.", "ERROR!", JOptionPane.ERROR_MESSAGE);
             }

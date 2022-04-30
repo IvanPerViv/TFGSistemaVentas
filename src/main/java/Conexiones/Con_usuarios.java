@@ -20,8 +20,23 @@ public class Con_usuarios {
         con = objConexion.con;
     }
 
+    public String mostrarCodUsuario(int buscar) {
+        String query = "SELECT rol_usuario FROM `usuarios` INNER JOIN roles_usuarios on usuarios.cod_usuario = roles_usuarios.cod_rol WHERE roles_usuarios.cod_rol = " + buscar;
+        String resultado = "";
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    resultado = rs.getString(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+        }
+        return resultado;
+    }
+
     public Usuarios recuperarDatosUsuarios(String usuario, String pass) {
-        String query = "SELECT * FROM `usuarios` WHERE nombre = ? and contraseña = ?";
+        String query = "SELECT * FROM `usuarios` WHERE usuario = ? and contraseña = ?";
         Usuarios objUsers = null;
 
         try (PreparedStatement pst = con.prepareStatement(query)) {
@@ -30,12 +45,13 @@ public class Con_usuarios {
 
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
-                    System.out.println("ENTRO!!");
-                    String nom = rs.getString(2);   //Nombre
-                    String pasw = rs.getString(3);  //Contraseña
-                    String apl = rs.getString(4);   //Apellidos
-                    String rol = rs.getString(5);   //rol usuario
-                    objUsers = new Usuarios(0, nom, pasw, apl, rol);
+                    int cod = rs.getInt(1);
+                    String user = rs.getString(2);
+                    String nom = rs.getString(3);   //Nombre
+                    String pasw = rs.getString(4);  //Contraseña
+                    String apl = rs.getString(5);   //Apellidos
+                    int rol = rs.getInt(6);   //rol usuario
+                    objUsers = new Usuarios(cod, user, nom, pasw, apl, rol);
                 }
             }
         } catch (SQLException ex) {
