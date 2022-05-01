@@ -29,7 +29,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         botonGuardar.setEnabled(blockeo);
         botonActualizar.setEnabled(blockeo);
         BotonLocalidad.setEnabled(blockeo);
-                
+
         TFNombre.setEnabled(blockeo);
         TFPaisEmisor.setEnabled(blockeo);
         TFNombreComercial.setEnabled(blockeo);
@@ -69,7 +69,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
     }
 
     protected void cargaDeDatosClientes(String buscar) {
-        String[] nombreTablas = {"Cod", "Nombre", "N. Comercial", "NIF",  "C.Postal", "Dirreción", "Localidad", "Telefono", "Email"}; //Cargamos en un array el nombre que tendran nuestras columnas.
+        String[] nombreTablas = {"Cod", "Nombre", "N. Comercial", "NIF", "C.Postal", "Dirreción", "Localidad", "Telefono", "Email"}; //Cargamos en un array el nombre que tendran nuestras columnas.
         datosClientes = new DefaultTableModel(null, nombreTablas);
         tablaClientes.setModel(datosClientes);
 
@@ -563,7 +563,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         // Boton Localidad
         Ven_clientes_localidad objLocalidad = new Ven_clientes_localidad();
         Ven_principal.escritorio.add(objLocalidad).setVisible(true);
-        
+
     }//GEN-LAST:event_BotonLocalidadActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
