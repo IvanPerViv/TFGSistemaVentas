@@ -1,6 +1,7 @@
 package Ventanas;
 
 import Conexiones.Con_clientes;
+import Conexiones.Con_localidad_prov_pais;
 import Modelos.Clientes;
 import static Ventanas.Ven_pedidos.TFDir;
 import java.util.ArrayList;
@@ -9,9 +10,10 @@ import javax.swing.table.DefaultTableModel;
 
 public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
 
-    protected DefaultTableModel mostrarClientes;
+    protected DefaultTableModel datosClientes;
     protected final String DATOVACIO = "";
     protected final Con_clientes objConexionClientes = new Con_clientes();
+    protected final Con_localidad_prov_pais objLocal = new Con_localidad_prov_pais();
     protected static String codigo;
 
     public Ven_tabla_cliente() {
@@ -20,27 +22,26 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
     }
 
     protected void cargaDeDatosClientes(String buscar) {
-        String[] nombreTablas = {"Cod", "Nombre", "Pais-Fiscal", "ID-Fiscal", "N. Comercial", "CP", "Dirreción", "Ciudad", "Telefono", "Email"}; //Cargamos en un array el nombre que tendran nuestras columnas.
-        mostrarClientes = new DefaultTableModel(null, nombreTablas);
-        tablaClientes.setModel(mostrarClientes);
+        String[] nombreTablas = {"Cod", "Nombre", "N. Comercial", "NIF", "C.Postal", "Dirreción", "Localidad", "Telefono", "Email"}; //Cargamos en un array el nombre que tendran nuestras columnas.
+        datosClientes = new DefaultTableModel(null, nombreTablas);
+        tablaClientes.setModel(datosClientes);
 
-        Object[] fila = new Object[10];
+        Object[] fila = new Object[nombreTablas.length];
 
         ArrayList<Clientes> clieArray = new ArrayList<Clientes>();
         clieArray = objConexionClientes.mostrarClientesYBusqueda(buscar);
 
         for (int i = 0; i < clieArray.size(); i++) {
-            fila[0] = clieArray.get(i).getCod_cliente();
+            fila[0] = clieArray.get(i).getCodClientes();
             fila[1] = clieArray.get(i).getNombre();
-            fila[2] = clieArray.get(i).getPais_fiscal();
-            fila[3] = clieArray.get(i).getNombre_comercial();
-            fila[4] = clieArray.get(i).getId_fiscal();
-            fila[5] = clieArray.get(i).getCodigo_postal();
-            fila[6] = clieArray.get(i).getDirrecion();
-            fila[7] = clieArray.get(i).getCiudad();
-            fila[8] = clieArray.get(i).getTelefono();
-            fila[9] = clieArray.get(i).getEmail();
-            mostrarClientes.addRow(fila);
+            fila[2] = clieArray.get(i).getNombreComercial();
+            fila[3] = clieArray.get(i).getNif();
+            fila[4] = clieArray.get(i).getCodPostal();
+            fila[5] = clieArray.get(i).getDirFiscal();
+            fila[6] = objLocal.consultarLocalidadNombre(clieArray.get(i).getLocalidad()); //Integer.parseInt
+            fila[7] = clieArray.get(i).getTelf();
+            fila[8] = clieArray.get(i).getEmail();
+            datosClientes.addRow(fila);
         }
     }
 
@@ -145,13 +146,11 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
         int fila = tablaClientes.getSelectedRow();
         if (evt.getClickCount() == 1) {
             Ven_pedidos.TFCodClie.setText(tablaClientes.getValueAt(fila, 0).toString());
-            Ven_pedidos.TFNombreC.setText(tablaClientes.getValueAt(fila, 1).toString());
-            Ven_pedidos.TFDir.setText(tablaClientes.getValueAt(fila, 6).toString()+ " , "+ tablaClientes.getValueAt(fila, 7).toString()+ " "+tablaClientes.getValueAt(fila, 8).toString());
-            Ven_pedidos.TFTel.setText(tablaClientes.getValueAt(fila, 8).toString());
-            
-            dispose();
+            Ven_pedidos.TFNombreC.setText(tablaClientes.getValueAt(fila, 2).toString());
+            Ven_pedidos.TFDir.setText(tablaClientes.getValueAt(fila, 5).toString() + " , " + tablaClientes.getValueAt(fila, 6).toString() + " " + tablaClientes.getValueAt(fila, 4).toString());
+            Ven_pedidos.TFTel.setText(tablaClientes.getValueAt(fila, 7).toString());
         }
-
+        dispose();
     }//GEN-LAST:event_tablaClientesMouseClicked
 
 

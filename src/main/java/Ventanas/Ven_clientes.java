@@ -1,6 +1,7 @@
 package Ventanas;
 
 import Conexiones.Con_clientes;
+import Conexiones.Con_localidad_prov_pais;
 import Modelos.Articulos;
 import Modelos.Clientes;
 import Utils.generarCodigos;
@@ -15,6 +16,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
 
     protected DefaultTableModel datosClientes;
     protected final String DATOVACIO = "";
+    protected final Con_localidad_prov_pais objLocal = new Con_localidad_prov_pais();
     protected final Con_clientes objConexionClientes = new Con_clientes();
 
     public Ven_clientes() {
@@ -22,6 +24,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         bloquear(false);
         cargaDeDatosClientes(DATOVACIO);
         TFCodigo.setEnabled(false);
+        TFCiudad.setEnabled(false);
     }
 
     protected void bloquear(boolean blockeo) {
@@ -31,12 +34,10 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         BotonLocalidad.setEnabled(blockeo);
 
         TFNombre.setEnabled(blockeo);
-        TFPaisEmisor.setEnabled(blockeo);
         TFNombreComercial.setEnabled(blockeo);
         TFNif.setEnabled(blockeo);
         TFCp.setEnabled(blockeo);
         TFDir.setEnabled(blockeo);
-        TFCiudad.setEnabled(blockeo);
         TFTelef.setEnabled(blockeo);
         TFEmail.setEnabled(blockeo);
 
@@ -45,7 +46,6 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
     protected void limpiarDatos() {
         TFCodigo.setText("");
         TFNombre.setText("");
-        TFPaisEmisor.setText("");
         TFNombreComercial.setText("");
         TFNif.setText("");
         TFCp.setText("");
@@ -79,16 +79,15 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         clieArray = objConexionClientes.mostrarClientesYBusqueda(buscar);
 
         for (int i = 0; i < clieArray.size(); i++) {
-            fila[0] = clieArray.get(i).getCod_cliente();
+            fila[0] = clieArray.get(i).getCodClientes();
             fila[1] = clieArray.get(i).getNombre();
-            fila[2] = clieArray.get(i).getPais_fiscal();
-            fila[3] = clieArray.get(i).getNombre_comercial();
-            fila[4] = clieArray.get(i).getId_fiscal();
-            fila[5] = clieArray.get(i).getCodigo_postal();
-            fila[6] = clieArray.get(i).getDirrecion();
-            fila[7] = clieArray.get(i).getCiudad();
-            fila[8] = clieArray.get(i).getTelefono();
-            fila[9] = clieArray.get(i).getEmail();
+            fila[2] = clieArray.get(i).getNombreComercial();
+            fila[3] = clieArray.get(i).getNif();
+            fila[4] = clieArray.get(i).getCodPostal();
+            fila[5] = clieArray.get(i).getDirFiscal();
+            fila[6] = objLocal.consultarLocalidadNombre(clieArray.get(i).getLocalidad()); //Integer.parseInt
+            fila[7] = clieArray.get(i).getTelf();
+            fila[8] = clieArray.get(i).getEmail();
             datosClientes.addRow(fila);
         }
     }
@@ -112,8 +111,6 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         TFCodigo = new javax.swing.JTextField();
         txtNombre = new javax.swing.JLabel();
         TFNombre = new javax.swing.JTextField();
-        txtApellidos = new javax.swing.JLabel();
-        TFPaisEmisor = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JLabel();
         TFTelef = new javax.swing.JTextField();
         txtDirrec = new javax.swing.JLabel();
@@ -240,9 +237,6 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         txtNombre.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtNombre.setText("Nombre:");
 
-        txtApellidos.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        txtApellidos.setText("Pais-Emisor:");
-
         txtTelefono.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtTelefono.setText("Télefono:");
 
@@ -265,6 +259,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         txtApellidos1.setText("NIF Fiscal:");
 
         BotonLocalidad.setText("...");
+        BotonLocalidad.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BotonLocalidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BotonLocalidadActionPerformed(evt);
@@ -276,30 +271,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         PANEL_detalle_clienteLayout.setHorizontalGroup(
             PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
-                                .addComponent(TFCodigo))
-                            .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(TFNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtApellidos1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                                        .addComponent(TFNif)))
-                                .addGap(15, 15, 15)
-                                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(TFNombreComercial, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                                        .addComponent(TFPaisEmisor)
-                                        .addGap(170, 170, 170))))
-                            .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(15, 15, 15)
-                                .addComponent(txtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
                         .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
@@ -320,46 +292,58 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
                                 .addGap(15, 15, 15)
                                 .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(TFEmail)
-                                    .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(TFNombreComercial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(15, 15, 15)
                         .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(TFCiudad)
                             .addComponent(txtCiudad, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))
                         .addGap(10, 10, 10)
-                        .addComponent(BotonLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(BotonLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
+                                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+                                        .addComponent(TFCodigo))
+                                    .addComponent(TFNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(13, 13, 13))
+                            .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15)
+                                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(TFNif)
+                                    .addComponent(txtApellidos1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(230, 230, 230)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PANEL_detalle_clienteLayout.setVerticalGroup(
             PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_detalle_clienteLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
+                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(TFCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(TFEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(TFNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtApellidos1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(TFCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)
-                        .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, 0)
-                        .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(TFNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TFNombreComercial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(5, 5, 5)
-                        .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                                .addComponent(txtApellidos1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(TFNif, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(TFPaisEmisor, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(5, 5, 5)
+                        .addComponent(TFNif, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(TFNombreComercial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_detalle_clienteLayout.createSequentialGroup()
                         .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtDirrec, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCp, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -376,7 +360,11 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
                                 .addComponent(TFTelef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_detalle_clienteLayout.createSequentialGroup()
+                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(TFEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(10, 10, 10))
         );
 
@@ -441,7 +429,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(PANEL_detalle_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(PANEL_detalle_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(barraHerramientasClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(PANEL_buscar_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(15, 15, 15))
@@ -480,17 +468,16 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         // BOTON GUARDAR //
         int codigoUser = Integer.parseInt(TFCodigo.getText());
-        String nombre = TFNombre.getText(),
-                paisFiscal = TFPaisEmisor.getText(),
-                nombreComercial = TFNombreComercial.getText(),
-                email = TFEmail.getText(),
-                ciudad = TFCiudad.getText(),
-                dirrecion = TFDir.getText();
-        int idFiscal = Integer.parseInt(TFNif.getText()),
-                cod_postal = Integer.parseInt(TFCp.getText()),
-                telefono = Integer.parseInt(TFTelef.getText());
+        String nombre = TFNombre.getText();
+        String nombreComercial = TFNombreComercial.getText();
+        String nif = TFNif.getText();
+        int codPostal = Integer.parseInt(TFCp.getText());
+        String dirrecion = TFDir.getText();
+        int localidad = objLocal.consultarLocalidad(TFCiudad.getText());
+        int telef = Integer.parseInt(TFTelef.getText());
+        String email = TFEmail.getText();
 
-        boolean comprobacion = objConexionClientes.ingresoClientes(codigoUser, nombre, paisFiscal, nombreComercial, idFiscal, cod_postal, dirrecion, ciudad, telefono, email);
+        boolean comprobacion = objConexionClientes.ingresoClientes(codigoUser, nombre, nombreComercial, nif, codPostal, dirrecion, localidad, telef, email);
 
         if (comprobacion == true) {
             JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "", JOptionPane.INFORMATION_MESSAGE);
@@ -520,31 +507,32 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         bloquear(true);
         botonGuardar.setEnabled(false);
         TFCodigo.setText(tablaClientes.getValueAt(filaSelecionada, 0).toString());
-        TFNombre.setText(tablaClientes.getValueAt(filaSelecionada, 1).toString());
-        TFPaisEmisor.setText(tablaClientes.getValueAt(filaSelecionada, 2).toString());
-        TFNombreComercial.setText(tablaClientes.getValueAt(filaSelecionada, 3).toString());
-        TFNif.setText(tablaClientes.getValueAt(filaSelecionada, 4).toString());
-        TFCp.setText(tablaClientes.getValueAt(filaSelecionada, 5).toString());
-        TFDir.setText(tablaClientes.getValueAt(filaSelecionada, 6).toString());
-        TFCiudad.setText(tablaClientes.getValueAt(filaSelecionada, 7).toString());
-        TFTelef.setText(tablaClientes.getValueAt(filaSelecionada, 8).toString());
-        TFEmail.setText(tablaClientes.getValueAt(filaSelecionada, 9).toString());
+        TFNombre.setText(tablaClientes.getValueAt(filaSelecionada, 1).toString()); 
+        TFNombreComercial.setText(tablaClientes.getValueAt(filaSelecionada, 2).toString());
+        TFNif.setText(tablaClientes.getValueAt(filaSelecionada, 3).toString());
+        TFCp.setText(tablaClientes.getValueAt(filaSelecionada, 4).toString());
+        TFDir.setText(tablaClientes.getValueAt(filaSelecionada, 5).toString());
+        TFCiudad.setText(tablaClientes.getValueAt(filaSelecionada, 6).toString());
+        TFTelef.setText(tablaClientes.getValueAt(filaSelecionada, 7).toString());
+        TFEmail.setText(tablaClientes.getValueAt(filaSelecionada, 8).toString());
 
     }//GEN-LAST:event_tablaClientesMouseClicked
 
     private void botonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarActionPerformed
         //BOTON MODIFICAR
         bloquear(true);
-        String nombre = TFNombre.getText(),
-                paisFiscal = TFPaisEmisor.getText(),
-                nombreComercial = TFNombreComercial.getText(),
-                email = TFEmail.getText(),
-                ciudad = TFCiudad.getText(),
-                dirrecion = TFDir.getText();
-        int idFiscal = Integer.parseInt(TFNif.getText()),
-                cod_postal = Integer.parseInt(TFCp.getText()),
-                telefono = Integer.parseInt(TFTelef.getText());
-        boolean comprobacion = objConexionClientes.actualizarClientes(Integer.parseInt(TFCodigo.getText()), nombre, paisFiscal, nombreComercial, idFiscal, cod_postal, dirrecion, ciudad, telefono, email);
+        
+        int codigoUser = Integer.parseInt(TFCodigo.getText());
+        String nombre = TFNombre.getText();
+        String nombreComercial = TFNombreComercial.getText();
+        String nif = TFNif.getText();
+        int codPostal = Integer.parseInt(TFCp.getText());
+        String dirrecion = TFDir.getText();
+        int localidad = objLocal.consultarLocalidad(TFCiudad.getText());
+        int telef = Integer.parseInt(TFTelef.getText());
+        String email = TFEmail.getText();
+        
+       boolean comprobacion = objConexionClientes.actualizarClientes(codigoUser, nombre, nombreComercial, nif, codPostal, dirrecion, localidad, telef, email);
 
         if (comprobacion != true) {
             JOptionPane.showMessageDialog(this, "Datos actualizados.", "", JOptionPane.INFORMATION_MESSAGE);
@@ -561,7 +549,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
 
     private void BotonLocalidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLocalidadActionPerformed
         // Boton Localidad
-        Ven_clientes_localidad objLocalidad = new Ven_clientes_localidad();
+        Ven_clientes_tabla_localidad objLocalidad = new Ven_clientes_tabla_localidad();
         Ven_principal.escritorio.add(objLocalidad).setVisible(true);
 
     }//GEN-LAST:event_BotonLocalidadActionPerformed
@@ -571,7 +559,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
     private javax.swing.JPanel PANEL_buscar_cliente;
     private javax.swing.JPanel PANEL_detalle_cliente;
     private javax.swing.JTextField TFBuscar;
-    private javax.swing.JTextField TFCiudad;
+    public static javax.swing.JTextField TFCiudad;
     private javax.swing.JTextField TFCodigo;
     private javax.swing.JTextField TFCp;
     private javax.swing.JTextField TFDir;
@@ -579,7 +567,6 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
     private javax.swing.JTextField TFNif;
     private javax.swing.JTextField TFNombre;
     private javax.swing.JTextField TFNombreComercial;
-    private javax.swing.JTextField TFPaisEmisor;
     private javax.swing.JTextField TFTelef;
     private javax.swing.JToolBar barraHerramientasClientes;
     private javax.swing.JButton botonActualizar;
@@ -592,7 +579,6 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JTable tablaClientes;
-    private javax.swing.JLabel txtApellidos;
     private javax.swing.JLabel txtApellidos1;
     private javax.swing.JLabel txtCiudad;
     private javax.swing.JLabel txtCodigo;

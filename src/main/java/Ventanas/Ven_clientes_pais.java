@@ -82,6 +82,7 @@ public class Ven_clientes_pais extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setClosable(true);
+        setIconifiable(true);
         setTitle("Pais");
 
         barraHerramientasClientes.setFloatable(false);

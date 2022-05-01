@@ -22,22 +22,21 @@ public class Con_clientes {
      *
      * @return boolean si los datos han sido metidos.
      */
-    public boolean ingresoClientes(int cod_cliente, String nombre, String pais_fiscal, String nombre_comercial, int id_fiscal, int cod_postal, String dir, String ciudad, int telf, String email) {
-        String query = "INSERT INTO `clientes` (cod_cliente, nombre, pais_fiscal, nombre_comercial, id_fiscal, codigo_postal, dirrecion, ciudad, telefono, email)"
-                + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+    public boolean ingresoClientes(int cod_cliente, String nombre, String nombre_comercial, String nif_cif, int codigo_postal, String dirrecion_fiscal, int localidad_fiscal, int telefono, String email) {
+        String query = "INSERT INTO `clientes` (cod_cliente, nombre, nombre_comercial, nif_cif,  codigo_postal, dirrecion_fiscal, localidad_fiscal, telefono, email)"
+                + "VALUES (?,?,?,?,?,?,?,?,?)";
         int comprobacion = 0;
 
         try (PreparedStatement pst = con.prepareStatement(query)) {
             pst.setInt(1, cod_cliente);
             pst.setString(2, nombre);
-            pst.setString(3, pais_fiscal);
-            pst.setString(4, nombre_comercial);
-            pst.setInt(5, id_fiscal);
-            pst.setInt(6, cod_postal);
-            pst.setString(7, dir);
-            pst.setString(8, ciudad);
-            pst.setInt(9, telf);
-            pst.setString(10, email);
+            pst.setString(3, nombre_comercial);
+            pst.setString(4, nif_cif);
+            pst.setInt(5, codigo_postal);
+            pst.setString(6, dirrecion_fiscal);
+            pst.setInt(7, localidad_fiscal);
+            pst.setInt(8, telefono);
+            pst.setString(9, email);
 
             comprobacion = pst.executeUpdate();
         } catch (SQLException ex) {
@@ -56,19 +55,19 @@ public class Con_clientes {
         }
     }
 
-    public boolean actualizarClientes(int cod_cliente, String nombre, String pais_fiscal, String nombre_comercial, int id_fiscal, int cod_postal, String dir, String ciudad, int telf, String email) {
+    public boolean actualizarClientes(int codCliente, String nombre, String nombreComercial, String nif, 
+            int codPostal, String dirFiscal, int localidadFiscal, int telefono, String email) {
         int comprobacion = 0;
-        String query = "UPDATE `clientes` set cod_cliente ='" + cod_cliente
+        String query = "UPDATE `clientes` set cod_cliente ='" + codCliente
                 + "',nombre='" + nombre
-                + "',pais_fiscal='" + pais_fiscal
-                + "',nombre_comercial='" + nombre_comercial
-                + "',id_fiscal='" + id_fiscal
-                + "',codigo_postal='" + cod_postal
-                + "',dirrecion='" + dir
-                + "',ciudad='" + ciudad
-                + "',telefono='" + telf
+                + "',nombre_comercial='" + nombreComercial
+                + "',nif_cif='" + nif
+                + "',codigo_postal='" + codPostal
+                + "',dirrecion_fiscal='" + dirFiscal
+                + "',localidad_fiscal='" + localidadFiscal
+                + "',telefono='" + telefono
                 + "',email='" + email
-                + "' WHERE cod_cliente='" + cod_cliente + "'";
+                + "' WHERE cod_cliente='" + codCliente + "'";
 
         try (PreparedStatement pst = con.prepareStatement(query)) {
             pst.executeUpdate();
@@ -79,7 +78,7 @@ public class Con_clientes {
     }
 
     public ArrayList mostrarClientesYBusqueda(String buscar) {
-        String query = "SELECT * FROM `clientes`where concat(cod_cliente, nombre, pais_fiscal, nombre_comercial, codigo_postal, dirrecion, ciudad,telefono, email) like'%" + buscar + "%'";
+        String query = "SELECT * FROM `clientes`where concat(cod_cliente, nombre, nombre_comercial, nif_cif,  codigo_postal, dirrecion_fiscal, localidad_fiscal, telefono, email) like'%" + buscar + "%'";
 
         ArrayList<Clientes> clie = new ArrayList<>();
         try (PreparedStatement pst = con.prepareStatement(query)) {
@@ -87,15 +86,14 @@ public class Con_clientes {
                 while (rs.next()) {
                     int codClie = rs.getInt(1);
                     String nombre = rs.getString(2);
-                    String pais_fiscal = rs.getString(3);
-                    String nombre_comercial = rs.getString(4);
-                    String id_fiscal = rs.getString(5);
-                    String codigo_postal = rs.getString(6);
-                    String dirrecion = rs.getString(7);
-                    String ciudad = rs.getString(8);
-                     String telefono = rs.getString(9);
-                    String email = rs.getString(10);
-                    clie.add(new Clientes(codClie, nombre, pais_fiscal, nombre_comercial,id_fiscal, codigo_postal, dirrecion, ciudad, telefono, email));
+                    String nombreComercial = rs.getString(3);
+                    String nif = rs.getString(4);
+                    int codPostal = rs.getInt(5);
+                    String dirFiscal = rs.getString(6);
+                    int localidadFiscal = rs.getInt(7);
+                    int telefono = rs.getInt(8);
+                    String email = rs.getString(9);
+                    clie.add(new Clientes(codClie, nombre, nombreComercial, nif, codPostal, dirFiscal, localidadFiscal, telefono, email));
 
                 }
             }

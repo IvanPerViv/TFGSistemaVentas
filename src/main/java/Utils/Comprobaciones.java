@@ -19,7 +19,7 @@ public class Comprobaciones extends javax.swing.JFrame {
         JInternalFrame[] ventansActivas = escritorio.getAllFrames();
         for (int i = 0; i < ventansActivas.length; i++) {
             if (frame.getClass().isInstance(ventansActivas[i])) {
-                JOptionPane.showMessageDialog(this, "La ventana esta en uso.", "Información", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "La ventana '"+ frame.getTitle()+"' esta en uso.", "Información", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             }
         }

@@ -5,28 +5,35 @@ package Modelos;
  * @author Iván Pérez
  */
 public class Clientes {
-    int codClientes;
-    String nombre, paisFiscal, nombreComercial, idFiscal, codigoPostal, dirrecion, ciudad, telefono, email;
 
-    public Clientes(int cod_cliente, String nombre, String pais_fiscal, String nombre_comercial, String id_fiscal, String codigo_postal, String dirrecion, String ciudad, String telefono, String email) {
-        this.codClientes = cod_cliente;
+    int codClientes;
+    String nombre;
+    String nombreComercial;
+    String nif;
+    int codPostal;
+    String dirFiscal;
+    int localidad;
+    int telf;
+    String email;
+
+    public Clientes(int codClientes, String nombre, String nombreComercial, String nif, int codPostal, String dirFiscal, int localidad, int telf, String email) {
+        this.codClientes = codClientes;
         this.nombre = nombre;
-        this.paisFiscal = pais_fiscal;
-        this.nombreComercial = nombre_comercial;
-        this.idFiscal = id_fiscal;
-        this.codigoPostal = codigo_postal;
-        this.dirrecion = dirrecion;
-        this.ciudad = ciudad;
-        this.telefono = telefono;
+        this.nombreComercial = nombreComercial;
+        this.nif = nif;
+        this.codPostal = codPostal;
+        this.dirFiscal = dirFiscal;
+        this.localidad = localidad;
+        this.telf = telf;
         this.email = email;
     }
 
-    public int getCod_cliente() {
+    public int getCodClientes() {
         return codClientes;
     }
 
-    public void setCod_cliente(int cod_cliente) {
-        this.codClientes = cod_cliente;
+    public void setCodClientes(int codClientes) {
+        this.codClientes = codClientes;
     }
 
     public String getNombre() {
@@ -37,60 +44,52 @@ public class Clientes {
         this.nombre = nombre;
     }
 
-    public String getPais_fiscal() {
-        return paisFiscal;
-    }
-
-    public void setPais_fiscal(String pais_fiscal) {
-        this.paisFiscal = pais_fiscal;
-    }
-
-    public String getNombre_comercial() {
+    public String getNombreComercial() {
         return nombreComercial;
     }
 
-    public void setNombre_comercial(String nombre_comercial) {
-        this.nombreComercial = nombre_comercial;
+    public void setNombreComercial(String nombreComercial) {
+        this.nombreComercial = nombreComercial;
     }
 
-    public String getId_fiscal() {
-        return idFiscal;
+    public String getNif() {
+        return nif;
     }
 
-    public void setId_fiscal(String id_fiscal) {
-        this.idFiscal = id_fiscal;
+    public void setNif(String nif) {
+        this.nif = nif;
     }
 
-    public String getCodigo_postal() {
-        return codigoPostal;
+    public int getCodPostal() {
+        return codPostal;
     }
 
-    public void setCodigo_postal(String codigo_postal) {
-        this.codigoPostal = codigo_postal;
+    public void setCodPostal(int codPostal) {
+        this.codPostal = codPostal;
     }
 
-    public String getDirrecion() {
-        return dirrecion;
+    public String getDirFiscal() {
+        return dirFiscal;
     }
 
-    public void setDirrecion(String dirrecion) {
-        this.dirrecion = dirrecion;
+    public void setDirFiscal(String dirFiscal) {
+        this.dirFiscal = dirFiscal;
     }
 
-    public String getCiudad() {
-        return ciudad;
+    public int getLocalidad() {
+        return localidad;
     }
 
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
+    public void setLocalidad(int localidad) {
+        this.localidad = localidad;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public int getTelf() {
+        return telf;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setTelf(int telf) {
+        this.telf = telf;
     }
 
     public String getEmail() {
@@ -101,5 +100,4 @@ public class Clientes {
         this.email = email;
     }
 
-    
 }

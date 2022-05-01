@@ -6,19 +6,19 @@ package Utils;
  */
 public class generarCodigos {
 
-    protected int dato;
+    protected int numero;
     protected int codigoInicial = 1;
     
 
-    public int generarCod(int dato) {
-        this.dato = dato;
+    public int generarCod(int valor) {
+        numero = valor;
         int codigo = 0;
         
-        if (this.dato < 9) {
-            codigo = codigoInicial + this.dato;
+        if (numero < 9) {
+            codigo = codigoInicial + numero;
         }
-        if ((this.dato >= 9) || (this.dato < 100)) {
-            codigo = codigoInicial + this.dato;
+        if (numero >= 9 || numero < 100) {
+            codigo = codigoInicial + numero;
         }
         return codigo;
     }

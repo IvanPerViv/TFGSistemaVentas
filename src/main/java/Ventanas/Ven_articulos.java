@@ -424,7 +424,6 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
                 iva = TFIva.getText(),
                 stockArt = TFStock.getText();
         int categoriaFamilia = objArticulo.mostrarNombreFamilia(TFFamilia.getText());
-        System.out.println(categoriaFamilia);
         boolean comprobacion = objArticulo.actualizarArticulos(codigoUser, nombreArt, categoriaFamilia, precioArt, iva, stockArt);
 
         if (comprobacion != true) {

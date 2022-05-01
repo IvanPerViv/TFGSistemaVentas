@@ -359,7 +359,7 @@ public class Ven_principal extends javax.swing.JFrame {
     }//GEN-LAST:event_i_provinciaActionPerformed
 
     private void i_ciudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_i_ciudadActionPerformed
-        Ven_clientes_ciudad vCiudad = new Ven_clientes_ciudad();
+        Ven_clientes_localidad vCiudad = new Ven_clientes_localidad();
         mostarVentana(vCiudad);
     }//GEN-LAST:event_i_ciudadActionPerformed
 
@@ -384,7 +384,6 @@ public class Ven_principal extends javax.swing.JFrame {
     private javax.swing.JMenuBar barraSupHerra;
     public static javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenuItem i_CrearUser;
-    private javax.swing.JMenuItem i_CrearUsuario;
     private javax.swing.JMenuItem i_cerrarSesion;
     private javax.swing.JMenuItem i_ciudad;
     private javax.swing.JMenuItem i_pais;

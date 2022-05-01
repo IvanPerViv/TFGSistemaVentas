@@ -258,6 +258,38 @@ public class Con_localidad_prov_pais {
     }
 
     //CONSULTAS
+    
+    public int consultarLocalidad (String buscar) {
+        String query = "SELECT cod_localidad FROM `localidades` WHERE nombre_ciudad like'" + buscar + "'";
+        int resultado = 0;
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    resultado = rs.getInt(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+        }
+        return resultado;
+    }
+    
+    public String consultarLocalidadNombre (int buscar) {
+        String query = "SELECT nombre_ciudad FROM `localidades` WHERE cod_localidad ='" + buscar + "'";
+        String resultado = "";
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    resultado = rs.getString(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+        }
+        return resultado;
+    }
+    
+    
     public ArrayList consultarPais() {
         ArrayList<Pais> artProv = new ArrayList<>();
         String query = "SELECT * FROM `pais`";
