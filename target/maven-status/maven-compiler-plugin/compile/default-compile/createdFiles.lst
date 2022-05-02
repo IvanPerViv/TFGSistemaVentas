@@ -43,10 +43,10 @@ Ventanas\Ven_clientes$1.class
 Ventanas\Ven_pedidos$1.class
 Ventanas\Ven_clientes_prov$7.class
 Modelos\Provincia.class
-.netbeans_automatic_build
 Ventanas\Ven_articulos$6.class
 Ventanas\Ven_clientes_pais$7.class
 Ventanas\Ven_clientes$14.class
+Conexiones\Con_pedido_linea.class
 Ventanas\Ven_clientes$15.class
 Ventanas\Ven_articulos$5.class
 Ventanas\Ven_pedidos$6.class
@@ -73,7 +73,6 @@ Ventanas\Ven_login.class
 Ventanas\Ven_clientes$6.class
 Ventanas\Ven_clientes_pais$2.class
 Ventanas\Ven_clientes_tabla_localidad$1.class
-Conexiones\Con_pedidos.class
 Ventanas\Ven_articulos_familia.class
 Ventanas\Ven_pedidos$4.class
 Ventanas\Ven_crear_usuario.class
@@ -113,6 +112,7 @@ Ventanas\Ven_login$2.class
 Ventanas\Ven_articulos$2.class
 Ventanas\Ven_clientes_localidad$1.class
 Ventanas\Ven_clientes_tabla_localidad$2.class
+Conexiones\Con_pedido.class
 Ventanas\Ven_articulos_familia$6.class
 Ventanas\Ven_articulos$14.class
 Ventanas\Ven_tabla_articulos$2.class

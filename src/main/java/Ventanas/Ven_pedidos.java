@@ -1,27 +1,12 @@
 package Ventanas;
 
-import Conexiones.Con_clientes;
-import Conexiones.Con_articulos;
-import Conexiones.Con_pedidos;
-import Modelos.Articulos;
-import Modelos.Clientes;
+import Conexiones.Con_pedido;
+import Conexiones.Con_pedido_linea;
 import Utils.Comprobaciones;
 import Utils.generarCodigos;
-import static Ventanas.Ven_principal.escritorio;
-import java.awt.Color;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.text.*;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -29,14 +14,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_pedidos extends javax.swing.JInternalFrame {
 
-    protected final Con_clientes objConexionClientes = new Con_clientes();
-    protected final Con_articulos objConexionArticulos = new Con_articulos();
     protected final Comprobaciones objComprobaciones = new Comprobaciones();
+    protected final Con_pedido objConPedidos = new Con_pedido();
+    protected final Con_pedido_linea objPedidoLinea = new Con_pedido_linea();
+    protected final generarCodigos objGenCod = new generarCodigos();
 
     public Ven_pedidos() {
         initComponents();
         bloquearCampos(false);
         bloquearBotones(false);
+        AreaObs.setEnabled(false);
         cargaDeDatosArticulos();
     }
 
@@ -57,7 +44,6 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         TFIva.setEnabled(bloquear);
         TFStock.setEnabled(bloquear);
         TFCantidad.setEnabled(bloquear);
-
     }
 
     protected void bloquearBotones(boolean bloquear) {
@@ -71,7 +57,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
 
     protected void limpiar() {
         bloquearBotones(true);
-
+        TFnumPedido.setText("");
         TFCodClie.setText("");
         TFNombreC.setText("");
         TFDir.setText("");
@@ -83,6 +69,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         TFIva.setText("");
         TFStock.setText("");
         TFCantidad.setText("");
+        AreaObs.setText("");
     }
 
     protected void limpiarArticulos() {
@@ -95,10 +82,8 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     }
 
     protected void generarCodigoArticulo() {
-        Con_pedidos con = new Con_pedidos();
-        int codArticulo = con.codigoPedidos();
+        int codArticulo = objConPedidos.codigoPedidos();
         if (codArticulo != 0) {
-            generarCodigos objGenCod = new generarCodigos();
             int numero = objGenCod.generarCod(codArticulo);
             TFnumPedido.setText(String.valueOf(numero));
         } else {
@@ -113,7 +98,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     }
 
     protected void cargaDeDatosArticulos() {
-        String[] nombreTablas = {"Cod. Cliente", "Producto", "Cantidad", "Precio", "IVA"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
+        String[] nombreTablas = {"Cod.Articulo", "Producto", "Cantidad", "Precio", "IVA"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         DefaultTableModel proc = new DefaultTableModel(null, nombreTablas);
         tablaPedidos.setModel(proc);
     }
@@ -158,6 +143,15 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         } catch (Exception ex) {
         }
         return comprobacion;
+    }
+
+    public void comprobarStock() {
+        int stock = Integer.parseInt(TFStock.getText());
+        int cantidad = Integer.parseInt(TFCantidad.getText());
+        if (cantidad > stock) {
+            JOptionPane.showMessageDialog(this, "No cuenta con el stock apropiado.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+            TFCantidad.setText("");
+        }
     }
 
     protected boolean comprobacionCampos() {
@@ -231,7 +225,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         botonBuscarProducto = new javax.swing.JButton();
         panel_observaciones = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        AreaObs = new javax.swing.JTextArea();
         jLabel31 = new javax.swing.JLabel();
         TFTotal = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
@@ -553,9 +547,9 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
 
         panel_observaciones.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Observaciones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        AreaObs.setColumns(20);
+        AreaObs.setRows(5);
+        jScrollPane1.setViewportView(AreaObs);
 
         javax.swing.GroupLayout panel_observacionesLayout = new javax.swing.GroupLayout(panel_observaciones);
         panel_observaciones.setLayout(panel_observacionesLayout);
@@ -588,6 +582,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel28.setText("Subtotal:");
 
+        TFSubtotal.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         TFSubtotal.setText("0.0");
         TFSubtotal.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         TFSubtotal.setEnabled(false);
@@ -706,6 +701,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         generarCodigoArticulo();
         fechaactual();
         TFDate.setText(fechaactual());
+        AreaObs.setEnabled(true);
     }//GEN-LAST:event_botonNuevoActionPerformed
 
     private void botonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLimpiarActionPerformed
@@ -721,6 +717,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_BotonBuscarClienteActionPerformed
 
     private void botonBuscarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarProductoActionPerformed
+        // BOTON BUSCAR ARTICULO
         Ven_tabla_articulos objTablaArticulos = new Ven_tabla_articulos();
         Ven_principal.escritorio.add(objTablaArticulos).setVisible(true);
         TFCantidad.setEnabled(true);
@@ -729,10 +726,10 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     private void botonAgregarProcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarProcActionPerformed
         // Agregar Datos       
         if (comprobacionCampos()) {
-            if (verificacionCodigoPedido(TFNombreProc.getText()) == 0) {
+            if (verificacionCodigoPedido(TFNombreProc.getText()) == 0) { // VERIFICACION DE QUE EL ARTICULO NO SEA EL MISMO.
                 DefaultTableModel datosPedidos = (DefaultTableModel) tablaPedidos.getModel();
                 String[] pedidos = {
-                    TFCodClie.getText(),
+                    TFCodProd.getText(),
                     TFNombreProc.getText(),
                     TFCantidad.getText(),
                     TFPrecio.getText(),
@@ -762,14 +759,6 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_botonEliminarProcActionPerformed
 
-    public void comprobarStock() {
-        int stock = Integer.parseInt(TFStock.getText());
-        int cantidad = Integer.parseInt(TFCantidad.getText());
-        if (cantidad > stock) {
-            JOptionPane.showMessageDialog(this, "No cuenta con el stock apropiado.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-            TFCantidad.setText("");
-        }
-    }
     private void TFCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFCantidadKeyReleased
         comprobarStock();
     }//GEN-LAST:event_TFCantidadKeyReleased
@@ -780,33 +769,36 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         if (Seleccionada == 0) {
             JOptionPane.showMessageDialog(this, "No existe ninguna dato.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         } else {
+            int numPedido = Integer.parseInt(TFnumPedido.getText());
+            String fecha = TFDate.getText();
+            int codigoCliente = Integer.parseInt(TFCodClie.getText());
+            String estado = "Reserva";
+            String area = AreaObs.getText();
 
-            Con_pedidos objConPedidos = new Con_pedidos();
-            int codClie = 0, cantidad = 0, iva = 0;
-            String Producto;
-            double precio = 0.0;
+            boolean comprobacionPedido = objConPedidos.ingresoPedidos(numPedido, fecha, codigoCliente, estado, area);
+
             for (int i = 0; i < tablaPedidos.getRowCount(); i++) {
-                codClie = Integer.parseInt(tablaPedidos.getValueAt(i, 0).toString());
-                Producto = tablaPedidos.getValueAt(i, 1).toString();
-                cantidad = Integer.parseInt(tablaPedidos.getValueAt(i, 2).toString());
-                precio = Double.parseDouble(tablaPedidos.getValueAt(i, 3).toString());
-                iva = Integer.parseInt(tablaPedidos.getValueAt(i, 4).toString());
+                int codArticulo = Integer.parseInt(tablaPedidos.getValueAt(i, 0).toString());
+                String Producto = tablaPedidos.getValueAt(i, 1).toString();
+                int cantidad = Integer.parseInt(tablaPedidos.getValueAt(i, 2).toString());
+                double precioUnitario = Double.parseDouble(tablaPedidos.getValueAt(i, 3).toString());
+                double iva = Integer.parseInt(tablaPedidos.getValueAt(i, 4).toString());
+                objPedidoLinea.ingresoLineasPedidos(numPedido, codArticulo, cantidad, precioUnitario, iva); //TAABLA N:N
             }
 
-            System.out.println(cantidad);
-            double precio_sub = Double.parseDouble(TFSubtotal.getText());
-            double precio_total = Double.parseDouble(TFTotal.getText());
-            String estado = "Reserva";
-
-//            boolean comprobacion = objConPedidos.ingresoPedidos(Integer.parseInt(TFnumPedido.getText()), cantidad, precio, iva, precio_sub, precio_total, estado, codClie);
-//            if (comprobacion == true) {
-//                JOptionPane.showMessageDialog(this, "Pedido realizado con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-//            }
+            if (comprobacionPedido == true) {
+                JOptionPane.showMessageDialog(this, "Pedido realizado con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
+        limpiar();
+        limpiarArticulos();
+        bloquearBotones(false);
+        bloquearCampos(false);
 
     }//GEN-LAST:event_botonRealizarPedidoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea AreaObs;
     private javax.swing.JButton BotonBuscarCliente;
     private javax.swing.JPanel PANEL_carrito;
     private javax.swing.JPanel PANEL_cliente;
@@ -840,7 +832,6 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JScrollPane listadoVentas;
     private javax.swing.JPanel panel_observaciones;
     private javax.swing.JTable tablaPedidos;

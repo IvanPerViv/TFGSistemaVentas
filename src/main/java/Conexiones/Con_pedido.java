@@ -12,18 +12,18 @@ import java.util.Date;
  *
  * @author Iván Pérez
  */
-public class Con_pedidos {
+public class Con_pedido {
 
     protected Conexion objConexion;
     protected Connection con;
 
-    public Con_pedidos() {
+    public Con_pedido() {
         objConexion = new Conexion();
         con = objConexion.con;
     }
 
     public int codigoPedidos() {
-        String query = "select max(cod_pedido) from `pedidos`";
+        String query = "select max(num_pedido) from `pedidos`";
         int codigo = 0;
         try (PreparedStatement pst = con.prepareStatement(query)) {
             try (ResultSet rs = pst.executeQuery()) {
@@ -37,19 +37,16 @@ public class Con_pedidos {
         return codigo;
     }
 
-    public boolean ingresoPedidos(int cod_pedido, int cantidad, double precio, int iva, double precio_subtotal, double precio_total, String estado, int codClie) {
-        String query = "INSERT INTO `pedidos`(cod_pedido,cantidad, precio, iva, precio_sub, precio_total, estado,cod_cliente )"
-                + "VALUES (?,?,?,?,?,?,?,?)";
+    public boolean ingresoPedidos(int num_pedido, String fecha_pedido, int cod_cliente, String estado, String observaciones) {
+        String query = "INSERT INTO `pedidos`(num_pedido, cod_cliente, fecha_pedido, estado, observaciones)"
+                + "VALUES (?,?,?,?,?)";
         int comprobacion = 0;
         try (PreparedStatement pst = con.prepareStatement(query)) {
-            pst.setInt(1, cod_pedido);
-            pst.setInt(2, cantidad);
-            pst.setDouble(3, precio);
-            pst.setInt(4, iva);
-            pst.setDouble(5, precio_subtotal);
-            pst.setDouble(6, precio_total);
-            pst.setString(7, estado);
-            pst.setInt(8, codClie);
+            pst.setInt(1, num_pedido);
+            pst.setInt(2, cod_cliente);
+            pst.setString(3, fecha_pedido);
+            pst.setString(4, estado);
+            pst.setString(5, observaciones);
 
             comprobacion = pst.executeUpdate();
         } catch (SQLException ex) {
@@ -59,34 +56,40 @@ public class Con_pedidos {
     }
 
     public ArrayList mostrarPedidos(String buscar) {
-        String query = "SELECT * FROM `pedidos`where concat(cod_pedido, cantidad, precio, iva, precio_sub, precio_total, estado,cod_cliente ) like'%" + buscar + "%'";
+        String query = "SELECT * FROM `pedidos`where concat(num_pedido, fecha_pedido, cod_cliente, estado, observaciones) like'%" + buscar + "%'";
 
-        ArrayList<Pedidos> clie = new ArrayList<>();
+        ArrayList<Pedidos> arPedidos = new ArrayList<>();
         try (PreparedStatement pst = con.prepareStatement(query)) {
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
-                    int cod_pedido = rs.getInt(1);
-                    int cantidad = rs.getInt(2);
-                    double precio = rs.getDouble(3);
-                    int iva = rs.getInt(4);
-                    double precio_sub = rs.getDouble(5);
-                    double precio_total = rs.getDouble(6);
-                    String estado = rs.getString(7);
-                    int cod_cliente = rs.getInt(8);
-                    clie.add(new Pedidos(cod_pedido, cantidad, precio, iva, precio_sub, precio_total, estado, cod_cliente));
-
+                    int numPedido = rs.getInt(1);
+                    int codCliente = rs.getInt(2);
+                    String fechaPedido = rs.getString(3);
+                    String estado = rs.getString(4);
+                    String observaciones = rs.getString(5);
+                    arPedidos.add(new Pedidos(numPedido, fechaPedido, codCliente, estado, observaciones));
                 }
             }
         } catch (SQLException ex) {
             System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
         }
-        return clie;
+        return arPedidos;
+    }
+
+    public void eliminarPedido(int numPedido) {
+        String query = "DELETE FROM `pedidos`  WHERE num_pedido= '" + numPedido + "' ";
+
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+        }
     }
 
     //SELECT * FROM `pedidos` INNER JOIN clientes USING(cod_cliente);
     //SELECT nombre_comercial FROM `pedidos` INNER JOIN clientes on pedidos.cod_pedido = clientes.cod_cliente where clientes.cod_cliente = '2';
     public String mostrarCodPedido(int buscar) {
-        String query = "SELECT nombre_comercial FROM `pedidos` INNER JOIN clientes on pedidos.cod_pedido = clientes.cod_cliente where clientes.cod_cliente = '" + buscar + "'";
+        String query = "SELECT nombre_comercial FROM `clientes` WHERE cod_cliente = '" + buscar + "'";
         String resultado = "";
         try (PreparedStatement pst = con.prepareStatement(query)) {
             try (ResultSet rs = pst.executeQuery()) {
@@ -99,9 +102,8 @@ public class Con_pedidos {
         }
         return resultado;
     }
-    
-    
-     public boolean actualizarPedidos(int cod_pedido,String valor) {
+
+    public boolean actualizarPedidos(int cod_pedido, String valor) {
         int comprobacion = 0;
         String query = "UPDATE `pedidos` set estado ='" + valor
                 + "' WHERE cod_pedido='" + cod_pedido + "'";

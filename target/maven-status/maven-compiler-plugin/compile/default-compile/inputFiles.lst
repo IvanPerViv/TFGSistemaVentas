@@ -1,6 +1,8 @@
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Modelos\Pais.java
+D:\TFG\SistemaVentasTFGIvan\src\main\java\Conexiones\Con_pedido.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_tabla_pedidos_listados.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Conexiones\Con_localidad_prov_pais.java
+D:\TFG\SistemaVentasTFGIvan\src\main\java\Conexiones\Con_pedido_linea.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_tabla_cliente.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Conexiones\Con_usuarios.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Utils\Propert.java
@@ -24,7 +26,6 @@ D:\TFG\SistemaVentasTFGIvan\src\main\java\Modelos\Usuarios.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Modelos\FamiliaArticulos.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_tabla_articulos.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_principal.java
-D:\TFG\SistemaVentasTFGIvan\src\main\java\Conexiones\Con_pedidos.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_pedidos.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Modelos\Localidad.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Utils\generarCodigos.java

@@ -6,67 +6,42 @@ package Modelos;
  */
 public class Pedidos {
 
-    int codPedido, cantidad,iva, codCliente;
-    double precio, precioSubtotal, precioTotal;
+    int num_pedido;
+    String fecha_pedido;
+    int cod_cliente;
     String estado;
+    String observaciones;
 
-    public Pedidos(int cod_pedido, int cantidad, double precio, int iva, double precio_subtotal, double precio_total, String estado, int cod_cliente) {
-        this.codPedido = cod_pedido;
-        this.cantidad = cantidad;
-        this.precio = precio;
-        this.iva = iva;
-        this.precioSubtotal = precio_subtotal;
-        this.precioTotal = precio_total;
+    public Pedidos(int num_pedido, String fecha_pedido, int cod_cliente, String estado, String observaciones) {
+        this.num_pedido = num_pedido;
+        this.fecha_pedido = fecha_pedido;
+        this.cod_cliente = cod_cliente;
         this.estado = estado;
-        this.codCliente = cod_cliente;
+        this.observaciones = observaciones;
     }
 
-    public int getCod_pedido() {
-        return codPedido;
+    public int getNum_pedido() {
+        return num_pedido;
     }
 
-    public void setCod_pedido(int cod_pedido) {
-        this.codPedido = cod_pedido;
+    public void setNum_pedido(int num_pedido) {
+        this.num_pedido = num_pedido;
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public String getFecha_pedido() {
+        return fecha_pedido;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public void setFecha_pedido(String fecha_pedido) {
+        this.fecha_pedido = fecha_pedido;
     }
 
-    public double getPrecio() {
-        return precio;
+    public int getCod_cliente() {
+        return cod_cliente;
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public int getIva() {
-        return iva;
-    }
-
-    public void setIva(int iva) {
-        this.iva = iva;
-    }
-
-    public double getPrecio_subtotal() {
-        return precioSubtotal;
-    }
-
-    public void setPrecio_subtotal(double precio_subtotal) {
-        this.precioSubtotal = precio_subtotal;
-    }
-
-    public double getPrecio_total() {
-        return precioTotal;
-    }
-
-    public void setPrecio_total(double precio_total) {
-        this.precioTotal = precio_total;
+    public void setCod_cliente(int cod_cliente) {
+        this.cod_cliente = cod_cliente;
     }
 
     public String getEstado() {
@@ -77,12 +52,12 @@ public class Pedidos {
         this.estado = estado;
     }
 
-    public int getCod_cliente() {
-        return codCliente;
+    public String getObservaciones() {
+        return observaciones;
     }
 
-    public void setCod_cliente(int cod_cliente) {
-        this.codCliente = cod_cliente;
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
     }
 
 }
