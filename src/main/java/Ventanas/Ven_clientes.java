@@ -4,9 +4,14 @@ import Conexiones.Con_clientes;
 import Conexiones.Con_localidad_prov_pais;
 import Modelos.Articulos;
 import Modelos.Clientes;
+import Utils.Comprobaciones;
 import Utils.generarCodigos;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,6 +23,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
     protected final String DATOVACIO = "";
     protected final Con_localidad_prov_pais objLocal = new Con_localidad_prov_pais();
     protected final Con_clientes objConexionClientes = new Con_clientes();
+    protected final Comprobaciones objComprobacione = new Comprobaciones();
 
     public Ven_clientes() {
         initComponents();
@@ -90,6 +96,32 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
             fila[8] = clieArray.get(i).getEmail();
             datosClientes.addRow(fila);
         }
+    }
+
+    protected boolean comprobacionCampos() {
+        boolean comprobacion = true;
+        if (objComprobacione.comprobacionJTextField(TFNif)) {
+            comprobacion = false;
+        }
+        if (objComprobacione.comprobacionJTextField(TFNombre)) {
+            comprobacion = false;
+        }
+        if (objComprobacione.comprobacionJTextField(TFNombreComercial)) {
+            comprobacion = false;
+        }
+        if (objComprobacione.comprobacionJTextField(TFDir)) {
+            comprobacion = false;
+        }
+        if (objComprobacione.comprobacionJTextField(TFCp)) {
+            comprobacion = false;
+        }
+        if (objComprobacione.comprobacionJTextField(TFTelef)) {
+            comprobacion = false;
+        }
+        if (objComprobacione.comprobacionJTextField(TFEmail)) {
+            comprobacion = false;
+        }
+        return comprobacion;
     }
 
     @SuppressWarnings("unchecked")
@@ -237,14 +269,49 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         txtNombre.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtNombre.setText("Nombre:");
 
+        TFNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFNombreKeyReleased(evt);
+            }
+        });
+
         txtTelefono.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtTelefono.setText("Télefono:");
+
+        TFTelef.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFTelefKeyReleased(evt);
+            }
+        });
 
         txtDirrec.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtDirrec.setText("Dirección:");
 
+        TFDir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFDirKeyReleased(evt);
+            }
+        });
+
         txtEmail.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtEmail.setText("Email:");
+
+        TFEmail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFEmailKeyReleased(evt);
+            }
+        });
+
+        TFCp.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                TFCpFocusLost(evt);
+            }
+        });
+        TFCp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFCpKeyReleased(evt);
+            }
+        });
 
         txtCp.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtCp.setText("CP:");
@@ -255,8 +322,20 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         txtCiudad.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtCiudad.setText("Localidad:");
 
+        TFNombreComercial.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFNombreComercialKeyReleased(evt);
+            }
+        });
+
         txtApellidos1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtApellidos1.setText("NIF Fiscal:");
+
+        TFNif.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFNifKeyReleased(evt);
+            }
+        });
 
         BotonLocalidad.setText("...");
         BotonLocalidad.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -467,36 +546,41 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         // BOTON GUARDAR //
-        int codigoUser = Integer.parseInt(TFCodigo.getText());
-        String nombre = TFNombre.getText();
-        String nombreComercial = TFNombreComercial.getText();
-        String nif = TFNif.getText();
-        int codPostal = Integer.parseInt(TFCp.getText());
-        String dirrecion = TFDir.getText();
-        int localidad = objLocal.consultarLocalidad(TFCiudad.getText());
-        int telef = Integer.parseInt(TFTelef.getText());
-        String email = TFEmail.getText();
+        if (comprobacionCampos()) {
+            int codigoUser = Integer.parseInt(TFCodigo.getText());
+            String nombre = TFNombre.getText();
+            String nombreComercial = TFNombreComercial.getText();
+            String nif = TFNif.getText();
+            int codPostal = Integer.parseInt(TFCp.getText());
+            String dirrecion = TFDir.getText();
+            int localidad = objLocal.consultarLocalidad(TFCiudad.getText());
+            int telef = Integer.parseInt(TFTelef.getText());
+            String email = TFEmail.getText();
 
-        boolean comprobacion = objConexionClientes.ingresoClientes(codigoUser, nombre, nombreComercial, nif, codPostal, dirrecion, localidad, telef, email);
+            boolean comprobacion = objConexionClientes.ingresoClientes(codigoUser, nombre, nombreComercial, nif, codPostal, dirrecion, localidad, telef, email);
 
-        if (comprobacion == true) {
-            JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "", JOptionPane.INFORMATION_MESSAGE);
-            cargaDeDatosClientes(DATOVACIO);
-            limpiarDatos();
-            bloquear(false);
-            botonNuevo.setEnabled(true);
+            if (comprobacion == true) {
+                JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+                cargaDeDatosClientes(DATOVACIO);
+                limpiarDatos();
+                bloquear(false);
+                botonNuevo.setEnabled(true);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Introduce los datos necesarios.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
+
+
     }//GEN-LAST:event_botonGuardarActionPerformed
 
     private void botonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarActionPerformed
         // BOTON ELIMINAR //
-
-        int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea eliminar el registro?", "IMPORTANTE", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea eliminar el registro?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
         if (seleccion == 0) {
             int codigoUser = Integer.parseInt(TFCodigo.getText());
             objConexionClientes.eliminarRegistroCliente(codigoUser);
             cargaDeDatosClientes(DATOVACIO);
-            JOptionPane.showMessageDialog(this, "Datos eliminados.", "", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Datos eliminados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
 
 
@@ -507,7 +591,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         bloquear(true);
         botonGuardar.setEnabled(false);
         TFCodigo.setText(tablaClientes.getValueAt(filaSelecionada, 0).toString());
-        TFNombre.setText(tablaClientes.getValueAt(filaSelecionada, 1).toString()); 
+        TFNombre.setText(tablaClientes.getValueAt(filaSelecionada, 1).toString());
         TFNombreComercial.setText(tablaClientes.getValueAt(filaSelecionada, 2).toString());
         TFNif.setText(tablaClientes.getValueAt(filaSelecionada, 3).toString());
         TFCp.setText(tablaClientes.getValueAt(filaSelecionada, 4).toString());
@@ -521,7 +605,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
     private void botonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarActionPerformed
         //BOTON MODIFICAR
         bloquear(true);
-        
+
         int codigoUser = Integer.parseInt(TFCodigo.getText());
         String nombre = TFNombre.getText();
         String nombreComercial = TFNombreComercial.getText();
@@ -531,11 +615,11 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         int localidad = objLocal.consultarLocalidad(TFCiudad.getText());
         int telef = Integer.parseInt(TFTelef.getText());
         String email = TFEmail.getText();
-        
-       boolean comprobacion = objConexionClientes.actualizarClientes(codigoUser, nombre, nombreComercial, nif, codPostal, dirrecion, localidad, telef, email);
+
+        boolean comprobacion = objConexionClientes.actualizarClientes(codigoUser, nombre, nombreComercial, nif, codPostal, dirrecion, localidad, telef, email);
 
         if (comprobacion != true) {
-            JOptionPane.showMessageDialog(this, "Datos actualizados.", "", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Datos actualizados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             cargaDeDatosClientes(DATOVACIO);
             bloquear(false);
             botonNuevo.setEnabled(true);
@@ -553,6 +637,38 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         Ven_principal.escritorio.add(objLocalidad).setVisible(true);
 
     }//GEN-LAST:event_BotonLocalidadActionPerformed
+
+    private void TFNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFNombreKeyReleased
+        TFNombre.setBorder(new LineBorder(Color.gray));
+    }//GEN-LAST:event_TFNombreKeyReleased
+
+    private void TFNifKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFNifKeyReleased
+        TFNif.setBorder(new LineBorder(Color.gray));
+    }//GEN-LAST:event_TFNifKeyReleased
+
+    private void TFNombreComercialKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFNombreComercialKeyReleased
+        TFNombreComercial.setBorder(new LineBorder(Color.gray));
+    }//GEN-LAST:event_TFNombreComercialKeyReleased
+
+    private void TFCpKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFCpKeyReleased
+        TFCp.setBorder(new LineBorder(Color.gray));
+    }//GEN-LAST:event_TFCpKeyReleased
+
+    private void TFDirKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFDirKeyReleased
+        TFDir.setBorder(new LineBorder(Color.gray));
+    }//GEN-LAST:event_TFDirKeyReleased
+
+    private void TFTelefKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFTelefKeyReleased
+        TFTelef.setBorder(new LineBorder(Color.gray));
+    }//GEN-LAST:event_TFTelefKeyReleased
+
+    private void TFEmailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFEmailKeyReleased
+        TFEmail.setBorder(new LineBorder(Color.gray));
+    }//GEN-LAST:event_TFEmailKeyReleased
+
+    private void TFCpFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TFCpFocusLost
+        objComprobacione.ValidarCodigoPostal(TFCp);
+    }//GEN-LAST:event_TFCpFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonLocalidad;

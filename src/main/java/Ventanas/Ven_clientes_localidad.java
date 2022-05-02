@@ -8,9 +8,12 @@ import Conexiones.Con_localidad_prov_pais;
 import Modelos.Localidad;
 import Modelos.Pais;
 import Modelos.Provincia;
+import Utils.Comprobaciones;
 import Utils.generarCodigos;
+import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,6 +24,7 @@ public class Ven_clientes_localidad extends javax.swing.JInternalFrame {
 
     protected Con_localidad_prov_pais objetoLocalidad = new Con_localidad_prov_pais();
     protected generarCodigos objGenCod = new generarCodigos();
+    protected final Comprobaciones objComprobaciones = new Comprobaciones();
     protected DefaultTableModel datosLocalidad;
 
     public Ven_clientes_localidad() {
@@ -80,6 +84,14 @@ public class Ven_clientes_localidad extends javax.swing.JInternalFrame {
             comboProv.addItem(artPais.get(i).getNombreProvincia());
             //comboPais.addItem(new Pais(artPais.get(i).getCod(), artPais.get(i).getPais()));
         }
+    }
+
+    protected boolean comprobacionCampos() {
+        boolean comprobacion = true;
+        if (objComprobaciones.comprobacionJTextField(TFCiudad)) {
+            comprobacion = false;
+        }
+        return comprobacion;
     }
 
     @SuppressWarnings("unchecked")
@@ -152,6 +164,12 @@ public class Ven_clientes_localidad extends javax.swing.JInternalFrame {
 
         txtNombre.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtNombre.setText("Ciudad:");
+
+        TFCiudad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFCiudadKeyReleased(evt);
+            }
+        });
 
         txtNombre1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtNombre1.setText("Provincia:");
@@ -354,19 +372,24 @@ public class Ven_clientes_localidad extends javax.swing.JInternalFrame {
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         // BOTON GUARDAR
-        int codLocal = Integer.parseInt(TFCodigoLocal.getText());
-        int nombreProvincia = objetoLocalidad.consultarProvincia(comboProv.getSelectedItem().toString());
-        String ciudad = TFCiudad.getText();
+        if (comprobacionCampos()) {
+            int codLocal = Integer.parseInt(TFCodigoLocal.getText());
+            int nombreProvincia = objetoLocalidad.consultarProvincia(comboProv.getSelectedItem().toString());
+            String ciudad = TFCiudad.getText();
 
-        boolean comprobacion = objetoLocalidad.ingresoLocalidad(codLocal, ciudad, nombreProvincia);
+            boolean comprobacion = objetoLocalidad.ingresoLocalidad(codLocal, ciudad, nombreProvincia);
 
-        if (comprobacion == true) {
-            JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-            cargarDatosLocalidad("");
-            limpiarDatos();
-            bloquear(false);
-            botonNuevo.setEnabled(true);
+            if (comprobacion == true) {
+                JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+                cargarDatosLocalidad("");
+                limpiarDatos();
+                bloquear(false);
+                botonNuevo.setEnabled(true);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Introduce el campo necesario.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
+
     }//GEN-LAST:event_botonGuardarActionPerformed
 
     private void tablaLocalidadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaLocalidadMouseClicked
@@ -375,7 +398,7 @@ public class Ven_clientes_localidad extends javax.swing.JInternalFrame {
         botonGuardar.setEnabled(false);
         comboProv.setEnabled(false);
         comboProv.removeAllItems();
-        
+
         int filaSelecionada = tablaLocalidad.rowAtPoint(evt.getPoint());
         TFCodigoLocal.setText(tablaLocalidad.getValueAt(filaSelecionada, 0).toString());
         TFCiudad.setText(tablaLocalidad.getValueAt(filaSelecionada, 1).toString());
@@ -385,6 +408,10 @@ public class Ven_clientes_localidad extends javax.swing.JInternalFrame {
     private void TFBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFBuscarKeyReleased
         cargarDatosLocalidad(TFBuscar.getText());
     }//GEN-LAST:event_TFBuscarKeyReleased
+
+    private void TFCiudadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFCiudadKeyReleased
+        TFCiudad.setBorder(new LineBorder(Color.gray));
+    }//GEN-LAST:event_TFCiudadKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

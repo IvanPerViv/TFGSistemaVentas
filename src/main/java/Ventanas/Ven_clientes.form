@@ -377,6 +377,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="TFNombre">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TFNombreKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="txtTelefono">
           <Properties>
@@ -387,6 +390,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="TFTelef">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TFTelefKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="txtDirrec">
           <Properties>
@@ -397,6 +403,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="TFDir">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TFDirKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="txtEmail">
           <Properties>
@@ -407,8 +416,15 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="TFEmail">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TFEmailKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="TFCp">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="TFCpFocusLost"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TFCpKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="txtCp">
           <Properties>
@@ -440,6 +456,9 @@
           </AuxValues>
         </Component>
         <Component class="javax.swing.JTextField" name="TFNombreComercial">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TFNombreComercialKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="txtApellidos1">
           <Properties>
@@ -450,6 +469,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="TFNif">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TFNifKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="BotonLocalidad">
           <Properties>

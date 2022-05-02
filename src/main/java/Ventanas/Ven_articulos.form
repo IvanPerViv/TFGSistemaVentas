@@ -325,6 +325,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="TFNombre">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TFNombreKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="txtPrecio">
           <Properties>
@@ -335,6 +338,10 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="TFPrecio">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="TFPrecioFocusLost"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TFPrecioKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="txtIva">
           <Properties>
@@ -345,8 +352,16 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="TFIva">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="TFIvaFocusLost"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TFIvaKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="TFStock">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="TFStockFocusLost"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TFStockKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="txtStock">
           <Properties>

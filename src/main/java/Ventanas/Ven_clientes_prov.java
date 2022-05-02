@@ -3,9 +3,12 @@ package Ventanas;
 import Conexiones.Con_localidad_prov_pais;
 import Modelos.Pais;
 import Modelos.Provincia;
+import Utils.Comprobaciones;
 import Utils.generarCodigos;
+import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -16,6 +19,7 @@ public class Ven_clientes_prov extends javax.swing.JInternalFrame {
 
     protected Con_localidad_prov_pais objetoProv = new Con_localidad_prov_pais();
     protected generarCodigos objGenCod = new generarCodigos();
+    protected final Comprobaciones objComprobaciones = new Comprobaciones();
     protected DefaultTableModel datosPais;
 
     public Ven_clientes_prov() {
@@ -74,6 +78,14 @@ public class Ven_clientes_prov extends javax.swing.JInternalFrame {
             comboPais.addItem(artPais.get(i).getPais());
             //comboPais.addItem(new Pais(artPais.get(i).getCod(), artPais.get(i).getPais()));
         }
+    }
+
+    protected boolean comprobacionCampos() {
+        boolean comprobacion = true;
+        if (objComprobaciones.comprobacionJTextField(TFprov)) {
+            comprobacion = false;
+        }
+        return comprobacion;
     }
 
     @SuppressWarnings("unchecked")
@@ -150,6 +162,12 @@ public class Ven_clientes_prov extends javax.swing.JInternalFrame {
 
         txtNombre7.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtNombre7.setText("Provincia");
+
+        TFprov.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFprovKeyReleased(evt);
+            }
+        });
 
         comboPais.setPreferredSize(new java.awt.Dimension(32, 22));
 
@@ -353,20 +371,25 @@ public class Ven_clientes_prov extends javax.swing.JInternalFrame {
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         // BOTON GUARDAR
-        int codProv = Integer.parseInt(TFProv.getText());
-        int nombrePais = objetoProv.buscarNombrePorCodigo(comboPais.getSelectedItem().toString());
+        if (comprobacionCampos()) {
+            int codProv = Integer.parseInt(TFProv.getText());
+            int nombrePais = objetoProv.buscarNombrePorCodigo(comboPais.getSelectedItem().toString());
 
-        String nombreProv = TFprov.getText();
+            String nombreProv = TFprov.getText();
 
-        boolean comprobacion = objetoProv.ingresoProv(codProv, nombreProv, nombrePais);
+            boolean comprobacion = objetoProv.ingresoProv(codProv, nombreProv, nombrePais);
 
-        if (comprobacion == true) {
-            JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-            cargarDatosProvincia("");
-            limpiarDatos();
-            bloquear(false);
-            botonNuevo.setEnabled(true);
+            if (comprobacion == true) {
+                JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+                cargarDatosProvincia("");
+                limpiarDatos();
+                bloquear(false);
+                botonNuevo.setEnabled(true);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Introduce el campo necesario.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
+
     }//GEN-LAST:event_botonGuardarActionPerformed
 
     private void tablaProvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProvMouseClicked
@@ -375,7 +398,7 @@ public class Ven_clientes_prov extends javax.swing.JInternalFrame {
         botonGuardar.setEnabled(false);
         comboPais.setEnabled(false);
         comboPais.removeAllItems();
-        
+
         int filaSelecionada = tablaProv.rowAtPoint(evt.getPoint());
         TFProv.setText(tablaProv.getValueAt(filaSelecionada, 0).toString());
         TFprov.setText(tablaProv.getValueAt(filaSelecionada, 1).toString());
@@ -387,6 +410,10 @@ public class Ven_clientes_prov extends javax.swing.JInternalFrame {
         // BUSCADOR
         cargarDatosProvincia(TFBuscar.getText());
     }//GEN-LAST:event_TFBuscarKeyReleased
+
+    private void TFprovKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFprovKeyReleased
+        TFprov.setBorder(new LineBorder(Color.gray));
+    }//GEN-LAST:event_TFprovKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

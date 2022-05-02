@@ -349,8 +349,8 @@ public class Ven_principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        Ven_clientes_pais vPais = new Ven_clientes_pais();
-        mostarVentana(vPais);
+        Ven_tabla_pedidos_listados vListadoPedidos = new Ven_tabla_pedidos_listados();
+        mostarVentana(vListadoPedidos);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void i_provinciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_i_provinciaActionPerformed

@@ -211,6 +211,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="TFprov">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="TFprovKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="comboPais">
           <Properties>

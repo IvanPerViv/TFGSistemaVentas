@@ -7,8 +7,10 @@ import Conexiones.Conexion;
 import Modelos.FamiliaArticulos;
 import Utils.Comprobaciones;
 import Utils.generarCodigos;
+import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -53,8 +55,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
     }
 
     protected void generarCodigoArticulo() {
-        Con_articulos con = new Con_articulos();
-        int codArticulo = con.codigoArticulos();
+        int codArticulo = objArticulo.codigoArticulos();
         if (codArticulo != 0) {
             generarCodigos objGenCod = new generarCodigos();
             int numero = objGenCod.generarCod(codArticulo);
@@ -85,6 +86,23 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
             fila[5] = artArry.get(i).getStock();
             art.addRow(fila);
         }
+    }
+
+    protected boolean comprobacionCampos() {
+        boolean comprobacion = true;
+        if (objComprobaciones.comprobacionJTextField(TFNombre)) {
+            comprobacion = false;
+        }
+        if (objComprobaciones.comprobacionJTextField(TFPrecio)) {
+            comprobacion = false;
+        }
+        if (objComprobaciones.comprobacionJTextField(TFIva)) {
+            comprobacion = false;
+        }
+        if (objComprobaciones.comprobacionJTextField(TFStock)) {
+            comprobacion = false;
+        }
+        return comprobacion;
     }
 
     @SuppressWarnings("unchecked")
@@ -226,11 +244,50 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         txtNombre.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtNombre.setText("Descripción del Producto:");
 
+        TFNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFNombreKeyReleased(evt);
+            }
+        });
+
         txtPrecio.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtPrecio.setText("Precio de Compra:");
 
+        TFPrecio.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                TFPrecioFocusLost(evt);
+            }
+        });
+        TFPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFPrecioKeyReleased(evt);
+            }
+        });
+
         txtIva.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtIva.setText("IVA:");
+
+        TFIva.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                TFIvaFocusLost(evt);
+            }
+        });
+        TFIva.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFIvaKeyReleased(evt);
+            }
+        });
+
+        TFStock.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                TFStockFocusLost(evt);
+            }
+        });
+        TFStock.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFStockKeyReleased(evt);
+            }
+        });
 
         txtStock.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtStock.setText("Stock:");
@@ -254,38 +311,31 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         PANEL_detalle_clienteLayout.setHorizontalGroup(
             PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
                 .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TFCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_detalle_clienteLayout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(TFNombre)
-                            .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(TFFamilia)
-                                    .addComponent(txtPrecio1, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addComponent(botonFamilia, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(15, 15, 15)
-                                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(TFPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
-                                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
-                                        .addGap(15, 15, 15)
-                                        .addComponent(TFIva, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_detalle_clienteLayout.createSequentialGroup()
-                                        .addGap(15, 15, 15)
-                                        .addComponent(txtIva, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(15, 15, 15)
-                                .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(TFStock)
-                                    .addComponent(txtStock, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))))))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TFCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(TFNombre)
+                        .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
+                            .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(TFFamilia)
+                                .addComponent(txtPrecio1, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
+                            .addGap(18, 18, 18)
+                            .addComponent(botonFamilia, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(15, 15, 15)
+                            .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(TFPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                            .addGap(15, 15, 15)
+                            .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(TFIva, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtIva, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(15, 15, 15)
+                            .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(TFStock)
+                                .addComponent(txtStock, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)))))
                 .addGap(15, 15, 15))
         );
         PANEL_detalle_clienteLayout.setVerticalGroup(
@@ -321,7 +371,6 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
 
         PANEL_buscar_cliente.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
         PANEL_buscar_cliente.setMaximumSize(null);
-        PANEL_buscar_cliente.setMinimumSize(null);
 
         tablaArticulos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -403,11 +452,12 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
 
     private void botonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoActionPerformed
         // BOTON NUEVO //
+        limpiarDatos();
         bloquearBotones(true);
         botonNuevo.setEnabled(false);
         botonActualizar.setEnabled(false);
         generarCodigoArticulo();
-        limpiarDatos();
+
         TFNombre.requestFocus();
 
     }//GEN-LAST:event_botonNuevoActionPerformed
@@ -427,7 +477,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         boolean comprobacion = objArticulo.actualizarArticulos(codigoUser, nombreArt, categoriaFamilia, precioArt, iva, stockArt);
 
         if (comprobacion != true) {
-            JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             cargaDeDatosArticulos(DATOVACIO);
             limpiarDatos();
             bloquearBotones(false);
@@ -437,12 +487,12 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
 
     private void botonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarActionPerformed
         // BOTON ELIMINAR //
-        int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea eliminar el registro?", "IMPORTANTE", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea eliminar el registro?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
         if (seleccion == 0) {
             int codigoUser = Integer.parseInt(TFCodigo.getText());
             objArticulo.eliminarRegistroArticulo(codigoUser);
             cargaDeDatosArticulos(DATOVACIO);
-            JOptionPane.showMessageDialog(this, "Datos eliminados.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Datos eliminados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_botonEliminarActionPerformed
 
@@ -463,9 +513,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         // BOTON GUARDAR //
-
-        if (objComprobaciones.comprobacionJTextField(TFNombre) != 0 && objComprobaciones.comprobacionJTextField(TFFamilia) != 0
-                && objComprobaciones.comprobacionJTextField(TFPrecio) != 0 && objComprobaciones.comprobacionJTextField(TFIva) != 0 && objComprobaciones.comprobacionJTextField(TFStock) != 0) {
+        if (comprobacionCampos()) {
             int cod_art = Integer.parseInt(TFCodigo.getText());
             String nombreProc = TFNombre.getText();
             double precioArticulo = Double.valueOf(TFPrecio.getText());
@@ -484,11 +532,9 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
                 bloquearBotones(false);
                 botonNuevo.setEnabled(true);
             }
-        } else{
+        } else {
             JOptionPane.showMessageDialog(this, "Introduce datos validos.", "Información", JOptionPane.INFORMATION_MESSAGE);
         }
-
-
     }//GEN-LAST:event_botonGuardarActionPerformed
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
@@ -503,6 +549,35 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         Ven_articulos_familia objFamilia = new Ven_articulos_familia();
         Ven_principal.escritorio.add(objFamilia).setVisible(true);
     }//GEN-LAST:event_botonFamiliaActionPerformed
+
+    private void TFNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFNombreKeyReleased
+        TFNombre.setBorder(new LineBorder(Color.gray));
+    }//GEN-LAST:event_TFNombreKeyReleased
+
+    private void TFPrecioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFPrecioKeyReleased
+        TFPrecio.setBorder(new LineBorder(Color.gray));
+    }//GEN-LAST:event_TFPrecioKeyReleased
+
+    private void TFIvaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFIvaKeyReleased
+        TFIva.setBorder(new LineBorder(Color.gray));
+    }//GEN-LAST:event_TFIvaKeyReleased
+
+    private void TFStockKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFStockKeyReleased
+        TFStock.setBorder(new LineBorder(Color.gray));
+    }//GEN-LAST:event_TFStockKeyReleased
+
+    private void TFPrecioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TFPrecioFocusLost
+        // PRECIO
+        objComprobaciones.ValidarNumeros(TFPrecio);
+    }//GEN-LAST:event_TFPrecioFocusLost
+
+    private void TFIvaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TFIvaFocusLost
+        objComprobaciones.ValidarNumeros(TFIva);
+    }//GEN-LAST:event_TFIvaFocusLost
+
+    private void TFStockFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TFStockFocusLost
+        objComprobaciones.ValidarNumeros(TFStock);
+    }//GEN-LAST:event_TFStockFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

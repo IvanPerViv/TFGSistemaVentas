@@ -2,15 +2,19 @@ package Ventanas;
 
 import Conexiones.Con_localidad_prov_pais;
 import Modelos.Pais;
+import Utils.Comprobaciones;
 import Utils.generarCodigos;
+import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 public class Ven_clientes_pais extends javax.swing.JInternalFrame {
 
     protected Con_localidad_prov_pais objPais = new Con_localidad_prov_pais();
     protected generarCodigos objGenCod = new generarCodigos();
+    protected final Comprobaciones objComprobaciones = new Comprobaciones();
     protected DefaultTableModel datosPais;
 
     public Ven_clientes_pais() {
@@ -58,6 +62,14 @@ public class Ven_clientes_pais extends javax.swing.JInternalFrame {
 
             datosPais.addRow(fila);
         }
+    }
+
+    protected boolean comprobacionCampos() {
+        boolean comprobacion = true;
+        if (objComprobaciones.comprobacionJTextField(TFPais)) {
+            comprobacion = false;
+        }
+        return comprobacion;
     }
 
     @SuppressWarnings("unchecked")
@@ -129,6 +141,12 @@ public class Ven_clientes_pais extends javax.swing.JInternalFrame {
 
         txtNombre3.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtNombre3.setText("Pais");
+
+        TFPais.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TFPaisKeyReleased(evt);
+            }
+        });
 
         botonActualizar.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         botonActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_botonesGenerales/actualizar.png"))); // NOI18N
@@ -306,7 +324,7 @@ public class Ven_clientes_pais extends javax.swing.JInternalFrame {
         boolean comprobacion = objPais.actualizarPais(codPais, pais);
 
         if (comprobacion != true) {
-            JOptionPane.showMessageDialog(this, "Datos actualizados.", "", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Datos actualizados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             cargarDatosPais("");
             bloquear(false);
             botonNuevo.setEnabled(true);
@@ -316,17 +334,22 @@ public class Ven_clientes_pais extends javax.swing.JInternalFrame {
 
     private void botonGuardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardar1ActionPerformed
         // BOTON GUARDAR
-        int codPais = Integer.parseInt(TFCodPais.getText());
-        String pais = TFPais.getText();
-        boolean comprobacion = objPais.ingresoPais(codPais, pais);
+        if (comprobacionCampos()) {
+            int codPais = Integer.parseInt(TFCodPais.getText());
+            String pais = TFPais.getText();
+            boolean comprobacion = objPais.ingresoPais(codPais, pais);
 
-        if (comprobacion == true) {
-            JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-            cargarDatosPais("");
-            limpiarDatos();
-            bloquear(false);
-            botonNuevo.setEnabled(true);
+            if (comprobacion == true) {
+                JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+                cargarDatosPais("");
+                limpiarDatos();
+                bloquear(false);
+                botonNuevo.setEnabled(true);
+            }
+        } else{
+            JOptionPane.showMessageDialog(this, "Introduce el campo necesario.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
+
     }//GEN-LAST:event_botonGuardar1ActionPerformed
 
     private void tablaPaisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPaisMouseClicked
@@ -340,6 +363,10 @@ public class Ven_clientes_pais extends javax.swing.JInternalFrame {
     private void TFBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFBuscarKeyReleased
         cargarDatosPais(TFBuscar.getText());
     }//GEN-LAST:event_TFBuscarKeyReleased
+
+    private void TFPaisKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFPaisKeyReleased
+        TFPais.setBorder(new LineBorder(Color.gray));
+    }//GEN-LAST:event_TFPaisKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

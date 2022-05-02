@@ -8,6 +8,7 @@ import Modelos.Clientes;
 import Utils.Comprobaciones;
 import Utils.generarCodigos;
 import static Ventanas.Ven_principal.escritorio;
+import java.awt.Color;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +21,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -30,7 +32,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     protected final Con_clientes objConexionClientes = new Con_clientes();
     protected final Con_articulos objConexionArticulos = new Con_articulos();
     protected final Comprobaciones objComprobaciones = new Comprobaciones();
-    
+
     public Ven_pedidos() {
         initComponents();
         bloquearCampos(false);
@@ -111,7 +113,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     }
 
     protected void cargaDeDatosArticulos() {
-        String[] nombreTablas = {"Codigo", "Producto", "Cantidad", "Precio", "IVA"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
+        String[] nombreTablas = {"Cod. Cliente", "Producto", "Cantidad", "Precio", "IVA"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         DefaultTableModel proc = new DefaultTableModel(null, nombreTablas);
         tablaPedidos.setModel(proc);
     }
@@ -144,7 +146,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         return total = (cantidad * iva) / 100;
     }
 
-    public boolean verificacionCodigoPedido(String datoAEvaluar) {
+    public int verificacionCodigoPedido(String datoAEvaluar) {
         int comprobacion = 0;
         try {
             for (int i = 0; i < tablaPedidos.getRowCount(); i++) {
@@ -155,7 +157,37 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
             }
         } catch (Exception ex) {
         }
-        return comprobacion == 0;
+        return comprobacion;
+    }
+
+    protected boolean comprobacionCampos() {
+        boolean comprobacion = true;
+        if (objComprobaciones.comprobacionJTextField0SinPintar(TFNombreC)) {
+            comprobacion = false;
+        }
+        if (objComprobaciones.comprobacionJTextField0SinPintar(TFDir)) {
+            comprobacion = false;
+        }
+        if (objComprobaciones.comprobacionJTextField0SinPintar(TFTel)) {
+            comprobacion = false;
+        }
+        if (objComprobaciones.comprobacionJTextField0SinPintar(TFNombreProc)) {
+            comprobacion = false;
+        }
+        if (objComprobaciones.comprobacionJTextField0SinPintar(TFPrecio)) {
+            comprobacion = false;
+        }
+        if (objComprobaciones.comprobacionJTextField0SinPintar(TFIva)) {
+            comprobacion = false;
+        }
+        if (objComprobaciones.comprobacionJTextField0SinPintar(TFStock)) {
+            comprobacion = false;
+        }
+
+        if (objComprobaciones.comprobacionJTextField0SinPintar(TFCantidad)) {
+            comprobacion = false;
+        }
+        return comprobacion;
     }
 
     @SuppressWarnings("unchecked")
@@ -197,6 +229,9 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jLabel2 = new javax.swing.JLabel();
         botonBuscarProducto = new javax.swing.JButton();
+        panel_observaciones = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jLabel31 = new javax.swing.JLabel();
         TFTotal = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
@@ -299,7 +334,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                     .addComponent(txtDir, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
                 .addGroup(PANEL_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtCodigo1, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                    .addComponent(txtCodigo1, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
                     .addComponent(TFTel))
                 .addGap(15, 15, 15)
                 .addGroup(PANEL_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -435,7 +470,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                         .addContainerGap())
                     .addGroup(PANEL_carritoLayout.createSequentialGroup()
                         .addGroup(PANEL_carritoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(listadoVentas, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
+                            .addComponent(listadoVentas, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_carritoLayout.createSequentialGroup()
                                 .addGroup(PANEL_carritoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -516,7 +551,31 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                 .addGap(10, 10, 10))
         );
 
+        panel_observaciones.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Observaciones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        javax.swing.GroupLayout panel_observacionesLayout = new javax.swing.GroupLayout(panel_observaciones);
+        panel_observaciones.setLayout(panel_observacionesLayout);
+        panel_observacionesLayout.setHorizontalGroup(
+            panel_observacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_observacionesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
+        );
+        panel_observacionesLayout.setVerticalGroup(
+            panel_observacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_observacionesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         jLabel31.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel31.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel31.setText("Total:");
 
         TFTotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -526,6 +585,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         TFTotal.setEnabled(false);
 
         jLabel28.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel28.setText("Subtotal:");
 
         TFSubtotal.setText("0.0");
@@ -536,11 +596,16 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         informacion2.setText("Nº de pedido:");
 
         TFnumPedido.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        TFnumPedido.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        TFnumPedido.setBorder(null);
+        TFnumPedido.setOpaque(false);
 
         informacion4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         informacion4.setText("Fecha:");
 
         TFDate.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        TFDate.setBorder(null);
+        TFDate.setOpaque(false);
 
         botonRealizarPedido.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         botonRealizarPedido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_botonesGenerales/realizarVenta.png"))); // NOI18N
@@ -562,29 +627,38 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(barraHerramientas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PANEL_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PANEL_carrito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(informacion2, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(TFDate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(informacion4, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel28)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(TFSubtotal))
-                    .addComponent(botonRealizarPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(TFTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(PANEL_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(PANEL_carrito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(2, 2, 2)
+                                        .addComponent(informacion2, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(16, 16, 16)))
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(TFDate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(informacion4, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addComponent(panel_observaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(TFTotal)
+                                    .addComponent(TFSubtotal)
+                                    .addComponent(botonRealizarPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))))))
                 .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
@@ -594,16 +668,6 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                 .addComponent(barraHerramientas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TFSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TFTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addComponent(botonRealizarPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -615,9 +679,21 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                                 .addGap(0, 0, 0)
                                 .addComponent(TFDate, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(5, 5, 5)
-                        .addComponent(PANEL_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(panel_observaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(PANEL_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(5, 5, 5)
-                        .addComponent(PANEL_carrito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(PANEL_carrito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TFSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TFTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addComponent(botonRealizarPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(15, 15, 15))
         );
 
@@ -651,12 +727,11 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_botonBuscarProductoActionPerformed
 
     private void botonAgregarProcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarProcActionPerformed
-        // Agregar Datos
-        if (objComprobaciones.comprobacionJTextField(TFCodClie) != 0 && objComprobaciones.comprobacionJTextField(TFNombreProc) != 0
-                && objComprobaciones.comprobacionJTextField(TFCantidad) != 0 && objComprobaciones.comprobacionJTextField(TFPrecio) != 0 && objComprobaciones.comprobacionJTextField(TFIva) != 0) {
-            if (verificacionCodigoPedido(TFNombreProc.getText())) {
+        // Agregar Datos       
+        if (comprobacionCampos()) {
+            if (verificacionCodigoPedido(TFNombreProc.getText()) == 0) {
                 DefaultTableModel datosPedidos = (DefaultTableModel) tablaPedidos.getModel();
-                Object[] pedidos = {
+                String[] pedidos = {
                     TFCodClie.getText(),
                     TFNombreProc.getText(),
                     TFCantidad.getText(),
@@ -666,8 +741,10 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                 calcularPedido();
                 limpiarArticulos();
             } else {
-                JOptionPane.showMessageDialog(this, "El articulo ha sido ingresado, \neliminelo para poder modificarlo.", "", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "El articulo ha sido ingresado, \neliminelo para poder modificarlo.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Rellene los campos.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
 
 
@@ -680,7 +757,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         if (fila >= 0) {
             modelo.removeRow(fila);
         } else {
-            JOptionPane.showMessageDialog(this, "No has selecionado ninguna fila.", "", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No has selecionado ninguna fila.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
 
     }//GEN-LAST:event_botonEliminarProcActionPerformed
@@ -689,7 +766,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         int stock = Integer.parseInt(TFStock.getText());
         int cantidad = Integer.parseInt(TFCantidad.getText());
         if (cantidad > stock) {
-            JOptionPane.showMessageDialog(this, "No cuenta con el stock apropiado.", "", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No cuenta con el stock apropiado.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             TFCantidad.setText("");
         }
     }
@@ -701,7 +778,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         // Boton realizar pedido //
         int Seleccionada = tablaPedidos.getRowCount();
         if (Seleccionada == 0) {
-            JOptionPane.showMessageDialog(this, "No existe ninguna dato.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No existe ninguna dato.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         } else {
 
             Con_pedidos objConPedidos = new Con_pedidos();
@@ -716,19 +793,18 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                 iva = Integer.parseInt(tablaPedidos.getValueAt(i, 4).toString());
             }
 
+            System.out.println(cantidad);
             double precio_sub = Double.parseDouble(TFSubtotal.getText());
             double precio_total = Double.parseDouble(TFTotal.getText());
-            String estado = "Pendiente";
+            String estado = "Reserva";
 
-            boolean comprobacion = objConPedidos.ingresoPedidos(Integer.parseInt(TFnumPedido.getText()), cantidad, precio, iva, precio_sub, precio_total, estado, codClie);
-            if (comprobacion == true) {
-                JOptionPane.showMessageDialog(this, "Pedido realizado con exito.", "", JOptionPane.INFORMATION_MESSAGE);
-            }
-
+//            boolean comprobacion = objConPedidos.ingresoPedidos(Integer.parseInt(TFnumPedido.getText()), cantidad, precio, iva, precio_sub, precio_total, estado, codClie);
+//            if (comprobacion == true) {
+//                JOptionPane.showMessageDialog(this, "Pedido realizado con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+//            }
         }
 
     }//GEN-LAST:event_botonRealizarPedidoActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonBuscarCliente;
@@ -761,9 +837,12 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel31;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JScrollPane listadoVentas;
+    private javax.swing.JPanel panel_observaciones;
     private javax.swing.JTable tablaPedidos;
     private javax.swing.JLabel txtCantidad;
     private javax.swing.JLabel txtCantidad1;
