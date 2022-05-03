@@ -233,6 +233,7 @@ public class Ven_clientes_pais extends javax.swing.JInternalFrame {
 
             }
         ));
+        tablaPais.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         tablaPais.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaPaisMouseClicked(evt);

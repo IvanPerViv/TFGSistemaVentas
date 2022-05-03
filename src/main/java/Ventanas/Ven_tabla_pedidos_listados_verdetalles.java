@@ -1,5 +1,6 @@
 package Ventanas;
 
+import Conexiones.Con_articulos;
 import Conexiones.Con_pedido;
 import Conexiones.Con_pedido_linea;
 import Modelos.LineaPedido;
@@ -14,12 +15,15 @@ import javax.swing.table.DefaultTableModel;
 public class Ven_tabla_pedidos_listados_verdetalles extends javax.swing.JInternalFrame {
 
     protected Con_pedido_linea objPedidoLinea = new Con_pedido_linea();
+    protected Con_articulos objArticulo = new Con_articulos();
     protected Con_pedido objPedido = new Con_pedido();
     protected DefaultTableModel pedidoLinea;
 
     public Ven_tabla_pedidos_listados_verdetalles(int codigoPedido) {
         initComponents();
         cargaDeDatosArticulos(codigoPedido);
+        cargaDeDatosPedido();
+        calcularPedido();
     }
 
     protected void cargaDeDatosArticulos(int buscar) {
@@ -30,33 +34,63 @@ public class Ven_tabla_pedidos_listados_verdetalles extends javax.swing.JInterna
 
         Object[] fila = new Object[nombreTablas.length];
 
-        ArrayList<LineaPedido> artArry = new ArrayList<LineaPedido>();
-        artArry = objPedidoLinea.mostrarLineasPedidos(buscar);
+        ArrayList<LineaPedido> arLineaPedido = new ArrayList<LineaPedido>();
+        arLineaPedido = objPedidoLinea.mostrarLineasPedidos(buscar);
 
-        for (int i = 0; i < artArry.size(); i++) {
-            fila[0] = artArry.get(i).getCodArticulo();
-            fila[1] = artArry.get(i).getCodArticulo(); //SUBCONSULTAA DESCRIPCION PRODUCTO
-            fila[2] = artArry.get(i).getCantidad();
-            fila[3] = artArry.get(i).getPrecioVenta();
-            fila[4] = artArry.get(i).getIva();
+        for (int i = 0; i < arLineaPedido.size(); i++) {
+            fila[0] = arLineaPedido.get(i).getCodArticulo();
+            fila[1] = objArticulo.mostrarNombreArticulo(arLineaPedido.get(i).getCodArticulo()); //SUBCONSULTAA DESCRIPCION PRODUCTO
+            fila[2] = arLineaPedido.get(i).getCantidad();
+            fila[3] = arLineaPedido.get(i).getPrecioVenta();
+            fila[4] = arLineaPedido.get(i).getIva();
             pedidoLinea.addRow(fila);
         }
+    }
 
+    protected void cargaDeDatosPedido() {
         ArrayList<Pedidos> arPedidos = new ArrayList<Pedidos>();
         arPedidos = objPedido.mostrarPedidos("");
 
-        int numerpPedido = 0;
-        int numeroCliente= 0;
+        int numPed = 0;
+        int numeroCliente = 0;
         String fecha = "";
         for (int i = 0; i < arPedidos.size(); i++) {
-            numerpPedido = arPedidos.get(i).getNum_pedido();
+            numPed = arPedidos.get(i).getNum_pedido();
             numeroCliente = arPedidos.get(i).getCod_cliente();
             fecha = arPedidos.get(i).getFecha_pedido();
         }
-        TFFactura.setText(Integer.toString(numerpPedido));
-        TFCodCliente.setText(Integer.toString(numerpPedido));
+        TFFactura.setText(Integer.toString(numPed));
+        TFCodCliente.setText(Integer.toString(numeroCliente));
         TFFecha.setText(fecha);
 
+    }
+    
+    protected void calcularPedido() {
+        double IVA = 0, total = 0, subtotal = 0, precio, totalArticulo = 0;
+        String prec, cant, iva;
+        int cantidad;
+
+        for (int i = 0; i < tablaPedidos.getRowCount(); i++) {
+            cant = tablaPedidos.getValueAt(i, 2).toString();
+            prec = tablaPedidos.getValueAt(i, 3).toString();
+            iva = tablaPedidos.getValueAt(i, 4).toString();
+
+            precio = Double.parseDouble(prec);
+            cantidad = Integer.parseInt(cant);
+            IVA = Double.parseDouble(iva);
+
+            totalArticulo = cantidad * precio;
+            subtotal = subtotal + totalArticulo;
+            IVA = calcularIva(subtotal, IVA);
+            total = subtotal + IVA;
+        }
+        TFSubtotal.setText(Double.toString(subtotal));
+        TFTotal.setText(Double.toString(Math.rint(total)));
+    }
+    
+    public double calcularIva(double cantidad, double iva) {
+        double total;
+        return total = (cantidad * iva) / 100;
     }
 
     @SuppressWarnings("unchecked")

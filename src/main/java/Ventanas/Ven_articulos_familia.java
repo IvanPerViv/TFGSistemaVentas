@@ -208,6 +208,7 @@ public class Ven_articulos_familia extends javax.swing.JInternalFrame {
 
             }
         ));
+        tablaFamilias.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         tablaFamilias.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaFamiliasMouseClicked(evt);

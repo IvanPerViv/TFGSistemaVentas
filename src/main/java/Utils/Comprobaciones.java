@@ -17,6 +17,12 @@ public class Comprobaciones extends javax.swing.JFrame {
 
     }
 
+    public double conversor(String valor) {
+        String precioArticuloConvertido = valor.replaceAll(",", ".");
+        double precioArticuloFinal = Double.valueOf(precioArticuloConvertido);
+        return precioArticuloFinal;
+    }
+
     public boolean comprobacionVentanaAbierta(JInternalFrame frame) {
         JInternalFrame[] ventansActivas = escritorio.getAllFrames();
         for (int i = 0; i < ventansActivas.length; i++) {
@@ -36,7 +42,7 @@ public class Comprobaciones extends javax.swing.JFrame {
         }
         return comprobacion;
     }
-    
+
     public boolean comprobacionJTextField0SinPintar(JTextField campo) {
         boolean comprobacion = false;
         if (campo.getText().isEmpty()) {

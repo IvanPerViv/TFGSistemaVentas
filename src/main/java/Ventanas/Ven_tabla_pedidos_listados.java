@@ -17,6 +17,12 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         cargaDeDatosPedidos("");
     }
 
+    protected void limpiarDatos() {
+        TFCodPedido.setText("");
+        TFNombreCliente.setText("");
+        TFTotalPedido.setText("");
+    }
+
     protected void cargaDeDatosPedidos(String buscar) {
         String[] nombreTablas = {"CÓDIGO PEDIDO", "NOMBRE CLIENTE", "ESTADO", "FECHA"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         mostrarPedidos = new DefaultTableModel(null, nombreTablas);
@@ -84,6 +90,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
 
             }
         ));
+        tablaPedidos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         tablaPedidos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaPedidosMouseClicked(evt);
@@ -254,9 +261,9 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         if (filaSelecionada < 0) {
             JOptionPane.showMessageDialog(this, "Selecciona una fila de la tabla.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         } else {
-           
+
             int codPedido = Integer.parseInt(tablaPedidos.getValueAt(filaSelecionada, 0).toString());
-            
+
             Ven_tabla_pedidos_listados_verdetalles objTablaPedidosListadoVerDetalles = new Ven_tabla_pedidos_listados_verdetalles(codPedido);
             Ven_principal.escritorio.add(objTablaPedidosListadoVerDetalles).setVisible(true);
         }
@@ -268,12 +275,15 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         if (filaSelecionada < 0) {
             JOptionPane.showMessageDialog(this, "Selecciona una fila de la tabla.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            int seleccion = JOptionPane.showConfirmDialog(this, "¿Esta seguro de eliminar el registro?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            int seleccion = JOptionPane.showConfirmDialog(this, "¿Esta seguro de eliminar el pedido?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
             if (seleccion == 0) {
                 int codPedido = Integer.parseInt(tablaPedidos.getValueAt(filaSelecionada, 0).toString());
                 objConPedidos.eliminarPedido(codPedido);
+
                 JOptionPane.showMessageDialog(this, "Pedido eliminado.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             }
+            cargaDeDatosPedidos("");
+            limpiarDatos();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

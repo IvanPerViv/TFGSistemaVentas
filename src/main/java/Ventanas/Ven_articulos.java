@@ -253,11 +253,6 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         txtPrecio.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtPrecio.setText("Precio de Compra:");
 
-        TFPrecio.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                TFPrecioFocusLost(evt);
-            }
-        });
         TFPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TFPrecioKeyReleased(evt);
@@ -267,22 +262,12 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         txtIva.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtIva.setText("IVA:");
 
-        TFIva.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                TFIvaFocusLost(evt);
-            }
-        });
         TFIva.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TFIvaKeyReleased(evt);
             }
         });
 
-        TFStock.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                TFStockFocusLost(evt);
-            }
-        });
         TFStock.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TFStockKeyReleased(evt);
@@ -383,6 +368,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
 
             }
         ));
+        tablaArticulos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         tablaArticulos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaArticulosMouseClicked(evt);
@@ -474,6 +460,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
                 iva = TFIva.getText(),
                 stockArt = TFStock.getText();
         int categoriaFamilia = objArticulo.mostrarNombreFamilia(TFFamilia.getText());
+
         boolean comprobacion = objArticulo.actualizarArticulos(codigoUser, nombreArt, categoriaFamilia, precioArt, iva, stockArt);
 
         if (comprobacion != true) {
@@ -516,14 +503,14 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         if (comprobacionCampos()) {
             int cod_art = Integer.parseInt(TFCodigo.getText());
             String nombreProc = TFNombre.getText();
-            double precioArticulo = Double.valueOf(TFPrecio.getText());
+
+            double precioArticuloFinal = objComprobaciones.conversor(TFPrecio.getText());
+            
             int iva = Integer.parseInt(TFIva.getText());
             int stock = Integer.parseInt(TFStock.getText());
             int categoria = objArticulo.mostrarNombreFamilia(TFFamilia.getText());
-            System.out.println(categoria);
 
-            Con_articulos con = new Con_articulos();
-            boolean comprobacion = con.ingresoDeArticulos(cod_art, nombreProc, categoria, precioArticulo, iva, stock);
+            boolean comprobacion = objArticulo.ingresoDeArticulos(cod_art, nombreProc, categoria, precioArticuloFinal, iva, stock);
 
             if (comprobacion == true) {
                 JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -565,19 +552,6 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
     private void TFStockKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFStockKeyReleased
         TFStock.setBorder(new LineBorder(Color.gray));
     }//GEN-LAST:event_TFStockKeyReleased
-
-    private void TFPrecioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TFPrecioFocusLost
-        // PRECIO
-        objComprobaciones.ValidarNumeros(TFPrecio);
-    }//GEN-LAST:event_TFPrecioFocusLost
-
-    private void TFIvaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TFIvaFocusLost
-        objComprobaciones.ValidarNumeros(TFIva);
-    }//GEN-LAST:event_TFIvaFocusLost
-
-    private void TFStockFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TFStockFocusLost
-        objComprobaciones.ValidarNumeros(TFStock);
-    }//GEN-LAST:event_TFStockFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

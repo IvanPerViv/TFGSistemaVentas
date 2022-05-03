@@ -119,7 +119,7 @@ public class Con_articulos {
     }
     
     public int mostrarNombreFamilia(String buscar) {
-        String query = "SELECT cod_familia FROM `familias_articulos` JOIN articulos on articulos.familia = familias_articulos.cod_familia where familias_articulos.nombre_familia like'" + buscar + "'";
+        String query = "SELECT cod_familia FROM `familias_articulos` WHERE nombre_familia LIKE '" + buscar + "'" ;
         int resultado = 0;
         try (PreparedStatement pst = con.prepareStatement(query)) {
             try (ResultSet rs = pst.executeQuery()) {
@@ -133,8 +133,22 @@ public class Con_articulos {
         return resultado;
     }
     
+    public String mostrarNombreArticulo(int buscar) {
+        String query = "SELECT nombre_producto FROM `articulos` WHERE cod_articulo =" + buscar;
+        String resultado = "";
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    resultado = rs.getString(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+        }
+        return resultado;
+    }
     
-
+    
     public boolean actualizarStock(int stock, int cantidad, int codigoArt) {
         String query = "UPDATE articulos SET stock = stock - ? WHERE cod_articulo = ? ";
         int comprobacion = 0;

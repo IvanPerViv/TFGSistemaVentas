@@ -268,6 +268,7 @@ public class Ven_clientes_localidad extends javax.swing.JInternalFrame {
 
             }
         ));
+        tablaLocalidad.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         tablaLocalidad.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaLocalidadMouseClicked(evt);

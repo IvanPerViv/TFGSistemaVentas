@@ -45,11 +45,11 @@ public class Con_pedido_linea {
         try (PreparedStatement pst = con.prepareStatement(query)) {
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
-                    int codPedido = rs.getInt(1);
-                    int codArticulo = rs.getInt(2);
-                    int cantidad = rs.getInt(3);
-                    double precioVentaa = rs.getDouble(4);
-                    double iva = rs.getDouble(5);
+                    int codPedido = rs.getInt(2);
+                    int codArticulo = rs.getInt(3);
+                    int cantidad = rs.getInt(4);
+                    double precioVentaa = rs.getDouble(5);
+                    double iva = rs.getDouble(6);
                    
                     arLineaPedido.add(new LineaPedido(codPedido, codArticulo, cantidad, precioVentaa, iva));
 

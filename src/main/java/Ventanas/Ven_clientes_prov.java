@@ -265,6 +265,7 @@ public class Ven_clientes_prov extends javax.swing.JInternalFrame {
 
             }
         ));
+        tablaProv.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         tablaProv.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaProvMouseClicked(evt);

@@ -21,9 +21,8 @@ public class Conexion extends javax.swing.JFrame {
     public void conexion(Propert valorProperties) {
         try {
             con = DriverManager.getConnection(valorProperties.URL + valorProperties.BBDD, valorProperties.USER, valorProperties.PASS);
-            System.out.println("CONEXION EXITOSA!!");
         } catch (SQLException ex) {
-            System.err.println("Fallo en la BBDD" + ex.toString());
+            System.err.println("Fallo en la conexion con la BBDD" + ex.toString());
         }
     }
 }

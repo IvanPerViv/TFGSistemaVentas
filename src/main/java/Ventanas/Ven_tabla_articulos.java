@@ -19,11 +19,11 @@ public class Ven_tabla_articulos extends javax.swing.JInternalFrame {
 
     protected void cargaDeDatosArticulos(String buscar) {
 
-        String[] nombreTablas = {"Codigo", "Producto", "Precio", "IVA", "Stock"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
+        String[] nombreTablas = {"CÓDIGO", "PRODUCTO", "FAMILIA", "PRECIO", "IVA", "STOCK"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         DefaultTableModel art = new DefaultTableModel(null, nombreTablas);
         tablaArt.setModel(art);
 
-        Object[] fila = new Object[5];
+        Object[] fila = new Object[nombreTablas.length];
 
         ArrayList<Articulos> artArry = new ArrayList<Articulos>();
         artArry = objConexionClientes.mostrarArticulosYBusqueda(buscar);
@@ -31,9 +31,10 @@ public class Ven_tabla_articulos extends javax.swing.JInternalFrame {
         for (int i = 0; i < artArry.size(); i++) {
             fila[0] = artArry.get(i).getCod_articulo();
             fila[1] = artArry.get(i).getNombre_producto();
-            fila[2] = artArry.get(i).getPrecio_compra();
-            fila[3] = artArry.get(i).getIVA();
-            fila[4] = artArry.get(i).getStock();
+            fila[2] = objConexionClientes.mostrarFamiliaArticulos(artArry.get(i).getFamilia()); // CONSULTA NOMBRE DE LA FAMILIA
+            fila[3] = artArry.get(i).getPrecio_compra();
+            fila[4] = artArry.get(i).getIVA();
+            fila[5] = artArry.get(i).getStock();
             art.addRow(fila);
         }
     }
@@ -76,6 +77,7 @@ public class Ven_tabla_articulos extends javax.swing.JInternalFrame {
 
             }
         ));
+        tablaArt.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         tablaArt.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaArtMouseClicked(evt);
@@ -104,11 +106,8 @@ public class Ven_tabla_articulos extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(informacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(informacion2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, 0))))
+                    .addComponent(informacion2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,9 +139,9 @@ public class Ven_tabla_articulos extends javax.swing.JInternalFrame {
         if (evt.getClickCount() == 1) {
             Ven_pedidos.TFCodProd.setText(tablaArt.getValueAt(fila, 0).toString());
             Ven_pedidos.TFNombreProc.setText(tablaArt.getValueAt(fila, 1).toString());
-            Ven_pedidos.TFPrecio.setText(tablaArt.getValueAt(fila, 2).toString());
-            Ven_pedidos.TFIva.setText(tablaArt.getValueAt(fila, 3).toString());
-            Ven_pedidos.TFStock.setText(tablaArt.getValueAt(fila, 4).toString());
+            Ven_pedidos.TFPrecio.setText(tablaArt.getValueAt(fila, 3).toString());
+            Ven_pedidos.TFIva.setText(tablaArt.getValueAt(fila, 4).toString());
+            Ven_pedidos.TFStock.setText(tablaArt.getValueAt(fila, 5).toString());
 
             dispose();
         }

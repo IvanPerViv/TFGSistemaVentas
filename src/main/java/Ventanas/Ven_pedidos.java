@@ -7,6 +7,7 @@ import Utils.generarCodigos;
 import java.text.*;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -70,6 +71,9 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         TFStock.setText("");
         TFCantidad.setText("");
         AreaObs.setText("");
+        
+        TFSubtotal.setText("");
+        TFTotal.setText("");
     }
 
     protected void limpiarArticulos() {
@@ -79,6 +83,16 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         TFIva.setText("");
         TFStock.setText("");
         TFCantidad.setText("");
+    }
+
+    protected void limpiarTabla() {
+        DefaultTableModel tablaTemporal = (DefaultTableModel) tablaPedidos.getModel();
+        int filas = tablaPedidos.getRowCount();
+        int contador = 0;
+        while(filas > contador){
+            tablaTemporal.removeRow(0);  
+            contador++;
+        }
     }
 
     protected void generarCodigoArticulo() {
@@ -375,6 +389,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
 
             }
         ));
+        tablaPedidos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         listadoVentas.setViewportView(tablaPedidos);
 
         botonAgregarProc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_pedidos/mas.png"))); // NOI18N
@@ -767,7 +782,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         // Boton realizar pedido //
         int Seleccionada = tablaPedidos.getRowCount();
         if (Seleccionada == 0) {
-            JOptionPane.showMessageDialog(this, "No existe ninguna dato.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No existe ningun dato.\nRellene los datos correspondientes.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         } else {
             int numPedido = Integer.parseInt(TFnumPedido.getText());
             String fecha = TFDate.getText();
@@ -787,11 +802,12 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
             }
 
             if (comprobacionPedido == true) {
-                JOptionPane.showMessageDialog(this, "Pedido realizado con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Su pedido ha sido reservado con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             }
         }
         limpiar();
         limpiarArticulos();
+        limpiarTabla();
         bloquearBotones(false);
         bloquearCampos(false);
 

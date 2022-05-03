@@ -259,7 +259,7 @@ public class Ven_principal extends javax.swing.JFrame {
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/Listar.png"))); // NOI18N
-        jMenuItem2.setText("Listar");
+        jMenuItem2.setText("Listado");
         jMenuItem2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem2.setPreferredSize(new java.awt.Dimension(250, 50));
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
