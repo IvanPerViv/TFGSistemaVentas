@@ -16,7 +16,7 @@ public class Ven_principal extends javax.swing.JFrame {
         nombreUsuario.setText(nomUser);
         rol_usuario.setText(rolUsuario);
         setLocationRelativeTo(null);
-        //setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
+        setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
 
     public void comprobacionUsuario(String usuario) {
@@ -63,20 +63,18 @@ public class Ven_principal extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         BH_ayuda = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu Principal");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMaximumSize(null);
         setMinimumSize(new java.awt.Dimension(1200, 800));
-        setResizable(false);
 
         escritorio.setBackground(new java.awt.Color(40, 43, 53));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/fondito.png"))); // NOI18N
         escritorio.add(jLabel3);
-        jLabel3.setBounds(410, 260, 370, 130);
+        jLabel3.setBounds(30, 40, 370, 130);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
 
@@ -293,14 +291,23 @@ public class Ven_principal extends javax.swing.JFrame {
 
         barraSupHerra.add(BH_ventas);
 
-        BH_ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/ayuda.png"))); // NOI18N
-        BH_ayuda.setText("Ayuda");
+        BH_ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/conf.png"))); // NOI18N
+        BH_ayuda.setText("Configuración");
         BH_ayuda.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        BH_ayuda.setMinimumSize(new java.awt.Dimension(150, 50));
-        BH_ayuda.setPreferredSize(new java.awt.Dimension(150, 50));
+        BH_ayuda.setMinimumSize(new java.awt.Dimension(190, 50));
+        BH_ayuda.setPreferredSize(new java.awt.Dimension(190, 50));
 
-        jMenuItem3.setText("jMenuItem3");
-        BH_ayuda.add(jMenuItem3);
+        jMenuItem6.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/cambiarTema.png"))); // NOI18N
+        jMenuItem6.setText("Temas");
+        jMenuItem6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem6.setPreferredSize(new java.awt.Dimension(250, 50));
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        BH_ayuda.add(jMenuItem6);
 
         barraSupHerra.add(BH_ayuda);
 
@@ -373,6 +380,11 @@ public class Ven_principal extends javax.swing.JFrame {
         mostarVentana(vCrearUser);
     }//GEN-LAST:event_i_CrearUserActionPerformed
 
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        Ven_temas vConfTemas = new Ven_temas();
+        mostarVentana(vConfTemas);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu BH_articulos;
     private javax.swing.JMenu BH_ayuda;
@@ -394,9 +406,9 @@ public class Ven_principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JLabel nombreUsuario;

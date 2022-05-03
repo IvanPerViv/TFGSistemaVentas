@@ -75,6 +75,28 @@ public class Con_pedido {
         }
         return arPedidos;
     }
+    
+    public ArrayList busquedaNumPedido(int buscar) {
+        String query = "SELECT * FROM `pedidos` WHERE num_pedido =" + buscar;
+        ArrayList<Pedidos> arPedidos = new ArrayList<>();
+        
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    int numPedido = rs.getInt(1);
+                    int codCliente = rs.getInt(2);
+                    String fechaPedido = rs.getString(3);
+                    String estado = rs.getString(4);
+                    String observaciones = rs.getString(5);
+                    arPedidos.add(new Pedidos(numPedido, fechaPedido, codCliente, estado, observaciones));
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+        }
+        return arPedidos;
+    }
+    
 
     public void eliminarPedido(int numPedido) {
         String query = "DELETE FROM `pedidos`  WHERE num_pedido= '" + numPedido + "' ";
@@ -103,10 +125,10 @@ public class Con_pedido {
         return resultado;
     }
 
-    public boolean actualizarPedidos(int cod_pedido, String valor) {
+    public boolean actualizarEstadoPedido(int numPedido, String estado) {
         int comprobacion = 0;
-        String query = "UPDATE `pedidos` set estado ='" + valor
-                + "' WHERE cod_pedido='" + cod_pedido + "'";
+        String query = "UPDATE `pedidos` set estado ='" + estado
+                + "' WHERE num_pedido='" + numPedido + "'";
 
         try (PreparedStatement pst = con.prepareStatement(query)) {
             pst.executeUpdate();

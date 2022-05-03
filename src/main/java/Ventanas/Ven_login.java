@@ -39,7 +39,6 @@ public class Ven_login extends javax.swing.JFrame {
     public void tema() {
         try {
             UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatLightLaf());
-            //UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatDarkLaf());
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(Ven_login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
@@ -61,6 +60,9 @@ public class Ven_login extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        icono = new javax.swing.JLabel();
+        nombre = new javax.swing.JLabel();
+        informacion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -69,10 +71,12 @@ public class Ven_login extends javax.swing.JFrame {
 
         usuarioText.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         usuarioText.setForeground(new java.awt.Color(153, 153, 153));
+        usuarioText.setToolTipText("Introduce el nombre de usuario.");
         usuarioText.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         passText.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         passText.setForeground(new java.awt.Color(153, 153, 153));
+        passText.setToolTipText("");
         passText.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         jLabel1.setBackground(new java.awt.Color(255, 204, 51));
@@ -85,11 +89,13 @@ public class Ven_login extends javax.swing.JFrame {
 
         BotonLogin.setBackground(new java.awt.Color(255, 255, 255));
         BotonLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_login/entrar.png"))); // NOI18N
+        BotonLogin.setToolTipText("ENTRAR");
         BotonLogin.setBorderPainted(false);
         BotonLogin.setContentAreaFilled(false);
-        BotonLogin.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_login/login2.png"))); // NOI18N
-        BotonLogin.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_login/login2.png"))); // NOI18N
-        BotonLogin.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_login/login2.png"))); // NOI18N
+        BotonLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BotonLogin.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_login/entrar2.png"))); // NOI18N
+        BotonLogin.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_login/entrar2.png"))); // NOI18N
+        BotonLogin.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_login/entrar2.png"))); // NOI18N
         BotonLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BotonLoginActionPerformed(evt);
@@ -120,23 +126,24 @@ public class Ven_login extends javax.swing.JFrame {
                             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(Pnel_conexionLayout.createSequentialGroup()
                                 .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(usuarioText, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(usuarioText, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(20, 20, 20))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Pnel_conexionLayout.createSequentialGroup()
-                        .addGap(25, 25, 25)
+                        .addGap(20, 20, 20)
                         .addGroup(Pnel_conexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(Pnel_conexionLayout.createSequentialGroup()
                                 .addComponent(jLabel6)
-                                .addGap(5, 5, 5)
+                                .addGap(18, 18, 18)
                                 .addGroup(Pnel_conexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jSeparator2)
-                                    .addComponent(passText, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)))
+                                    .addComponent(passText, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(Pnel_conexionLayout.createSequentialGroup()
                                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(0, 19, Short.MAX_VALUE)))))
                 .addContainerGap(18, Short.MAX_VALUE))
             .addGroup(Pnel_conexionLayout.createSequentialGroup()
                 .addGap(113, 113, 113)
@@ -166,21 +173,49 @@ public class Ven_login extends javax.swing.JFrame {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
                 .addComponent(BotonLogin)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jPanel1.setBackground(new java.awt.Color(40, 43, 53));
         jPanel1.setForeground(new java.awt.Color(40, 43, 53));
 
+        icono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_login/icons8-rrp-100.png"))); // NOI18N
+
+        nombre.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        nombre.setForeground(new java.awt.Color(255, 255, 255));
+        nombre.setText("IVÁN PÉREZ");
+
+        informacion.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        informacion.setForeground(new java.awt.Color(255, 255, 255));
+        informacion.setText("Copyright © 2022 All rights reserved");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 330, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(65, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(nombre)
+                        .addGap(52, 52, 52))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(informacion)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(icono)
+                        .addGap(113, 113, 113))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(icono)
+                .addGap(18, 18, 18)
+                .addComponent(nombre)
+                .addGap(98, 98, 98)
+                .addComponent(informacion)
+                .addGap(5, 5, 5))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -188,11 +223,9 @@ public class Ven_login extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(Pnel_conexion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(Pnel_conexion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,6 +280,8 @@ public class Ven_login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotonLogin;
     private javax.swing.JPanel Pnel_conexion;
+    private javax.swing.JLabel icono;
+    private javax.swing.JLabel informacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -255,6 +290,7 @@ public class Ven_login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JLabel nombre;
     private javax.swing.JPasswordField passText;
     private javax.swing.JTextField usuarioText;
     // End of variables declaration//GEN-END:variables

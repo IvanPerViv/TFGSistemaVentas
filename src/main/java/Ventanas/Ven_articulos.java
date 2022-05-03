@@ -3,8 +3,6 @@ package Ventanas;
 import Modelos.Articulos;
 import Conexiones.Con_articulos;
 import Conexiones.Con_familias_articulos;
-import Conexiones.Conexion;
-import Modelos.FamiliaArticulos;
 import Utils.Comprobaciones;
 import Utils.generarCodigos;
 import java.awt.Color;
@@ -18,15 +16,19 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_articulos extends javax.swing.JInternalFrame {
 
-    protected Con_articulos objArticulo = new Con_articulos();
-    protected Con_familias_articulos objFamilias = new Con_familias_articulos();
-    protected final Comprobaciones objComprobaciones = new Comprobaciones();
+    protected Con_articulos objArticulo;
+    protected Con_familias_articulos objFamilias;
+    protected final Comprobaciones objComprobaciones;
 
     protected DefaultTableModel art;
     protected final String DATOVACIO = "";
 
     public Ven_articulos() {
         initComponents();
+        objArticulo = new Con_articulos();
+        objFamilias = new Con_familias_articulos();
+        objComprobaciones = new Comprobaciones();
+        
         bloquearBotones(false);
         cargaDeDatosArticulos(DATOVACIO);
         TFCodigo.setEnabled(false);
@@ -73,7 +75,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
 
         Object[] fila = new Object[nombreTablas.length];
 
-        ArrayList<Articulos> artArry = new ArrayList<Articulos>();
+        ArrayList<Articulos> artArry = new ArrayList<>();
         artArry = objArticulo.mostrarArticulosYBusqueda(buscar);
 
         for (int i = 0; i < artArry.size(); i++) {
@@ -456,9 +458,9 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         // BOTON ACTUALIZAR //
         int codigoUser = Integer.parseInt(TFCodigo.getText());
         String nombreArt = TFNombre.getText(),
-                precioArt = TFPrecio.getText(),
                 iva = TFIva.getText(),
                 stockArt = TFStock.getText();
+        double precioArt = objComprobaciones.conversor(TFPrecio.getText());
         int categoriaFamilia = objArticulo.mostrarNombreFamilia(TFFamilia.getText());
 
         boolean comprobacion = objArticulo.actualizarArticulos(codigoUser, nombreArt, categoriaFamilia, precioArt, iva, stockArt);
@@ -505,7 +507,6 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
             String nombreProc = TFNombre.getText();
 
             double precioArticuloFinal = objComprobaciones.conversor(TFPrecio.getText());
-            
             int iva = Integer.parseInt(TFIva.getText());
             int stock = Integer.parseInt(TFStock.getText());
             int categoria = objArticulo.mostrarNombreFamilia(TFFamilia.getText());

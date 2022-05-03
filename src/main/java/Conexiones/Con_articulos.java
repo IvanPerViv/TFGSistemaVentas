@@ -47,7 +47,7 @@ public class Con_articulos {
         }
     }
 
-    public boolean actualizarArticulos(int cod_art, String nomProc, int familia, String precioCompra, String iva, String stock) {
+    public boolean actualizarArticulos(int cod_art, String nomProc, int familia, double precioCompra, String iva, String stock) {
         int comprobacion = 0;
         String query = "UPDATE `articulos` set cod_articulo ='" + cod_art
                 + "',nombre_producto ='" + nomProc
@@ -117,9 +117,9 @@ public class Con_articulos {
         }
         return resultado;
     }
-    
+
     public int mostrarNombreFamilia(String buscar) {
-        String query = "SELECT cod_familia FROM `familias_articulos` WHERE nombre_familia LIKE '" + buscar + "'" ;
+        String query = "SELECT cod_familia FROM `familias_articulos` WHERE nombre_familia LIKE '" + buscar + "'";
         int resultado = 0;
         try (PreparedStatement pst = con.prepareStatement(query)) {
             try (ResultSet rs = pst.executeQuery()) {
@@ -132,7 +132,7 @@ public class Con_articulos {
         }
         return resultado;
     }
-    
+
     public String mostrarNombreArticulo(int buscar) {
         String query = "SELECT nombre_producto FROM `articulos` WHERE cod_articulo =" + buscar;
         String resultado = "";
@@ -147,23 +147,35 @@ public class Con_articulos {
         }
         return resultado;
     }
-    
-    
-    public boolean actualizarStock(int stock, int cantidad, int codigoArt) {
+
+    public boolean actualizarStock(int cantidad, int codigoArt) {
         String query = "UPDATE articulos SET stock = stock - ? WHERE cod_articulo = ? ";
         int comprobacion = 0;
-        if (stock > cantidad) {
-            try (PreparedStatement pst = con.prepareStatement(query)) {
-                pst.setInt(1, cantidad);
-                pst.setInt(2, codigoArt);
-                comprobacion = pst.executeUpdate();
-            } catch (SQLException ex) {
-                System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
-            }
-
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setInt(1, cantidad);
+            pst.setInt(2, codigoArt);
+            comprobacion = pst.executeUpdate();
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
         }
         return comprobacion > 0;
 
+    }
+
+    //DEVOLVER EL NUMERO DE STOCK POR ARTICULO
+    public int mostrarStockArticulo(int codPedido) {
+        String query = "SELECT stock FROM `articulos` WHERE cod_articulo=" + codPedido;
+        int resultado = 0;
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    resultado = rs.getInt(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+        }
+        return resultado;
     }
 
 }

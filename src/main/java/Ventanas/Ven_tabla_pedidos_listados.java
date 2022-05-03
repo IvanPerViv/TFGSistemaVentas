@@ -1,7 +1,12 @@
 package Ventanas;
 
+import Conexiones.Con_articulos;
 import Conexiones.Con_pedido;
+import Conexiones.Con_pedido_linea;
+import Modelos.Articulos;
+import Modelos.LineaPedido;
 import Modelos.Pedidos;
+import Utils.Comprobaciones;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -9,11 +14,19 @@ import javax.swing.table.DefaultTableModel;
 public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
 
     protected DefaultTableModel mostrarPedidos;
-    protected Con_pedido objConPedidos = new Con_pedido();
+    protected Con_pedido objConPedidos;
+    protected Con_articulos objConArticulos;
+    protected Con_pedido_linea obLineaPedido;
+    protected final Comprobaciones objComprobaciones;
     protected String estado;
 
     public Ven_tabla_pedidos_listados() {
         initComponents();
+        objConPedidos = new Con_pedido();
+        objComprobaciones = new Comprobaciones();
+        objConArticulos = new Con_articulos();
+        obLineaPedido = new Con_pedido_linea();
+
         cargaDeDatosPedidos("");
     }
 
@@ -41,13 +54,37 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         }
     }
 
+    protected void cargaDeDatosNumPedidos(int buscar) {
+        ArrayList<Pedidos> arPedidos = new ArrayList<Pedidos>();
+        arPedidos = objConPedidos.busquedaNumPedido(buscar);
+
+        Object[] fila = new Object[4];
+        for (int i = 0; i < arPedidos.size(); i++) {
+            fila[0] = arPedidos.get(i).getNum_pedido();
+            fila[1] = objConPedidos.mostrarCodPedido(arPedidos.get(i).getCod_cliente());
+            fila[2] = arPedidos.get(i).getEstado();
+            fila[3] = arPedidos.get(i).getFecha_pedido();
+            mostrarPedidos.addRow(fila);
+        }
+    }
+
+    public void limpiezaTabla() {
+        DefaultTableModel tablaTemporal = (DefaultTableModel) tablaPedidos.getModel();
+        int filas = tablaPedidos.getRowCount();
+        int contador = 0;
+        while (filas > contador) {
+            tablaTemporal.removeRow(0);
+            contador++;
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        botonGroup = new javax.swing.ButtonGroup();
         informacion = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jLabel1 = new javax.swing.JLabel();
         TFBuscar = new javax.swing.JTextField();
         buscadorPedidos = new javax.swing.JScrollPane();
         tablaPedidos = new javax.swing.JTable();
@@ -59,19 +96,20 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         TFTotalPedido = new javax.swing.JTextField();
         txtEstado = new javax.swing.JLabel();
         jComboEstadoPedido = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        botonEliminarPedido = new javax.swing.JButton();
+        botonVerDetalles = new javax.swing.JButton();
+        botonCambiarEstadoPedido = new javax.swing.JButton();
+        mostrarNumPedido = new javax.swing.JRadioButton();
+        TFnumPedido = new javax.swing.JTextField();
+        BuscarNumPedido = new javax.swing.JButton();
+        buscarPorPalabras = new javax.swing.JRadioButton();
 
         setClosable(true);
         setIconifiable(true);
         setTitle("Listado");
 
         informacion.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        informacion.setText("LISTADO DE PEDIDOS.");
-
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jLabel1.setText("Buscar por palabras: ");
+        informacion.setText("LISTADO DE PEDIDOS");
 
         TFBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -131,26 +169,48 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         txtEstado.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtEstado.setText("Estado Pedido");
 
-        jComboEstadoPedido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "Pagado" }));
+        jComboEstadoPedido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "Enviado", "Anulado", "Pagado" }));
+        jComboEstadoPedido.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jButton1.setText("ELIMINAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        botonEliminarPedido.setText("ELIMINAR");
+        botonEliminarPedido.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botonEliminarPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                botonEliminarPedidoActionPerformed(evt);
             }
         });
 
-        jButton2.setText("VER DETALLES");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        botonVerDetalles.setText("VER DETALLES");
+        botonVerDetalles.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botonVerDetalles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                botonVerDetallesActionPerformed(evt);
             }
         });
 
-        jButton3.setText("CAMBIAR");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        botonCambiarEstadoPedido.setText("CAMBIAR");
+        botonCambiarEstadoPedido.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botonCambiarEstadoPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                botonCambiarEstadoPedidoActionPerformed(evt);
+            }
+        });
+
+        botonGroup.add(mostrarNumPedido);
+        mostrarNumPedido.setText("Mostrar  por Nº Pedido:");
+
+        BuscarNumPedido.setText("BUSCAR");
+        BuscarNumPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarNumPedidoActionPerformed(evt);
+            }
+        });
+
+        botonGroup.add(buscarPorPalabras);
+        buscarPorPalabras.setText("Buscar por palabras:");
+        buscarPorPalabras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarPorPalabrasActionPerformed(evt);
             }
         });
 
@@ -181,24 +241,32 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
                                 .addGap(23, 23, 23)
                                 .addComponent(jComboEstadoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(15, 15, 15)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(botonCambiarEstadoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(24, 24, 24)
                                 .addComponent(txtEstado))))
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(informacion, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(informacion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(TFBuscar))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(mostrarNumPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(buscarPorPalabras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(BuscarNumPedido))
+                                    .addComponent(TFBuscar)))
                             .addComponent(buscadorPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(15, 15, 15))
+                            .addComponent(botonVerDetalles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botonEliminarPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(3, 3, 3))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,16 +276,21 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mostrarNumPedido)
+                    .addComponent(BuscarNumPedido))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buscarPorPalabras)
                     .addComponent(TFBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7)
+                .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(buscadorPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(botonVerDetalles)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)))
+                        .addComponent(botonEliminarPedido))
+                    .addComponent(buscadorPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -235,7 +308,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jComboEstadoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3))
+                            .addComponent(botonCambiarEstadoPedido))
                         .addComponent(TFTotalPedido)))
                 .addGap(17, 17, 17))
         );
@@ -256,7 +329,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_tablaPedidosMouseClicked
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void botonVerDetallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVerDetallesActionPerformed
         int filaSelecionada = tablaPedidos.getSelectedRow();
         if (filaSelecionada < 0) {
             JOptionPane.showMessageDialog(this, "Selecciona una fila de la tabla.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
@@ -267,44 +340,102 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
             Ven_tabla_pedidos_listados_verdetalles objTablaPedidosListadoVerDetalles = new Ven_tabla_pedidos_listados_verdetalles(codPedido);
             Ven_principal.escritorio.add(objTablaPedidosListadoVerDetalles).setVisible(true);
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_botonVerDetallesActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void botonEliminarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarPedidoActionPerformed
         // BOTON BORRAR
         int filaSelecionada = tablaPedidos.getSelectedRow();
+        String estado = tablaPedidos.getValueAt(filaSelecionada, 2).toString();
         if (filaSelecionada < 0) {
             JOptionPane.showMessageDialog(this, "Selecciona una fila de la tabla.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            int seleccion = JOptionPane.showConfirmDialog(this, "¿Esta seguro de eliminar el pedido?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-            if (seleccion == 0) {
-                int codPedido = Integer.parseInt(tablaPedidos.getValueAt(filaSelecionada, 0).toString());
-                objConPedidos.eliminarPedido(codPedido);
-
-                JOptionPane.showMessageDialog(this, "Pedido eliminado.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+            if (estado.contains("Anulado")) {
+                int seleccion = JOptionPane.showConfirmDialog(this, "¿Esta seguro de eliminar el pedido?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                if (seleccion == 0) {
+                    int codPedido = Integer.parseInt(tablaPedidos.getValueAt(filaSelecionada, 0).toString());
+                    objConPedidos.eliminarPedido(codPedido);
+                    JOptionPane.showMessageDialog(this, "Pedido eliminado.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+                }
+                cargaDeDatosPedidos("");
+                limpiarDatos();
+            } else {
+                JOptionPane.showMessageDialog(this, "Anule el pedido para su eliminación.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             }
-            cargaDeDatosPedidos("");
-            limpiarDatos();
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        }
+    }//GEN-LAST:event_botonEliminarPedidoActionPerformed
+
+    private void botonCambiarEstadoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCambiarEstadoPedidoActionPerformed
+        // BOTON CAMBIAR ESTADO
+        String estado = jComboEstadoPedido.getSelectedItem().toString();
+        int fila = tablaPedidos.getSelectedRow();
+        int codPedido = Integer.parseInt(tablaPedidos.getValueAt(fila, 0).toString());
+        int cantidad = 0, codArticulo = 0;
+        ArrayList<LineaPedido> arLineapedido = new ArrayList<>();
+
+        switch (estado) {
+            case "Pendiente":
+                objConPedidos.actualizarEstadoPedido(codPedido, estado);
+                System.out.println("pendiente");
+                break;
+            case "Enviado":
+                objConPedidos.actualizarEstadoPedido(codPedido, estado);
+                System.out.println("Enviado");
+                
+                // resta el stock
+                arLineapedido = obLineaPedido.mostrarLineasPedidos(codPedido);
+                for (int i = 0; i < arLineapedido.size(); i++) {
+                    cantidad = arLineapedido.get(i).getCantidad();
+                    codArticulo = arLineapedido.get(i).getCodArticulo();
+
+                    boolean comprobacion = objConArticulos.actualizarStock(cantidad, codArticulo);
+                }
+
+                break;
+            case "Anulado":
+                objConPedidos.actualizarEstadoPedido(codPedido, estado);
+                System.out.println("Anulado");
+                break;
+            case "Pagado":
+                objConPedidos.actualizarEstadoPedido(codPedido, estado);
+                System.out.println("Pagado");
+                break;
+        }
+        cargaDeDatosPedidos("");
+
+    }//GEN-LAST:event_botonCambiarEstadoPedidoActionPerformed
+
+    private void BuscarNumPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarNumPedidoActionPerformed
+        // BOTON BUSCAR   
+        limpiezaTabla();
+        cargaDeDatosNumPedidos(Integer.parseInt(TFnumPedido.getText()));
+    }//GEN-LAST:event_BuscarNumPedidoActionPerformed
+
+    private void buscarPorPalabrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarPorPalabrasActionPerformed
+        if (buscarPorPalabras.isSelected() == true) {
+            limpiezaTabla();
+            cargaDeDatosPedidos(TFBuscar.getText());
+        }
+    }//GEN-LAST:event_buscarPorPalabrasActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BuscarNumPedido;
     private javax.swing.JTextField TFBuscar;
     public static javax.swing.JTextField TFCodPedido;
     public static javax.swing.JTextField TFNombreCliente;
     public static javax.swing.JTextField TFTotalPedido;
+    private javax.swing.JTextField TFnumPedido;
+    private javax.swing.JButton botonCambiarEstadoPedido;
+    private javax.swing.JButton botonEliminarPedido;
+    private javax.swing.ButtonGroup botonGroup;
+    private javax.swing.JButton botonVerDetalles;
     private javax.swing.JScrollPane buscadorPedidos;
+    private javax.swing.JRadioButton buscarPorPalabras;
     private javax.swing.JLabel informacion;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboEstadoPedido;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JRadioButton mostrarNumPedido;
     private javax.swing.JTable tablaPedidos;
     private javax.swing.JLabel txtCod;
     private javax.swing.JLabel txtEstado;
