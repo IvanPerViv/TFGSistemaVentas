@@ -7,7 +7,6 @@ import Utils.generarCodigos;
 import java.text.*;
 import java.util.Date;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -15,13 +14,18 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_pedidos extends javax.swing.JInternalFrame {
 
-    protected final Comprobaciones objComprobaciones = new Comprobaciones();
-    protected final Con_pedido objConPedidos = new Con_pedido();
-    protected final Con_pedido_linea objPedidoLinea = new Con_pedido_linea();
-    protected final generarCodigos objGenCod = new generarCodigos();
+    protected Comprobaciones objComprobaciones;
+    protected Con_pedido objConPedidos;
+    protected Con_pedido_linea objPedidoLinea;
+    protected generarCodigos objGenCod;
 
     public Ven_pedidos() {
         initComponents();
+        objComprobaciones = new Comprobaciones();
+        objConPedidos = new Con_pedido();
+        objPedidoLinea = new Con_pedido_linea();
+        generarCodigos objGenCod = new generarCodigos();
+
         bloquearCampos(false);
         bloquearBotones(false);
         AreaObs.setEnabled(false);
@@ -71,7 +75,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         TFStock.setText("");
         TFCantidad.setText("");
         AreaObs.setText("");
-        
+
         TFSubtotal.setText("");
         TFTotal.setText("");
     }
@@ -89,8 +93,8 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         DefaultTableModel tablaTemporal = (DefaultTableModel) tablaPedidos.getModel();
         int filas = tablaPedidos.getRowCount();
         int contador = 0;
-        while(filas > contador){
-            tablaTemporal.removeRow(0);  
+        while (filas > contador) {
+            tablaTemporal.removeRow(0);
             contador++;
         }
     }

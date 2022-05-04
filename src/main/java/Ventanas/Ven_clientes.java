@@ -2,14 +2,11 @@ package Ventanas;
 
 import Conexiones.Con_clientes;
 import Conexiones.Con_localidad_prov_pais;
-import Modelos.Articulos;
 import Modelos.Clientes;
 import Utils.Comprobaciones;
 import Utils.generarCodigos;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
@@ -21,12 +18,16 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
 
     protected DefaultTableModel datosClientes;
     protected final String DATOVACIO = "";
-    protected final Con_localidad_prov_pais objLocal = new Con_localidad_prov_pais();
-    protected final Con_clientes objConexionClientes = new Con_clientes();
-    protected final Comprobaciones objComprobacione = new Comprobaciones();
+    
+    protected Con_localidad_prov_pais objLocal;
+    protected Con_clientes objConexionClientes;
+    protected Comprobaciones objComprobacione;
 
     public Ven_clientes() {
         initComponents();
+        objLocal = new Con_localidad_prov_pais();
+        objConexionClientes = new Con_clientes();
+        objComprobacione = new Comprobaciones();
         bloquear(false);
         cargaDeDatosClientes(DATOVACIO);
         TFCodigo.setEnabled(false);

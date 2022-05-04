@@ -12,12 +12,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_clientes_tabla_localidad extends javax.swing.JInternalFrame {
 
-    protected Con_localidad_prov_pais objLocalidad = new Con_localidad_prov_pais();
-    protected generarCodigos objGenCod = new generarCodigos();
+    protected Con_localidad_prov_pais objLocalidad;
+    protected generarCodigos objGenCod;
     protected DefaultTableModel datosLocalidades;
 
     public Ven_clientes_tabla_localidad() {
         initComponents();
+        objLocalidad = new Con_localidad_prov_pais();
+        objGenCod = new generarCodigos();
+        
         cargarDatosLocalidad("");
     }
 

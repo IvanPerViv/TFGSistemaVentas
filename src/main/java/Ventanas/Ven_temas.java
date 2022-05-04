@@ -33,8 +33,8 @@ public class Ven_temas extends javax.swing.JInternalFrame {
                     
                     
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -50,19 +50,19 @@ public class Ven_temas extends javax.swing.JInternalFrame {
         jRadioButton3 = new javax.swing.JRadioButton();
         panelDefecto = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
+        titulo = new javax.swing.JLabel();
         jPanel14 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         panelOscuro = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
+        titulo2 = new javax.swing.JLabel();
         jPanel16 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         botonAplicar = new javax.swing.JButton();
         panelOscuro2 = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
-        jLabel14 = new javax.swing.JLabel();
+        titulo3 = new javax.swing.JLabel();
         jPanel20 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
 
@@ -70,7 +70,7 @@ public class Ven_temas extends javax.swing.JInternalFrame {
         setTitle("Configuración");
         setToolTipText("");
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Selección de tema");
 
         buttonGroup1.add(jRadioButton1);
@@ -94,8 +94,8 @@ public class Ven_temas extends javax.swing.JInternalFrame {
 
         jPanel13.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel10.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel10.setText("Título");
+        titulo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        titulo.setText("Título");
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
@@ -103,12 +103,12 @@ public class Ven_temas extends javax.swing.JInternalFrame {
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel10)
+                .addComponent(titulo)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+            .addComponent(titulo, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
         );
 
         jPanel14.setBackground(new java.awt.Color(255, 255, 255));
@@ -154,9 +154,9 @@ public class Ven_temas extends javax.swing.JInternalFrame {
 
         jPanel15.setBackground(new java.awt.Color(102, 102, 102));
 
-        jLabel11.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Título");
+        titulo2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        titulo2.setForeground(new java.awt.Color(255, 255, 255));
+        titulo2.setText("Título");
 
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
@@ -164,12 +164,12 @@ public class Ven_temas extends javax.swing.JInternalFrame {
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel11)
+                .addComponent(titulo2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+            .addComponent(titulo2, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
         );
 
         jPanel16.setBackground(new java.awt.Color(102, 102, 102));
@@ -224,9 +224,9 @@ public class Ven_temas extends javax.swing.JInternalFrame {
 
         jPanel19.setBackground(new java.awt.Color(169, 195, 221));
 
-        jLabel14.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel14.setText("Título");
+        titulo3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        titulo3.setForeground(new java.awt.Color(255, 255, 255));
+        titulo3.setText("Título");
 
         javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
         jPanel19.setLayout(jPanel19Layout);
@@ -234,12 +234,12 @@ public class Ven_temas extends javax.swing.JInternalFrame {
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel19Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel14)
+                .addComponent(titulo3)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+            .addComponent(titulo3, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
         );
 
         jPanel20.setBackground(new java.awt.Color(169, 195, 221));
@@ -317,9 +317,9 @@ public class Ven_temas extends javax.swing.JInternalFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(20, 20, 20)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelOscuro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelDefecto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -370,9 +370,6 @@ public class Ven_temas extends javax.swing.JInternalFrame {
     private javax.swing.JButton botonAplicar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -390,5 +387,8 @@ public class Ven_temas extends javax.swing.JInternalFrame {
     private javax.swing.JPanel panelDefecto;
     private javax.swing.JPanel panelOscuro;
     private javax.swing.JPanel panelOscuro2;
+    private javax.swing.JLabel titulo;
+    private javax.swing.JLabel titulo2;
+    private javax.swing.JLabel titulo3;
     // End of variables declaration//GEN-END:variables
 }

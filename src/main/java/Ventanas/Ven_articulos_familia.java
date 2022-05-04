@@ -10,11 +10,13 @@ import javax.swing.table.DefaultTableModel;
 
 public class Ven_articulos_familia extends javax.swing.JInternalFrame {
 
-    protected Con_familias_articulos objFamilias = new Con_familias_articulos();
-    protected Con_articulos objArticulo = new Con_articulos();
+    protected Con_familias_articulos objFamilias;
+    protected Con_articulos objArticulo;
 
     public Ven_articulos_familia() {
         initComponents();
+        objFamilias = new Con_familias_articulos();
+        objArticulo = new Con_articulos();
         bloquearBotones(false);
         TFCodigo.setEnabled(false);
         cargaDeDatosFamilia("");
@@ -49,7 +51,7 @@ public class Ven_articulos_familia extends javax.swing.JInternalFrame {
 
         Object[] fila = new Object[nombreTablas.length];
 
-        ArrayList<FamiliaArticulos> artFamilia = new ArrayList<FamiliaArticulos>();
+        ArrayList<FamiliaArticulos> artFamilia = new ArrayList<>();
         artFamilia = objFamilias.mostrarArticulosYBusqueda(buscar);
 
         for (int i = 0; i < artFamilia.size(); i++) {

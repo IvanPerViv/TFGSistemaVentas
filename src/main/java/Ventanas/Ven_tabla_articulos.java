@@ -9,11 +9,12 @@ public class Ven_tabla_articulos extends javax.swing.JInternalFrame {
 
     protected DefaultTableModel mostrarClientes;
     protected final String DATOVACIO = "";
-    protected final Con_articulos objConexionClientes = new Con_articulos();
-    protected static String codigo;
+    protected Con_articulos objConexionClientes;
 
     public Ven_tabla_articulos() {
         initComponents();
+        objConexionClientes = new Con_articulos();
+        
         cargaDeDatosArticulos(DATOVACIO);
     }
 

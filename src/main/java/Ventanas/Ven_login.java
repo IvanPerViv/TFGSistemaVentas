@@ -17,16 +17,17 @@ import javax.swing.UIManager;
 public class Ven_login extends javax.swing.JFrame {
 
     protected Image imagenIconito;
-
+    protected Con_usuarios objUsers;
+    
     public Ven_login() {
         initComponents();
+        objUsers = new Con_usuarios();
         //imagenIconito = getIconImage();
         setLocationRelativeTo(null);
     }
 
     /**
      * Metodo que carga una imagen para establecerla como icono del programa.
-     *
      * @return imagen del icono del programa.
      */
     @Override
@@ -240,17 +241,8 @@ public class Ven_login extends javax.swing.JFrame {
         String usuario = usuarioText.getText();
         String pass = passText.getText();
 
-//String itemSeleecionado = (String) comboUser.getSelectedItem();
-//        if (usuario.equals("ivan") && itemSeleecionado.equals("Administrador")) {
-//            new V_principal(itemSeleecionado, usuario).setVisible(true);
-//        }
-//
-//        if (usuario.equals("ivan") && itemSeleecionado.equals("Empleado")) {
-//            new V_principal(itemSeleecionado, usuario).setVisible(true);
-//        }
-        Con_usuarios objUsers = new Con_usuarios();
         Usuarios objUsuarios = objUsers.recuperarDatosUsuarios(usuario, pass);
-        String rolUsuario = objUsers.mostrarCodUsuario(objUsuarios.getRol());
+        String rolUsuario = objUsers.mostrarNombreRol(objUsuarios.getRol());
 
         if (!Objects.isNull(objUsuarios)) {
             if (usuario.equals(objUsuarios.getUsuario()) && pass.equals(objUsuarios.getContraseña())) {
@@ -262,8 +254,6 @@ public class Ven_login extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Creedenciales incorrectas.", "ERROR!", JOptionPane.ERROR_MESSAGE);
         }
-
-
     }//GEN-LAST:event_BotonLoginActionPerformed
 
     public static void main(String args[]) {

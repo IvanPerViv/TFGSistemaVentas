@@ -3,21 +3,21 @@ package Ventanas;
 import Conexiones.Con_clientes;
 import Conexiones.Con_localidad_prov_pais;
 import Modelos.Clientes;
-import static Ventanas.Ven_pedidos.TFDir;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
 
     protected DefaultTableModel datosClientes;
     protected final String DATOVACIO = "";
-    protected final Con_clientes objConexionClientes = new Con_clientes();
-    protected final Con_localidad_prov_pais objLocal = new Con_localidad_prov_pais();
-    protected static String codigo;
+    protected Con_clientes objConexionClientes;
+    protected Con_localidad_prov_pais objLocal;
 
     public Ven_tabla_cliente() {
         initComponents();
+        objConexionClientes = new Con_clientes();
+        objLocal = new Con_localidad_prov_pais();
+        
         cargaDeDatosClientes(DATOVACIO);
     }
 

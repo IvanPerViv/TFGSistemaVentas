@@ -270,7 +270,7 @@ public class Ven_principal extends javax.swing.JFrame {
         barraSupHerra.add(BH_consultas);
 
         BH_ventas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/ventas.png"))); // NOI18N
-        BH_ventas.setText("Ventas");
+        BH_ventas.setText("¿¿??");
         BH_ventas.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         BH_ventas.setMinimumSize(new java.awt.Dimension(150, 50));
         BH_ventas.setPreferredSize(new java.awt.Dimension(150, 50));

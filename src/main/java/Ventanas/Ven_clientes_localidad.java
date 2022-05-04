@@ -6,7 +6,6 @@ package Ventanas;
 
 import Conexiones.Con_localidad_prov_pais;
 import Modelos.Localidad;
-import Modelos.Pais;
 import Modelos.Provincia;
 import Utils.Comprobaciones;
 import Utils.generarCodigos;
@@ -22,13 +21,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_clientes_localidad extends javax.swing.JInternalFrame {
 
-    protected Con_localidad_prov_pais objetoLocalidad = new Con_localidad_prov_pais();
-    protected generarCodigos objGenCod = new generarCodigos();
-    protected final Comprobaciones objComprobaciones = new Comprobaciones();
+    protected Con_localidad_prov_pais objetoLocalidad;
+    protected generarCodigos objGenCod;
+    protected Comprobaciones objComprobaciones;
     protected DefaultTableModel datosLocalidad;
 
     public Ven_clientes_localidad() {
         initComponents();
+        objetoLocalidad = new Con_localidad_prov_pais();
+        objGenCod = new generarCodigos();
+        objComprobaciones = new Comprobaciones();
+        
         cargarDatosLocalidad("");
         TFCodigoLocal.setEnabled(false);
         bloquear(false);

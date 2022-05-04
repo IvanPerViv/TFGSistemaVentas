@@ -14,13 +14,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_tabla_pedidos_listados_verdetalles extends javax.swing.JInternalFrame {
 
-    protected Con_pedido_linea objPedidoLinea = new Con_pedido_linea();
-    protected Con_articulos objArticulo = new Con_articulos();
-    protected Con_pedido objPedido = new Con_pedido();
+    protected Con_pedido_linea objPedidoLinea;
+    protected Con_articulos objArticulo;
+    protected Con_pedido objPedido;
     protected DefaultTableModel pedidoLinea;
 
     public Ven_tabla_pedidos_listados_verdetalles(int codigoPedido) {
         initComponents();
+        objPedidoLinea = new Con_pedido_linea();
+        objArticulo = new Con_articulos();
+        objPedido = new Con_pedido();
+        
         cargaDeDatosArticulos(codigoPedido);
         cargaDeDatosPedido();
         calcularPedido();

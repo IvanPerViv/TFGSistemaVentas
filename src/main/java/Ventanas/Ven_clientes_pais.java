@@ -12,13 +12,17 @@ import javax.swing.table.DefaultTableModel;
 
 public class Ven_clientes_pais extends javax.swing.JInternalFrame {
 
-    protected Con_localidad_prov_pais objPais = new Con_localidad_prov_pais();
-    protected generarCodigos objGenCod = new generarCodigos();
-    protected final Comprobaciones objComprobaciones = new Comprobaciones();
+    protected Con_localidad_prov_pais objPais;
+    protected generarCodigos objGenCod;
+    protected final Comprobaciones objComprobaciones;
     protected DefaultTableModel datosPais;
 
     public Ven_clientes_pais() {
         initComponents();
+        objPais = new Con_localidad_prov_pais();
+        objGenCod = new generarCodigos();
+        objComprobaciones = new Comprobaciones();
+        
         cargarDatosPais("");
         TFCodPais.setEnabled(false);
         bloquear(false);
@@ -347,7 +351,7 @@ public class Ven_clientes_pais extends javax.swing.JInternalFrame {
                 bloquear(false);
                 botonNuevo.setEnabled(true);
             }
-        } else{
+        } else {
             JOptionPane.showMessageDialog(this, "Introduce el campo necesario.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
 

@@ -3,7 +3,6 @@ package Ventanas;
 import Conexiones.Con_articulos;
 import Conexiones.Con_pedido;
 import Conexiones.Con_pedido_linea;
-import Modelos.Articulos;
 import Modelos.LineaPedido;
 import Modelos.Pedidos;
 import Utils.Comprobaciones;

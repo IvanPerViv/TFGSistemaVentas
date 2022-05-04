@@ -17,13 +17,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_clientes_prov extends javax.swing.JInternalFrame {
 
-    protected Con_localidad_prov_pais objetoProv = new Con_localidad_prov_pais();
-    protected generarCodigos objGenCod = new generarCodigos();
-    protected final Comprobaciones objComprobaciones = new Comprobaciones();
+    protected Con_localidad_prov_pais objetoProv;
+    protected generarCodigos objGenCod;
+    protected Comprobaciones objComprobaciones;
     protected DefaultTableModel datosPais;
 
     public Ven_clientes_prov() {
         initComponents();
+        objetoProv = new Con_localidad_prov_pais();
+        objGenCod = new generarCodigos();
+        objComprobaciones = new Comprobaciones();
+        
         cargarDatosProvincia("");
         TFProv.setEnabled(false);
         bloquear(false);
@@ -65,7 +69,7 @@ public class Ven_clientes_prov extends javax.swing.JInternalFrame {
         for (int i = 0; i < arProv.size(); i++) {
             fila[0] = arProv.get(i).getCodProv();
             fila[1] = arProv.get(i).getNombreProvincia();
-            fila[2] = objetoProv.buscarPaisPorCodigo(arProv.get(i).getCodPais());
+            fila[2] = objetoProv.buscarPaisPorCodigo(arProv.get(i).getCodPais()); //Subconsulta.
             datosPais.addRow(fila);
         }
     }
