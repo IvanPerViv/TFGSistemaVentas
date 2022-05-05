@@ -54,6 +54,7 @@ public class Ven_tabla_articulos extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setTitle("Listado articulos");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/iconArticulos.png"))); // NOI18N
 
         informacion.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         informacion.setText("ARTICULOS");
@@ -67,6 +68,7 @@ public class Ven_tabla_articulos extends javax.swing.JInternalFrame {
             }
         });
 
+        tablaArt.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         tablaArt.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},

@@ -4,8 +4,10 @@ import Conexiones.Con_pedido;
 import Conexiones.Con_pedido_linea;
 import Utils.Comprobaciones;
 import Utils.generarCodigos;
+import com.toedter.calendar.JDateChooser;
 import java.text.*;
 import java.util.Date;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -24,7 +26,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         objComprobaciones = new Comprobaciones();
         objConPedidos = new Con_pedido();
         objPedidoLinea = new Con_pedido_linea();
-        generarCodigos objGenCod = new generarCodigos();
+        objGenCod = new generarCodigos();
 
         bloquearCampos(false);
         bloquearBotones(false);
@@ -34,7 +36,6 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
 
     protected void bloquearCampos(boolean bloquear) {
         TFnumPedido.setEnabled(bloquear);
-        TFDate.setEnabled(bloquear);
 
         //Cliente
         TFCodClie.setEnabled(bloquear);
@@ -54,6 +55,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     protected void bloquearBotones(boolean bloquear) {
         botonLimpiar.setEnabled(bloquear);
 
+        jDateChooser1.setEnabled(bloquear);
         BotonBuscarCliente.setEnabled(bloquear);
         botonBuscarProducto.setEnabled(bloquear);
         botonAgregarProc.setEnabled(bloquear);
@@ -107,12 +109,6 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         } else {
             TFnumPedido.setText("1");
         }
-    }
-
-    public String fechaactual() {
-        Date fecha = new Date();
-        SimpleDateFormat formatofecha = new SimpleDateFormat("dd-MM-YYYY");
-        return formatofecha.format(fecha);
     }
 
     protected void cargaDeDatosArticulos() {
@@ -174,29 +170,31 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
 
     protected boolean comprobacionCampos() {
         boolean comprobacion = true;
-        if (objComprobaciones.comprobacionJTextField0SinPintar(TFNombreC)) {
+        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFNombreC)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField0SinPintar(TFDir)) {
+        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFDir)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField0SinPintar(TFTel)) {
+        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFTel)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField0SinPintar(TFNombreProc)) {
+        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFNombreProc)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField0SinPintar(TFPrecio)) {
+        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFPrecio)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField0SinPintar(TFIva)) {
+        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFIva)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField0SinPintar(TFStock)) {
+        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFStock)) {
             comprobacion = false;
         }
-
-        if (objComprobaciones.comprobacionJTextField0SinPintar(TFCantidad)) {
+        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFCantidad)) {
+            comprobacion = false;
+        }
+        if (jDateChooser1.getDate() == null) {
             comprobacion = false;
         }
         return comprobacion;
@@ -251,12 +249,13 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         informacion2 = new javax.swing.JLabel();
         TFnumPedido = new javax.swing.JTextField();
         informacion4 = new javax.swing.JLabel();
-        TFDate = new javax.swing.JTextField();
         botonRealizarPedido = new javax.swing.JButton();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         setClosable(true);
         setIconifiable(true);
         setTitle("Pedidos");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/iconPedidos.png"))); // NOI18N
 
         barraHerramientas.setFloatable(false);
         barraHerramientas.setRollover(true);
@@ -385,6 +384,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
 
         PANEL_carrito.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Productos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
 
+        tablaPedidos.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         tablaPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -617,12 +617,8 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         informacion4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         informacion4.setText("Fecha:");
 
-        TFDate.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        TFDate.setBorder(null);
-        TFDate.setOpaque(false);
-
         botonRealizarPedido.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        botonRealizarPedido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_botonesGenerales/realizarVenta.png"))); // NOI18N
+        botonRealizarPedido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_pedidos/icons8-boleto-30.png"))); // NOI18N
         botonRealizarPedido.setText("Realizar Pedido");
         botonRealizarPedido.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         botonRealizarPedido.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -635,6 +631,9 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
             }
         });
 
+        jDateChooser1.setDateFormatString("dd/MM/yyyy");
+        jDateChooser1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -642,7 +641,9 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(barraHerramientas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(barraHerramientas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(15, 15, 15))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(PANEL_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -655,10 +656,10 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(16, 16, 16)))
-                                .addGap(15, 15, 15)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(TFDate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(informacion4, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(informacion4, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addComponent(panel_observaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -669,8 +670,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                             .addComponent(TFTotal)
                             .addComponent(TFSubtotal)
                             .addComponent(botonRealizarPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 10, Short.MAX_VALUE)))
-                .addGap(15, 15, 15))
+                        .addGap(0, 23, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -680,22 +680,22 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(informacion2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(informacion4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(TFDate, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(5, 5, 5)
-                        .addComponent(PANEL_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)
+                        .addComponent(informacion2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(informacion4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(5, 5, 5)
+                .addComponent(PANEL_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(PANEL_carrito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(5, 5, 5)
                         .addComponent(panel_observaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(TFSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -715,8 +715,6 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         // BOTON NUEVO //
         bloquearBotones(true);
         generarCodigoArticulo();
-        fechaactual();
-        TFDate.setText(fechaactual());
         AreaObs.setEnabled(true);
     }//GEN-LAST:event_botonNuevoActionPerformed
 
@@ -776,22 +774,26 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_botonEliminarProcActionPerformed
 
     private void TFCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFCantidadKeyReleased
+        objComprobaciones.ValidarNumeros(TFCantidad);
         comprobarStock();
     }//GEN-LAST:event_TFCantidadKeyReleased
-
+    
     private void botonRealizarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRealizarPedidoActionPerformed
         // Boton realizar pedido //
         int Seleccionada = tablaPedidos.getRowCount();
         if (Seleccionada == 0) {
             JOptionPane.showMessageDialog(this, "No existe ningun dato.\nRellene los datos correspondientes.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            int numPedido = Integer.parseInt(TFnumPedido.getText());
-            String fecha = TFDate.getText();
+            int numPedido = Integer.parseInt(TFnumPedido.getText());   
+            Date date = jDateChooser1.getDate();
+            long fechaConversion = date.getTime();
+            java.sql.Date fechaDate = new  java.sql.Date(fechaConversion);
+
             int codigoCliente = Integer.parseInt(TFCodClie.getText());
-            String estado = "Reserva";
+            String estado = "Pendiente";
             String area = AreaObs.getText();
 
-            boolean comprobacionPedido = objConPedidos.ingresoPedidos(numPedido, fecha, codigoCliente, estado, area);
+            boolean comprobacionPedido = objConPedidos.ingresoPedidos(numPedido, fechaDate, codigoCliente, estado, area);
 
             for (int i = 0; i < tablaPedidos.getRowCount(); i++) {
                 int codArticulo = Integer.parseInt(tablaPedidos.getValueAt(i, 0).toString());
@@ -822,7 +824,6 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     private javax.swing.JTextField TFCantidad;
     public static javax.swing.JTextField TFCodClie;
     public static javax.swing.JTextField TFCodProd;
-    private javax.swing.JTextField TFDate;
     public static javax.swing.JTextField TFDir;
     public static javax.swing.JTextField TFIva;
     public static javax.swing.JTextField TFNombreC;
@@ -842,6 +843,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     private javax.swing.JButton botonRealizarPedido;
     private javax.swing.JLabel informacion2;
     private javax.swing.JLabel informacion4;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel28;

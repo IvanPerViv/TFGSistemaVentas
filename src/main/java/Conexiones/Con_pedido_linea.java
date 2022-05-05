@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * @author Iván Pérez
  */
 public class Con_pedido_linea {
+
     protected Conexion objConexion;
     protected Connection con;
 
@@ -19,7 +20,7 @@ public class Con_pedido_linea {
         objConexion = new Conexion();
         con = objConexion.con;
     }
-    
+
     public boolean ingresoLineasPedidos(int cod_pedido, int cod_articulo, int cantidad, Double precio_venta, double iva) {
         String query = "INSERT INTO `lineas_pedidos`(pedido, articulo, cantidad, precio_venta, iva)"
                 + "VALUES (?,?,?,?,?)";
@@ -30,16 +31,16 @@ public class Con_pedido_linea {
             pst.setInt(3, cantidad);
             pst.setDouble(4, precio_venta);
             pst.setDouble(5, iva);
-            
+
             comprobacion = pst.executeUpdate();
         } catch (SQLException ex) {
             System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
         }
         return comprobacion > 0;
     }
-    
+
     public ArrayList mostrarLineasPedidos(int buscar) {
-        String query = "SELECT * FROM lineas_pedidos WHERE pedido=" + buscar ;
+        String query = "SELECT * FROM lineas_pedidos WHERE pedido=" + buscar;
 
         ArrayList<LineaPedido> arLineaPedido = new ArrayList<>();
         try (PreparedStatement pst = con.prepareStatement(query)) {
@@ -50,7 +51,7 @@ public class Con_pedido_linea {
                     int cantidad = rs.getInt(4);
                     double precioVentaa = rs.getDouble(5);
                     double iva = rs.getDouble(6);
-                   
+
                     arLineaPedido.add(new LineaPedido(codPedido, codArticulo, cantidad, precioVentaa, iva));
 
                 }
@@ -60,5 +61,5 @@ public class Con_pedido_linea {
         }
         return arLineaPedido;
     }
-    
+
 }

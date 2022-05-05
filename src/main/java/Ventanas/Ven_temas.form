@@ -9,6 +9,9 @@
     <Property name="closable" type="boolean" value="true"/>
     <Property name="title" type="java.lang.String" value="Configuraci&#xf3;n"/>
     <Property name="toolTipText" type="java.lang.String" value=""/>
+    <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+      <Image iconType="3" name="/VI_icon/icons8-ajustes-16.png"/>
+    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>

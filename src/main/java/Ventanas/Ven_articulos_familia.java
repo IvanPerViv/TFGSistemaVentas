@@ -88,6 +88,7 @@ public class Ven_articulos_familia extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setTitle("Familia Producto");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/iconArticulos.png"))); // NOI18N
 
         barraHerramientasClientes.setFloatable(false);
         barraHerramientasClientes.setRollover(true);
@@ -199,6 +200,7 @@ public class Ven_articulos_familia extends javax.swing.JInternalFrame {
 
         Panel_buscar_Familia.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
 
+        tablaFamilias.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         tablaFamilias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},

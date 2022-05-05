@@ -69,6 +69,7 @@ public class Ven_temas extends javax.swing.JInternalFrame {
         setClosable(true);
         setTitle("Configuración");
         setToolTipText("");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/icons8-ajustes-16.png"))); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Selección de tema");

@@ -1,11 +1,15 @@
 package Ventanas;
 
+import Conexiones.Con_albaran;
 import Conexiones.Con_articulos;
+import Conexiones.Con_clientes;
 import Conexiones.Con_pedido;
 import Conexiones.Con_pedido_linea;
 import Modelos.LineaPedido;
 import Modelos.Pedidos;
 import Utils.Comprobaciones;
+import Utils.generarCodigos;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -16,6 +20,8 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
     protected Con_pedido objConPedidos;
     protected Con_articulos objConArticulos;
     protected Con_pedido_linea obLineaPedido;
+    protected Con_albaran objAlbaran;
+
     protected final Comprobaciones objComprobaciones;
     protected String estado;
 
@@ -25,6 +31,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         objComprobaciones = new Comprobaciones();
         objConArticulos = new Con_articulos();
         obLineaPedido = new Con_pedido_linea();
+        objAlbaran = new Con_albaran();
 
         cargaDeDatosPedidos("");
     }
@@ -77,6 +84,18 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         }
     }
 
+    protected int generarCodigoAlbaran() {
+        int numero;
+        int codigoAlbaran = objAlbaran.codigoAlbaran();
+        if (codigoAlbaran != 0) {
+            generarCodigos objGenCod = new generarCodigos();
+            numero = objGenCod.generarCod(codigoAlbaran);
+        } else {
+            numero = 1;
+        }
+        return numero;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -102,10 +121,13 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         TFnumPedido = new javax.swing.JTextField();
         BuscarNumPedido = new javax.swing.JButton();
         buscarPorPalabras = new javax.swing.JRadioButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
-        setTitle("Listado");
+        setTitle("Listado PEDIDOS");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/iconPedidos.png"))); // NOI18N
+        setPreferredSize(new java.awt.Dimension(746, 512));
 
         informacion.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         informacion.setText("LISTADO DE PEDIDOS");
@@ -116,6 +138,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
             }
         });
 
+        tablaPedidos.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         tablaPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
@@ -168,7 +191,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         txtEstado.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtEstado.setText("Estado Pedido");
 
-        jComboEstadoPedido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "Enviado", "Anulado", "Pagado" }));
+        jComboEstadoPedido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "Enviado", "Anulado" }));
         jComboEstadoPedido.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         botonEliminarPedido.setText("ELIMINAR");
@@ -206,12 +229,14 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         });
 
         botonGroup.add(buscarPorPalabras);
-        buscarPorPalabras.setText("Buscar por palabras:");
+        buscarPorPalabras.setText("Buscar por 'Estado':");
         buscarPorPalabras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buscarPorPalabrasActionPerformed(evt);
             }
         });
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_albaran/icons8-test-aprobado-80.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -220,6 +245,32 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(mostrarNumPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(buscarPorPalabras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGap(15, 15, 15)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(BuscarNumPedido))
+                                        .addComponent(TFBuscar)))
+                                .addComponent(buscadorPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(15, 15, 15)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(botonEliminarPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(botonVerDetalles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(informacion, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1)
+                            .addGap(12, 12, 12)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -237,60 +288,42 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
                             .addComponent(TFTotalPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(txtEstado))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(23, 23, 23)
                                 .addComponent(jComboEstadoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(15, 15, 15)
-                                .addComponent(botonCambiarEstadoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addComponent(txtEstado))))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(informacion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(mostrarNumPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(buscarPorPalabras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(15, 15, 15)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(BuscarNumPedido))
-                                    .addComponent(TFBuscar)))
-                            .addComponent(buscadorPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(botonVerDetalles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(botonEliminarPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(3, 3, 3))
+                                .addGap(18, 18, 18)
+                                .addComponent(botonCambiarEstadoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(informacion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(mostrarNumPedido)
-                    .addComponent(BuscarNumPedido))
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buscarPorPalabras)
-                    .addComponent(TFBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(informacion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(mostrarNumPedido)
+                            .addComponent(BuscarNumPedido))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(buscarPorPalabras)
+                            .addComponent(TFBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(botonVerDetalles)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(15, 15, 15)
                         .addComponent(botonEliminarPedido))
                     .addComponent(buscadorPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(5, 5, 5)
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtCod, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -304,12 +337,11 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
                             .addComponent(TFNombreCliente)
                             .addComponent(TFCodPedido)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboEstadoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(botonCambiarEstadoPedido))
-                        .addComponent(TFTotalPedido)))
-                .addGap(17, 17, 17))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboEstadoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(botonCambiarEstadoPedido))
+                    .addComponent(TFTotalPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -330,12 +362,13 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
 
     private void botonVerDetallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVerDetallesActionPerformed
         int filaSelecionada = tablaPedidos.getSelectedRow();
+
         if (filaSelecionada < 0) {
             JOptionPane.showMessageDialog(this, "Selecciona una fila de la tabla.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         } else {
 
             int codPedido = Integer.parseInt(tablaPedidos.getValueAt(filaSelecionada, 0).toString());
-
+            estado = tablaPedidos.getValueAt(filaSelecionada, 2).toString();
             Ven_tabla_pedidos_listados_verdetalles objTablaPedidosListadoVerDetalles = new Ven_tabla_pedidos_listados_verdetalles(codPedido);
             Ven_principal.escritorio.add(objTablaPedidosListadoVerDetalles).setVisible(true);
         }
@@ -364,40 +397,38 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_botonEliminarPedidoActionPerformed
 
+
     private void botonCambiarEstadoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCambiarEstadoPedidoActionPerformed
         // BOTON CAMBIAR ESTADO
-        String estado = jComboEstadoPedido.getSelectedItem().toString();
         int fila = tablaPedidos.getSelectedRow();
         int codPedido = Integer.parseInt(tablaPedidos.getValueAt(fila, 0).toString());
-        int cantidad = 0, codArticulo = 0;
-        ArrayList<LineaPedido> arLineapedido = new ArrayList<>();
+        String codCliente = tablaPedidos.getValueAt(fila, 1).toString();
+        String fecha = tablaPedidos.getValueAt(fila, 3).toString();
+        java.sql.Date fechaConversion = java.sql.Date.valueOf(fecha); // CONVERSION STRING TO SQL.DATE
+
+        int codCLiente = objConPedidos.mostrarCodCliente(codCliente);
+        String estado = jComboEstadoPedido.getSelectedItem().toString();
+        int codigoAlbaran = generarCodigoAlbaran();
 
         switch (estado) {
+
             case "Pendiente":
+                //PRUEBA
                 objConPedidos.actualizarEstadoPedido(codPedido, estado);
                 System.out.println("pendiente");
                 break;
             case "Enviado":
-                objConPedidos.actualizarEstadoPedido(codPedido, estado);
-                System.out.println("Enviado");
-                
-                // resta el stock
-                arLineapedido = obLineaPedido.mostrarLineasPedidos(codPedido);
-                for (int i = 0; i < arLineapedido.size(); i++) {
-                    cantidad = arLineapedido.get(i).getCantidad();
-                    codArticulo = arLineapedido.get(i).getCodArticulo();
+                //GENERA ALBARAN
+                int seleccion = JOptionPane.showConfirmDialog(this, "¿Estas seguro?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                if (seleccion == 0) {
+                    objConPedidos.actualizarEstadoPedido(codPedido, estado);
+                    JOptionPane.showMessageDialog(this, "Se ha generado un nuevo Albaran.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
 
-                    boolean comprobacion = objConArticulos.actualizarStock(cantidad, codArticulo);
+                    objAlbaran.ingresoAlbaran(codigoAlbaran, codCLiente, codPedido, fechaConversion); // SE ACTUALIZA LA TABLA ALBARAN                                                             
                 }
-
                 break;
             case "Anulado":
                 objConPedidos.actualizarEstadoPedido(codPedido, estado);
-                System.out.println("Anulado");
-                break;
-            case "Pagado":
-                objConPedidos.actualizarEstadoPedido(codPedido, estado);
-                System.out.println("Pagado");
                 break;
         }
         cargaDeDatosPedidos("");
@@ -433,6 +464,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton buscarPorPalabras;
     private javax.swing.JLabel informacion;
     private javax.swing.JComboBox<String> jComboEstadoPedido;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JRadioButton mostrarNumPedido;
     private javax.swing.JTable tablaPedidos;

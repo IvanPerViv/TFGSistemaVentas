@@ -61,6 +61,7 @@ public class Ven_principal extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         BH_ventas = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
+        BH_ventas1 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         BH_ayuda = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -269,27 +270,40 @@ public class Ven_principal extends javax.swing.JFrame {
 
         barraSupHerra.add(BH_consultas);
 
-        BH_ventas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/ventas.png"))); // NOI18N
-        BH_ventas.setText("¿¿??");
+        BH_ventas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/icons8-libro-de-caja-40.png"))); // NOI18N
+        BH_ventas.setText("Albarán");
         BH_ventas.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         BH_ventas.setMinimumSize(new java.awt.Dimension(150, 50));
         BH_ventas.setPreferredSize(new java.awt.Dimension(150, 50));
 
         jMenuItem4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/Albaran.png"))); // NOI18N
-        jMenuItem4.setText("Albaranes");
+        jMenuItem4.setText("Listado albaranes");
         jMenuItem4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenuItem4.setPreferredSize(new java.awt.Dimension(250, 50));
+        jMenuItem4.setPreferredSize(new java.awt.Dimension(280, 50));
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         BH_ventas.add(jMenuItem4);
+
+        barraSupHerra.add(BH_ventas);
+
+        BH_ventas1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/icons8-verificar-40.png"))); // NOI18N
+        BH_ventas1.setText("Factura");
+        BH_ventas1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        BH_ventas1.setMinimumSize(new java.awt.Dimension(150, 50));
+        BH_ventas1.setPreferredSize(new java.awt.Dimension(150, 50));
 
         jMenuItem5.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/Factura2.png"))); // NOI18N
-        jMenuItem5.setText("Facturas");
+        jMenuItem5.setText("Listado facturas");
         jMenuItem5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenuItem5.setPreferredSize(new java.awt.Dimension(250, 50));
-        BH_ventas.add(jMenuItem5);
+        jMenuItem5.setPreferredSize(new java.awt.Dimension(280, 50));
+        BH_ventas1.add(jMenuItem5);
 
-        barraSupHerra.add(BH_ventas);
+        barraSupHerra.add(BH_ventas1);
 
         BH_ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/conf.png"))); // NOI18N
         BH_ayuda.setText("Configuración");
@@ -385,6 +399,11 @@ public class Ven_principal extends javax.swing.JFrame {
         mostarVentana(vConfTemas);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        Ven_albaran_listado vAlbaran = new Ven_albaran_listado();
+        mostarVentana(vAlbaran);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu BH_articulos;
     private javax.swing.JMenu BH_ayuda;
@@ -393,6 +412,7 @@ public class Ven_principal extends javax.swing.JFrame {
     private javax.swing.JMenu BH_consultas;
     private javax.swing.JMenu BH_usuarios;
     private javax.swing.JMenu BH_ventas;
+    private javax.swing.JMenu BH_ventas1;
     private javax.swing.JMenuBar barraSupHerra;
     public static javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenuItem i_CrearUser;

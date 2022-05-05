@@ -58,6 +58,7 @@ public class Ven_clientes_tabla_localidad extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Localidad");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/CiudadesIcons.png"))); // NOI18N
         setMaximumSize(null);
         setPreferredSize(new java.awt.Dimension(495, 448));
 
@@ -69,6 +70,7 @@ public class Ven_clientes_tabla_localidad extends javax.swing.JInternalFrame {
             }
         });
 
+        tablaLocalidades.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         tablaLocalidades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},

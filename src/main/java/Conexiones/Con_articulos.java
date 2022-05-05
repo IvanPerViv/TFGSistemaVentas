@@ -147,6 +147,21 @@ public class Con_articulos {
         }
         return resultado;
     }
+    
+    public int mostrarCodigoArticulo(String buscar) {
+        String query = "SELECT cod_articulo FROM `articulos` WHERE nombre_producto LIKE '" + buscar+ "'";
+        int resultado = 0;
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    resultado = rs.getInt(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+        }
+        return resultado;
+    }
 
     public boolean actualizarStock(int cantidad, int codigoArt) {
         String query = "UPDATE articulos SET stock = stock - ? WHERE cod_articulo = ? ";

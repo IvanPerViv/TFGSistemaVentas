@@ -2,11 +2,11 @@ package Conexiones;
 
 import Modelos.Pedidos;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  *
@@ -37,14 +37,14 @@ public class Con_pedido {
         return codigo;
     }
 
-    public boolean ingresoPedidos(int num_pedido, String fecha_pedido, int cod_cliente, String estado, String observaciones) {
+    public boolean ingresoPedidos(int num_pedido, java.sql.Date fecha_pedido, int cod_cliente, String estado, String observaciones) {
         String query = "INSERT INTO `pedidos`(num_pedido, cod_cliente, fecha_pedido, estado, observaciones)"
                 + "VALUES (?,?,?,?,?)";
         int comprobacion = 0;
         try (PreparedStatement pst = con.prepareStatement(query)) {
             pst.setInt(1, num_pedido);
             pst.setInt(2, cod_cliente);
-            pst.setString(3, fecha_pedido);
+            pst.setDate(3, fecha_pedido);
             pst.setString(4, estado);
             pst.setString(5, observaciones);
 
@@ -64,7 +64,7 @@ public class Con_pedido {
                 while (rs.next()) {
                     int numPedido = rs.getInt(1);
                     int codCliente = rs.getInt(2);
-                    String fechaPedido = rs.getString(3);
+                    Date fechaPedido = rs.getDate(3);
                     String estado = rs.getString(4);
                     String observaciones = rs.getString(5);
                     arPedidos.add(new Pedidos(numPedido, fechaPedido, codCliente, estado, observaciones));
@@ -85,7 +85,7 @@ public class Con_pedido {
                 while (rs.next()) {
                     int numPedido = rs.getInt(1);
                     int codCliente = rs.getInt(2);
-                    String fechaPedido = rs.getString(3);
+                    Date fechaPedido = rs.getDate(3);
                     String estado = rs.getString(4);
                     String observaciones = rs.getString(5);
                     arPedidos.add(new Pedidos(numPedido, fechaPedido, codCliente, estado, observaciones));
@@ -117,6 +117,21 @@ public class Con_pedido {
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     resultado = rs.getString(1);
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+        }
+        return resultado;
+    }
+    
+    public int mostrarCodCliente(String buscar) {
+        String query = "SELECT cod_cliente FROM `clientes` WHERE nombre_comercial LIKE '" + buscar + "'";
+        int resultado = 0;
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    resultado = rs.getInt(1);
                 }
             }
         } catch (SQLException ex) {

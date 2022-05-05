@@ -1,5 +1,7 @@
 package Modelos;
 
+import java.sql.Date;
+
 /**
  *
  * @author Iván Pérez
@@ -7,12 +9,12 @@ package Modelos;
 public class Pedidos {
 
     int num_pedido;
-    String fecha_pedido;
+    Date fecha_pedido;
     int cod_cliente;
     String estado;
     String observaciones;
 
-    public Pedidos(int num_pedido, String fecha_pedido, int cod_cliente, String estado, String observaciones) {
+    public Pedidos(int num_pedido, Date fecha_pedido, int cod_cliente, String estado, String observaciones) {
         this.num_pedido = num_pedido;
         this.fecha_pedido = fecha_pedido;
         this.cod_cliente = cod_cliente;
@@ -28,11 +30,11 @@ public class Pedidos {
         this.num_pedido = num_pedido;
     }
 
-    public String getFecha_pedido() {
+    public Date getFecha_pedido() {
         return fecha_pedido;
     }
 
-    public void setFecha_pedido(String fecha_pedido) {
+    public void setFecha_pedido(Date fecha_pedido) {
         this.fecha_pedido = fecha_pedido;
     }
 

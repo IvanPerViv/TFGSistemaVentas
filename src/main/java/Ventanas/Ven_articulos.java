@@ -143,6 +143,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Articulos");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/iconArticulos.png"))); // NOI18N
         setMaximumSize(null);
         setMinimumSize(null);
         setNormalBounds(new java.awt.Rectangle(0, 0, 99, 0));
@@ -359,6 +360,7 @@ public class Ven_articulos extends javax.swing.JInternalFrame {
         PANEL_buscar_cliente.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
         PANEL_buscar_cliente.setMaximumSize(null);
 
+        tablaArticulos.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         tablaArticulos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},

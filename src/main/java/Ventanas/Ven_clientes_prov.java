@@ -118,6 +118,7 @@ public class Ven_clientes_prov extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Provincias");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/CiudadesIcons.png"))); // NOI18N
 
         barraHerramientasClientes.setFloatable(false);
         barraHerramientasClientes.setRollover(true);
@@ -258,6 +259,7 @@ public class Ven_clientes_prov extends javax.swing.JInternalFrame {
             }
         });
 
+        tablaProv.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         tablaProv.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},

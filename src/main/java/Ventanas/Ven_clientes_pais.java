@@ -100,6 +100,7 @@ public class Ven_clientes_pais extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Pais");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/CiudadesIcons.png"))); // NOI18N
 
         barraHerramientasClientes.setFloatable(false);
         barraHerramientasClientes.setRollover(true);
@@ -226,6 +227,7 @@ public class Ven_clientes_pais extends javax.swing.JInternalFrame {
             }
         });
 
+        tablaPais.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         tablaPais.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},

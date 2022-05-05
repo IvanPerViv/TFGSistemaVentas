@@ -28,6 +28,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         objLocal = new Con_localidad_prov_pais();
         objConexionClientes = new Con_clientes();
         objComprobacione = new Comprobaciones();
+        
         bloquear(false);
         cargaDeDatosClientes(DATOVACIO);
         TFCodigo.setEnabled(false);
@@ -168,6 +169,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Clientes");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/iconCliente.png"))); // NOI18N
         setMaximumSize(null);
         setMinimumSize(null);
         setPreferredSize(new java.awt.Dimension(672, 618));
@@ -456,6 +458,7 @@ public class Ven_clientes extends javax.swing.JInternalFrame {
             }
         });
 
+        tablaClientes.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},

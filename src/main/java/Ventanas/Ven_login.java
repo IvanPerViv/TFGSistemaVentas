@@ -1,14 +1,10 @@
 package Ventanas;
 
 import Conexiones.Con_usuarios;
-import Conexiones.Conexion;
 import Modelos.Usuarios;
-import com.sun.tools.javac.Main;
-import java.awt.*;
-import java.net.URL;
+import Utils.Icono;
 import java.util.Objects;
 import javax.swing.JOptionPane;
-import javax.swing.JRootPane;
 import javax.swing.UIManager;
 
 /**
@@ -16,25 +12,16 @@ import javax.swing.UIManager;
  */
 public class Ven_login extends javax.swing.JFrame {
 
-    protected Image imagenIconito;
     protected Con_usuarios objUsers;
+    protected Icono obIcon = new Icono();
     
     public Ven_login() {
         initComponents();
-        objUsers = new Con_usuarios();
-        //imagenIconito = getIconImage();
+        objUsers = new Con_usuarios();   
+        
+        obIcon.getIconImage("VI_login/user.png");
         setLocationRelativeTo(null);
-    }
-
-    /**
-     * Metodo que carga una imagen para establecerla como icono del programa.
-     * @return imagen del icono del programa.
-     */
-    @Override
-    public Image getIconImage() {
-        URL imageResource = Main.class.getClassLoader().getResource("VI_login/iconito.png");
-        Image iconito = Toolkit.getDefaultToolkit().getImage(imageResource);
-        return iconito;
+        
     }
 
     public void tema() {
@@ -66,6 +53,7 @@ public class Ven_login extends javax.swing.JFrame {
         informacion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(obIcon.getIconImage("VI_login/user.png"));
         setResizable(false);
 
         Pnel_conexion.setBackground(new java.awt.Color(255, 255, 255));
@@ -136,14 +124,14 @@ public class Ven_login extends javax.swing.JFrame {
                         .addGroup(Pnel_conexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(Pnel_conexionLayout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addGroup(Pnel_conexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jSeparator2)
-                                    .addComponent(passText, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(Pnel_conexionLayout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(Pnel_conexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(Pnel_conexionLayout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addGap(18, 18, 18)
+                                        .addGroup(Pnel_conexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jSeparator2)
+                                            .addComponent(passText, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)))
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 19, Short.MAX_VALUE)))))
                 .addContainerGap(18, Short.MAX_VALUE))
             .addGroup(Pnel_conexionLayout.createSequentialGroup()

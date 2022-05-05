@@ -43,14 +43,14 @@ public class Comprobaciones extends javax.swing.JFrame {
         return comprobacion;
     }
 
-    public boolean comprobacionJTextField0SinPintar(JTextField campo) {
+    public boolean comprobacionJTextFieldSinPintar(JTextField campo) {
         boolean comprobacion = false;
         if (campo.getText().isEmpty()) {
             comprobacion = true;
         }
         return comprobacion;
     }
-
+    
     public void ValidarNumeros(JTextField campo) {
         Pattern patron = Pattern.compile("[0-9]*");
         Matcher match = patron.matcher(campo.getText());

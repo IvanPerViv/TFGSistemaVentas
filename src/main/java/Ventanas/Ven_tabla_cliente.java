@@ -59,10 +59,12 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setTitle("Listado Clientes");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/iconCliente.png"))); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel1.setText("Buscar por palabras: ");
 
+        tablaClientes.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},

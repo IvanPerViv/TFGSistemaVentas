@@ -5,6 +5,9 @@ import Conexiones.Con_pedido;
 import Conexiones.Con_pedido_linea;
 import Modelos.LineaPedido;
 import Modelos.Pedidos;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,13 +21,17 @@ public class Ven_tabla_pedidos_listados_verdetalles extends javax.swing.JInterna
     protected Con_articulos objArticulo;
     protected Con_pedido objPedido;
     protected DefaultTableModel pedidoLinea;
+    protected String estado;
+    protected int codPedido;
 
     public Ven_tabla_pedidos_listados_verdetalles(int codigoPedido) {
         initComponents();
         objPedidoLinea = new Con_pedido_linea();
         objArticulo = new Con_articulos();
         objPedido = new Con_pedido();
-        
+
+        this.estado = estado;
+        codPedido = codigoPedido;
         cargaDeDatosArticulos(codigoPedido);
         cargaDeDatosPedido();
         calcularPedido();
@@ -38,7 +45,7 @@ public class Ven_tabla_pedidos_listados_verdetalles extends javax.swing.JInterna
 
         Object[] fila = new Object[nombreTablas.length];
 
-        ArrayList<LineaPedido> arLineaPedido = new ArrayList<LineaPedido>();
+        ArrayList<LineaPedido> arLineaPedido = new ArrayList<>();
         arLineaPedido = objPedidoLinea.mostrarLineasPedidos(buscar);
 
         for (int i = 0; i < arLineaPedido.size(); i++) {
@@ -57,18 +64,22 @@ public class Ven_tabla_pedidos_listados_verdetalles extends javax.swing.JInterna
 
         int numPed = 0;
         int numeroCliente = 0;
-        String fecha = "";
+        String fechaToString="";
+        Date fecha;
         for (int i = 0; i < arPedidos.size(); i++) {
             numPed = arPedidos.get(i).getNum_pedido();
             numeroCliente = arPedidos.get(i).getCod_cliente();
             fecha = arPedidos.get(i).getFecha_pedido();
+
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            fechaToString = dateFormat.format(fecha);
         }
+
         TFFactura.setText(Integer.toString(numPed));
         TFCodCliente.setText(Integer.toString(numeroCliente));
-        TFFecha.setText(fecha);
-
+        TFFecha.setText(fechaToString);
     }
-    
+
     protected void calcularPedido() {
         double IVA = 0, total = 0, subtotal = 0, precio, totalArticulo = 0;
         String prec, cant, iva;
@@ -91,7 +102,7 @@ public class Ven_tabla_pedidos_listados_verdetalles extends javax.swing.JInterna
         TFSubtotal.setText(Double.toString(subtotal));
         TFTotal.setText(Double.toString(Math.rint(total)));
     }
-    
+
     public double calcularIva(double cantidad, double iva) {
         double total;
         return total = (cantidad * iva) / 100;
@@ -118,7 +129,9 @@ public class Ven_tabla_pedidos_listados_verdetalles extends javax.swing.JInterna
 
         setClosable(true);
         setTitle("Consulta Pedido");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/iconPedidos.png"))); // NOI18N
 
+        tablaPedidos.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         tablaPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
@@ -134,7 +147,7 @@ public class Ven_tabla_pedidos_listados_verdetalles extends javax.swing.JInterna
         buscadorPedidos.setViewportView(tablaPedidos);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel1.setText("Factura:");
+        jLabel1.setText("Pedido");
 
         TFFactura.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         TFFactura.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -187,39 +200,35 @@ public class Ven_tabla_pedidos_listados_verdetalles extends javax.swing.JInterna
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buscadorPedidos, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(buscadorPedidos)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                                    .addComponent(TFFactura))
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(TFCodCliente))
+                                .addGap(286, 286, 286)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(TFFecha)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(15, 15, 15)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
-                                            .addComponent(TFFactura))
-                                        .addGap(15, 15, 15)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(TFCodCliente))
-                                        .addGap(286, 286, 286)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(TFFecha)
-                                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGap(15, 15, 15)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(TFSubtotal, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
-                                            .addComponent(jSeparator1)))))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jSeparator2)
-                            .addComponent(TFTotal, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))))
+                                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(TFSubtotal, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+                                        .addComponent(jSeparator1)
+                                        .addComponent(TFTotal)))))))
                 .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
@@ -248,8 +257,8 @@ public class Ven_tabla_pedidos_listados_verdetalles extends javax.swing.JInterna
                     .addComponent(TFTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
         );
 
         pack();
