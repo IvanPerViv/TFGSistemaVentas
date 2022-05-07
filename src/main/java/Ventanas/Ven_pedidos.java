@@ -101,7 +101,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
         }
     }
 
-    protected void generarCodigoArticulo() {
+    protected void generarNumeroPedido() {
         int codArticulo = objConPedidos.codigoPedidos();
         if (codArticulo != 0) {
             int numero = objGenCod.generarCod(codArticulo);
@@ -714,7 +714,7 @@ public class Ven_pedidos extends javax.swing.JInternalFrame {
     private void botonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoActionPerformed
         // BOTON NUEVO //
         bloquearBotones(true);
-        generarCodigoArticulo();
+        generarNumeroPedido();
         AreaObs.setEnabled(true);
     }//GEN-LAST:event_botonNuevoActionPerformed
 

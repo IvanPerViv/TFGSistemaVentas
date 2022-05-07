@@ -102,6 +102,32 @@ public class Con_clientes {
         }
         return clie;
     }
+    
+    public ArrayList mostrarNommbreCliente(int buscar) {
+        String query = "SELECT * FROM `clientes`where cod_cliente =" + buscar;
+
+        ArrayList<Clientes> clie = new ArrayList<>();
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    int codClie = rs.getInt(1);
+                    String nombre = rs.getString(2);
+                    String nombreComercial = rs.getString(3);
+                    String nif = rs.getString(4);
+                    int codPostal = rs.getInt(5);
+                    String dirFiscal = rs.getString(6);
+                    int localidadFiscal = rs.getInt(7);
+                    int telefono = rs.getInt(8);
+                    String email = rs.getString(9);
+                    clie.add(new Clientes(codClie, nombre, nombreComercial, nif, codPostal, dirFiscal, localidadFiscal, telefono, email));
+
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+        }
+        return clie;
+    }
 
     public int codigoClientes() {
         String query = "select max(cod_cliente) from `clientes`";

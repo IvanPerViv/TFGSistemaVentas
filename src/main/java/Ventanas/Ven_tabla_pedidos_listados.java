@@ -1,6 +1,7 @@
 package Ventanas;
 
 import Conexiones.Con_albaran;
+import Conexiones.Con_albaran_linea;
 import Conexiones.Con_articulos;
 import Conexiones.Con_clientes;
 import Conexiones.Con_pedido;
@@ -20,7 +21,8 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
     protected Con_pedido objConPedidos;
     protected Con_articulos objConArticulos;
     protected Con_pedido_linea obLineaPedido;
-    protected Con_albaran objAlbaran;
+    protected Con_albaran objAlbaran;   
+    protected Con_albaran_linea objConAlbaranLinea;
 
     protected final Comprobaciones objComprobaciones;
     protected String estado;
@@ -32,7 +34,8 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         objConArticulos = new Con_articulos();
         obLineaPedido = new Con_pedido_linea();
         objAlbaran = new Con_albaran();
-
+        objConAlbaranLinea = new Con_albaran_linea();
+        
         cargaDeDatosPedidos("");
     }
 
@@ -229,6 +232,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         });
 
         botonGroup.add(buscarPorPalabras);
+        buscarPorPalabras.setSelected(true);
         buscarPorPalabras.setText("Buscar por 'Estado':");
         buscarPorPalabras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -376,11 +380,11 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
 
     private void botonEliminarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarPedidoActionPerformed
         // BOTON BORRAR
-        int filaSelecionada = tablaPedidos.getSelectedRow();
-        String estado = tablaPedidos.getValueAt(filaSelecionada, 2).toString();
+        int filaSelecionada = tablaPedidos.getSelectedRow();        
         if (filaSelecionada < 0) {
             JOptionPane.showMessageDialog(this, "Selecciona una fila de la tabla.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         } else {
+            String estado = tablaPedidos.getValueAt(filaSelecionada, 2).toString();
             if (estado.contains("Anulado")) {
                 int seleccion = JOptionPane.showConfirmDialog(this, "¿Esta seguro de eliminar el pedido?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 if (seleccion == 0) {
@@ -400,6 +404,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
 
     private void botonCambiarEstadoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCambiarEstadoPedidoActionPerformed
         // BOTON CAMBIAR ESTADO
+
         int fila = tablaPedidos.getSelectedRow();
         int codPedido = Integer.parseInt(tablaPedidos.getValueAt(fila, 0).toString());
         String codCliente = tablaPedidos.getValueAt(fila, 1).toString();
@@ -413,18 +418,31 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
         switch (estado) {
 
             case "Pendiente":
-                //PRUEBA
+                //SE ACTUALIZA EL ESTADO.
                 objConPedidos.actualizarEstadoPedido(codPedido, estado);
-                System.out.println("pendiente");
                 break;
             case "Enviado":
                 //GENERA ALBARAN
                 int seleccion = JOptionPane.showConfirmDialog(this, "¿Estas seguro?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 if (seleccion == 0) {
+                    //SE ACTUALIZA EL ESTADO.
                     objConPedidos.actualizarEstadoPedido(codPedido, estado);
                     JOptionPane.showMessageDialog(this, "Se ha generado un nuevo Albaran.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
 
-                    objAlbaran.ingresoAlbaran(codigoAlbaran, codCLiente, codPedido, fechaConversion); // SE ACTUALIZA LA TABLA ALBARAN                                                             
+                    //SE GENERA UN NUEVO ALBARAN
+                    objAlbaran.ingresoAlbaran(codigoAlbaran, codCLiente, codPedido, fechaConversion);
+
+                    ArrayList<LineaPedido> arLineaPedido = new ArrayList<>();
+                    arLineaPedido = obLineaPedido.mostrarLineasPedidos(codPedido); //CARGAMOS LOS DATOS DE LINEA-PEDIDO PARA EL PEDIDO
+                    for (int i = 0; i < arLineaPedido.size(); i++) {
+                        int codArticulo = arLineaPedido.get(i).getCodArticulo();
+                        int cantidad = arLineaPedido.get(i).getCantidad();
+                        double precioUnitario = arLineaPedido.get(i).getPrecioVenta();
+                        double iva = arLineaPedido.get(i).getIva();
+                        
+                        //SE GENERA UN NUEVO LINEA-ALBARAN CON LOS DATOS DE LINEA-PEDIDO.
+                        objConAlbaranLinea.ingresoLineaAlbaran(codigoAlbaran, codArticulo, cantidad, precioUnitario, iva);
+                    }
                 }
                 break;
             case "Anulado":

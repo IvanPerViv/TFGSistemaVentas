@@ -1,13 +1,9 @@
 package Ventanas;
 
 import Conexiones.Con_albaran;
-import Conexiones.Con_articulos;
 import Conexiones.Con_pedido;
-import Conexiones.Con_pedido_linea;
 import Modelos.Albaran;
-import Modelos.LineaPedido;
 import Modelos.Pedidos;
-import Utils.Comprobaciones;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -27,7 +23,7 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
     }
 
     protected void cargaDeDatosAlbaran(String buscar) {
-        String[] nombreTablas = {"CÓDIGO PEDIDO", "NOMBRE CLIENTE", "FECHA"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
+        String[] nombreTablas = {"CÓDIGO ALBARÁN","CÓDIGO PEDIDO", "NOMBRE CLIENTE", "FECHA"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         dftAlbaran = new DefaultTableModel(null, nombreTablas);
         tablaPedidos.setModel(dftAlbaran);
 
@@ -36,23 +32,23 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
 
         Object[] fila = new Object[nombreTablas.length];
         for (int i = 0; i < arAlbaran.size(); i++) {
-            fila[0] = arAlbaran.get(i).getNumPedido();
-            fila[1] = objConPedidos.mostrarCodPedido(arAlbaran.get(i).getCodCliente()); //SUBCONSULTA
-            fila[2] = arAlbaran.get(i).getFecha();
+            fila[0] = arAlbaran.get(i).getCodAlbaran();
+            fila[1] = arAlbaran.get(i).getNumPedido();
+            fila[2] = objConPedidos.mostrarCodPedido(arAlbaran.get(i).getCodCliente()); //SUBCONSULTA
+            fila[3] = arAlbaran.get(i).getFecha();
             dftAlbaran.addRow(fila);
         }
     }
 
      protected void cargaDeDatosNumPedidos(int buscar) {
-        ArrayList<Pedidos> arPedidos = new ArrayList<Pedidos>();
+        ArrayList<Pedidos> arPedidos = new ArrayList<>();
         arPedidos = objConPedidos.busquedaNumPedido(buscar);
 
-        Object[] fila = new Object[4];
+        Object[] fila = new Object[3];
         for (int i = 0; i < arPedidos.size(); i++) {
             fila[0] = arPedidos.get(i).getNum_pedido();
             fila[1] = objConPedidos.mostrarCodPedido(arPedidos.get(i).getCod_cliente());
-            fila[2] = arPedidos.get(i).getEstado();
-            fila[3] = arPedidos.get(i).getFecha_pedido();
+            fila[2] = arPedidos.get(i).getFecha_pedido();
             dftAlbaran.addRow(fila);
         }
     }
@@ -135,6 +131,7 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
         });
 
         botonGroup.add(buscarPorPalabras);
+        buscarPorPalabras.setSelected(true);
         buscarPorPalabras.setText("Buscar por 'Cliente':");
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_albaran/icons8-test-aprobado-80.png"))); // NOI18N
@@ -213,10 +210,11 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
         if (filaSelecionada < 0) {
             JOptionPane.showMessageDialog(this, "Selecciona una fila de la tabla.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            int codPedido = Integer.parseInt(tablaPedidos.getValueAt(filaSelecionada, 0).toString());
+            int codPedido = Integer.parseInt(tablaPedidos.getValueAt(filaSelecionada, 1).toString());
             Ven_albaran objAlbaraan = new Ven_albaran(codPedido);
             Ven_principal.escritorio.add(objAlbaraan).setVisible(true);
         }
+        //dispose();
     }//GEN-LAST:event_botonCambiarEstadoPedidoActionPerformed
 
     private void BuscarNumPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarNumPedidoActionPerformed

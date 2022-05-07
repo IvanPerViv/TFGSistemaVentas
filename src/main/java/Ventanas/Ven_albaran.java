@@ -5,11 +5,11 @@ import Conexiones.Con_albaran_linea;
 import Conexiones.Con_articulos;
 import Conexiones.Con_clientes;
 import Conexiones.Con_localidad_prov_pais;
-import Conexiones.Con_pedido_linea;
+import Conexiones.Con_pedido;
 import Modelos.Albaran;
 import Modelos.Clientes;
-import Modelos.LineaPedido;
-import Utils.Icono;
+import Modelos.LineaAlbaran;
+import Utils.generarCodigos;
 import java.text.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,29 +25,29 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
 
     protected DefaultTableModel dftAlbaran;
 
-    protected Con_pedido_linea objConPedidoLinea;
     protected Con_articulos objConArticulos;
     protected Con_clientes objConClientes;
     protected Con_albaran objConAlbaran;
     protected Con_localidad_prov_pais objConLocal;
     protected Con_albaran_linea objConLineaAlbaran;
+    protected Con_pedido objConPedidos;
 
     protected int numeroPedido;
     protected double precioUnitario, iva;
 
     public Ven_albaran(int numeroPedido) {
         initComponents();
-        objConPedidoLinea = new Con_pedido_linea();
         objConArticulos = new Con_articulos();
         objConAlbaran = new Con_albaran();
         objConClientes = new Con_clientes();
         objConLocal = new Con_localidad_prov_pais();
         objConLineaAlbaran = new Con_albaran_linea();
+        objConPedidos = new Con_pedido();
 
+        cargaDeDatosArticulos(numeroPedido);
         this.numeroPedido = numeroPedido;
         bloquearCampos(false);
-        cargaDeDatosArticulos(numeroPedido);
-        cargaDeDatosArticulos();
+        cargaDatosAlbaran();
     }
 
     protected void bloquearCampos(boolean bloquear) {
@@ -62,21 +62,23 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
 
     }
 
-    protected void cargaDeDatosArticulos() {
+    protected void cargaDatosAlbaran() {
         ArrayList<Albaran> arAlbaran = new ArrayList<>();
         arAlbaran = objConAlbaran.mostrarAlbaran(String.valueOf(numeroPedido));
 
+        int codAlbaran = 0, codCliente = 0;
+        Date fecha = null;
         for (int i = 0; i < arAlbaran.size(); i++) {
-            int codAlbaran = arAlbaran.get(i).getCodAlbaran();
-            int codCliente = arAlbaran.get(i).getCodCliente();
-            Date fecha = arAlbaran.get(i).getFecha();
-
-            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            String fechaToString = dateFormat.format(fecha);
-
-            rellenoDeDatosAlbaran(codAlbaran, codCliente, fechaToString);
-            cargaDeDatosClientes(String.valueOf(codCliente));
+            codAlbaran = arAlbaran.get(i).getCodAlbaran();
+            codCliente = arAlbaran.get(i).getCodCliente();
+            fecha = arAlbaran.get(i).getFecha();
         }
+
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String fechaToString = dateFormat.format(fecha);
+
+        rellenoDeDatosAlbaran(codAlbaran, codCliente, fechaToString);
+        cargaDeDatosClientes(codCliente);
     }
 
     protected void rellenoDeDatosAlbaran(int codAlbaran, int codCliente, String fecha) {
@@ -87,9 +89,9 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         TFDate.setText(fecha);
     }
 
-    protected void cargaDeDatosClientes(String codigoCliente) {
+    protected void cargaDeDatosClientes(int codigoCliente) {
         ArrayList<Clientes> arClientes = new ArrayList<>();
-        arClientes = objConClientes.mostrarClientesYBusqueda(codigoCliente);
+        arClientes = objConClientes.mostrarNommbreCliente(codigoCliente);
 
         for (int i = 0; i < arClientes.size(); i++) {
             String nombreComercial = arClientes.get(i).getNombreComercial();
@@ -109,25 +111,49 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         TFTel.setText(String.valueOf(telef));
     }
 
-    protected void cargaDeDatosArticulos(int numerPedido) {
+    protected void cargaDeDatosArticulos(int numAlbaran) {
         String[] nombreTablas = {"CODIGO ARTICULO", "DESCRIPCIÓN PRODUCTO", "CANTIDAD", "CANTIDAD-ENVIAR"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         dftAlbaran = new DefaultTableModel(null, nombreTablas);
         tablaAlbaran.setModel(dftAlbaran);
 
         Object[] fila = new Object[nombreTablas.length];
 
-        ArrayList<LineaPedido> arLineaPedido = new ArrayList<>();
-        arLineaPedido = objConPedidoLinea.mostrarLineasPedidos(numerPedido);
+        ArrayList<LineaAlbaran> arLineaPedido = new ArrayList<>();
+        arLineaPedido = objConLineaAlbaran.mostrarLineaAlbaran(numAlbaran);
 
         for (int i = 0; i < arLineaPedido.size(); i++) {
             fila[0] = arLineaPedido.get(i).getCodArticulo();
             fila[1] = objConArticulos.mostrarNombreArticulo(arLineaPedido.get(i).getCodArticulo());
             fila[2] = arLineaPedido.get(i).getCantidad();
-            precioUnitario = arLineaPedido.get(i).getPrecioVenta();
+            precioUnitario = arLineaPedido.get(i).getPrecioUnitario();
             iva = arLineaPedido.get(i).getIva();
 
             dftAlbaran.addRow(fila);
         }
+    }
+
+    protected int generarCodigoAlbaran() {
+        int numero;
+        int codigoAlbaran = objConAlbaran.codigoAlbaran();
+        if (codigoAlbaran != 0) {
+            generarCodigos objGenCod = new generarCodigos();
+            numero = objGenCod.generarCod(codigoAlbaran);
+        } else {
+            numero = 1;
+        }
+        return numero;
+    }
+
+    protected int generarCodigoPedido() {
+        int numero;
+        int codigoAlbaran = objConPedidos.codigoPedidos();
+        if (codigoAlbaran != 0) {
+            generarCodigos objGenCod = new generarCodigos();
+            numero = objGenCod.generarCod(codigoAlbaran);
+        } else {
+            numero = 1;
+        }
+        return numero;
     }
 
     @SuppressWarnings("unchecked")
@@ -385,47 +411,47 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
 
     private void botonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEnviarActionPerformed
         // BOTON ENVIAR
+        int numeroAlbaran = Integer.parseInt(TFCodAlbaran.getText());
+        int codArticulo = 0, producto = 0, cantidadPedida = 0, cantidadEnviar = 0, cantidadFinal = 0;
+
+        int numPedido = generarCodigoPedido();
 
         for (int i = 0; i < tablaAlbaran.getRowCount(); i++) {
-            int codArticulo = Integer.parseInt(tablaAlbaran.getValueAt(i, 0).toString());
-            int producto = objConArticulos.mostrarCodigoArticulo(tablaAlbaran.getValueAt(i, 1).toString());
-            int cantidad = Integer.parseInt(tablaAlbaran.getValueAt(i, 2).toString());
-            int cantidadEnviar = Integer.parseInt(tablaAlbaran.getValueAt(i, 3).toString());
+            codArticulo = Integer.parseInt(tablaAlbaran.getValueAt(i, 0).toString());
+            producto = objConArticulos.mostrarCodigoArticulo(tablaAlbaran.getValueAt(i, 1).toString());
+            cantidadPedida = Integer.parseInt(tablaAlbaran.getValueAt(i, 2).toString());
+            cantidadEnviar = Integer.parseInt(tablaAlbaran.getValueAt(i, 3).toString());
 
-            if (cantidadEnviar <= cantidad) {
-                int cantidadFinal = calcularCantidadEnviada(cantidad, cantidadEnviar);
-                objConLineaAlbaran.ingresoLineasPedidos(Integer.parseInt(TFCodAlbaran.getText()), codArticulo, cantidadFinal, precioUnitario, iva);
+            cantidadFinal = cantidadPedida - cantidadEnviar;
 
-                try {
-                    SimpleDateFormat a = new SimpleDateFormat("dd-MM-yyyy");
-                    Date date = a.parse(TFDate.getText());
-
-                    long fechaConversion = date.getTime();
-                    java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
-                    objConAlbaran.ingresoAlbaran(Integer.parseInt(TFCodAlbaran.getText()), Integer.parseInt(TFCodClie.getText()), Integer.parseInt(TFnumPedido.getText()), fechaDate);
-                } catch (ParseException ex) {
-                    Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                //JOptionPane.showMessageDialog(this, "Solicitudad enviada.", "Información", JOptionPane.INFORMATION_MESSAGE);
-//                    try {
-//                        SimpleDateFormat a = new SimpleDateFormat("dd-MM-yyyy");
-//                        Date date = a.parse(TFDate.getText());
-//
-//                        long fechaConversion = date.getTime();
-//                        java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
-//                        
-//                        objConAlbaran.ingresoAlbaran(Integer.parseInt(TFCodAlbaran.getText()), Integer.parseInt(TFCodClie.getText()), Integer.parseInt(TFnumPedido.getText()), fechaDate);
-//                    } catch (ParseException ex) {
-//                        Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-            } else {
-                JOptionPane.showMessageDialog(this, "No puedes enviar mas de la cantidad fijada\nPara el siguiente producto '"
-                        + objConArticulos.mostrarNombreArticulo(producto) + "'.", "Información", JOptionPane.INFORMATION_MESSAGE);
-                break;
-            }
-
+            //UPDATE de los articulos a enviar
+            objConLineaAlbaran.actualizarLineaAlbaran(cantidadFinal, numeroAlbaran, codArticulo);
+            //NUEVO ALBARAN
+//            else {
+//                JOptionPane.showMessageDialog(this, "No puedes enviar mas de la cantidad fijada\nPara el siguiente producto '"
+//                        + objConArticulos.mostrarNombreArticulo(producto) + "'.", "Información", JOptionPane.INFORMATION_MESSAGE);
+//            }  
         }
+        if (cantidadFinal > 0) {
+            try {
+                SimpleDateFormat a = new SimpleDateFormat("dd-MM-yyyy");
+                Date date = a.parse(TFDate.getText());
+                long fechaConversion = date.getTime();
+                java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
+
+                int numAlbaran = generarCodigoAlbaran();
+
+                objConAlbaran.ingresoAlbaran(numAlbaran, Integer.parseInt(TFCodClie.getText()), Integer.parseInt(TFnumPedido.getText()), fechaDate);
+                // CREA UNA NUEVA LINEA PEDIDO
+                objConLineaAlbaran.ingresoLineaAlbaran(numAlbaran, codArticulo, cantidadFinal, precioUnitario, iva);
+
+            } catch (ParseException ex) {
+                Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        JOptionPane.showMessageDialog(this, "Sus articulos han sido enviados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+        // LUEGO RESTAMOS LA CANTIDAD ELEGIDA DEL STOCK
 
 
     }//GEN-LAST:event_botonEnviarActionPerformed

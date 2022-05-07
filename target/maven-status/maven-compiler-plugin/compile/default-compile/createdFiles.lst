@@ -43,6 +43,7 @@ Ventanas\Ven_articulos$1.class
 Ventanas\Ven_clientes$6.class
 Ventanas\Ven_clientes_pais$2.class
 Modelos\Albaran.class
+Modelos\LineaAlbaran.class
 Ventanas\Ven_crear_usuario.class
 Ventanas\Ven_clientes_prov$2.class
 Modelos\Pedidos.class
