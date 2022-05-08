@@ -11,12 +11,22 @@ public class Albaran {
     int codCliente;
     int numPedido;
     Date fecha;
+    String estado;
 
-    public Albaran(int codAlbaran, int codCliente, int numPedido, Date fecha) {
+    public Albaran(int codAlbaran, int codCliente, int numPedido, Date fecha, String estado) {
         this.codAlbaran = codAlbaran;
         this.codCliente = codCliente;
         this.numPedido = numPedido;
         this.fecha = fecha;
+        this.estado = estado;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public int getCodAlbaran() {
@@ -50,5 +60,5 @@ public class Albaran {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
-  
+
 }

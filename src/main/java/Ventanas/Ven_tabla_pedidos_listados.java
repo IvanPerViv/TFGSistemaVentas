@@ -430,7 +430,7 @@ public class Ven_tabla_pedidos_listados extends javax.swing.JInternalFrame {
                     JOptionPane.showMessageDialog(this, "Se ha generado un nuevo Albaran.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
 
                     //SE GENERA UN NUEVO ALBARAN
-                    objAlbaran.ingresoAlbaran(codigoAlbaran, codCLiente, codPedido, fechaConversion);
+                    objAlbaran.ingresoAlbaran(codigoAlbaran, codCLiente, codPedido, fechaConversion, "Pendiente");
 
                     ArrayList<LineaPedido> arLineaPedido = new ArrayList<>();
                     arLineaPedido = obLineaPedido.mostrarLineasPedidos(codPedido); //CARGAMOS LOS DATOS DE LINEA-PEDIDO PARA EL PEDIDO

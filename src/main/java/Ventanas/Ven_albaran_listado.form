@@ -61,8 +61,8 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="botonEliminarPedido" max="32767" attributes="0"/>
-                          <Component id="botonCambiarEstadoPedido" max="32767" attributes="0"/>
+                          <Component id="botonEliminar" max="32767" attributes="0"/>
+                          <Component id="botonVerDetalles" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="15" max="32767" attributes="0"/>
                   </Group>
@@ -101,9 +101,9 @@
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="botonCambiarEstadoPedido" min="-2" max="-2" attributes="0"/>
+                      <Component id="botonVerDetalles" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                      <Component id="botonEliminarPedido" min="-2" max="-2" attributes="0"/>
+                      <Component id="botonEliminar" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="buscadorPedidos" min="-2" pref="264" max="-2" attributes="0"/>
               </Group>
@@ -150,7 +150,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="botonEliminarPedido">
+    <Component class="javax.swing.JButton" name="botonEliminar">
       <Properties>
         <Property name="text" type="java.lang.String" value="ELIMINAR"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
@@ -158,7 +158,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="botonCambiarEstadoPedido">
+    <Component class="javax.swing.JButton" name="botonVerDetalles">
       <Properties>
         <Property name="text" type="java.lang.String" value="VER DETALLES"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
@@ -166,7 +166,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonCambiarEstadoPedidoActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonVerDetallesActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="mostrarNumPedido">

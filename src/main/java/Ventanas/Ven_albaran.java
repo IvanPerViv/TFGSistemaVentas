@@ -32,10 +32,10 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
     protected Con_albaran_linea objConLineaAlbaran;
     protected Con_pedido objConPedidos;
 
-    protected int numeroPedido;
+    protected int numAlbaran;
     protected double precioUnitario, iva;
 
-    public Ven_albaran(int numeroPedido) {
+    public Ven_albaran(int codAlbaran) {
         initComponents();
         objConArticulos = new Con_articulos();
         objConAlbaran = new Con_albaran();
@@ -44,8 +44,8 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         objConLineaAlbaran = new Con_albaran_linea();
         objConPedidos = new Con_pedido();
 
-        cargaDeDatosArticulos(numeroPedido);
-        this.numeroPedido = numeroPedido;
+        cargaDeDatosArticulos(codAlbaran);
+        this.numAlbaran = codAlbaran;
         bloquearCampos(false);
         cargaDatosAlbaran();
     }
@@ -64,7 +64,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
 
     protected void cargaDatosAlbaran() {
         ArrayList<Albaran> arAlbaran = new ArrayList<>();
-        arAlbaran = objConAlbaran.mostrarAlbaran(String.valueOf(numeroPedido));
+        arAlbaran = objConAlbaran.mostrarAlbaran(String.valueOf(numAlbaran));
 
         int codAlbaran = 0, codCliente = 0;
         Date fecha = null;
@@ -82,7 +82,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
     }
 
     protected void rellenoDeDatosAlbaran(int codAlbaran, int codCliente, String fecha) {
-        TFnumPedido.setText(String.valueOf(numeroPedido));
+        TFnumPedido.setText(String.valueOf(numAlbaran));
         TFCodAlbaran.setText(String.valueOf(codAlbaran));
         TFCodClie.setText(String.valueOf(codCliente));
 
@@ -143,19 +143,6 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         }
         return numero;
     }
-
-    protected int generarCodigoPedido() {
-        int numero;
-        int codigoAlbaran = objConPedidos.codigoPedidos();
-        if (codigoAlbaran != 0) {
-            generarCodigos objGenCod = new generarCodigos();
-            numero = objGenCod.generarCod(codigoAlbaran);
-        } else {
-            numero = 1;
-        }
-        return numero;
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -413,8 +400,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         // BOTON ENVIAR
         int numeroAlbaran = Integer.parseInt(TFCodAlbaran.getText());
         int codArticulo = 0, producto = 0, cantidadPedida = 0, cantidadEnviar = 0, cantidadFinal = 0;
-
-        int numPedido = generarCodigoPedido();
+        int numAlbaran = generarCodigoAlbaran();
 
         for (int i = 0; i < tablaAlbaran.getRowCount(); i++) {
             codArticulo = Integer.parseInt(tablaAlbaran.getValueAt(i, 0).toString());
@@ -423,35 +409,42 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
             cantidadEnviar = Integer.parseInt(tablaAlbaran.getValueAt(i, 3).toString());
 
             cantidadFinal = cantidadPedida - cantidadEnviar;
+            if (cantidadPedida >= cantidadEnviar) {
 
-            //UPDATE de los articulos a enviar
-            objConLineaAlbaran.actualizarLineaAlbaran(cantidadFinal, numeroAlbaran, codArticulo);
-            //NUEVO ALBARAN
-//            else {
-//                JOptionPane.showMessageDialog(this, "No puedes enviar mas de la cantidad fijada\nPara el siguiente producto '"
-//                        + objConArticulos.mostrarNombreArticulo(producto) + "'.", "Información", JOptionPane.INFORMATION_MESSAGE);
-//            }  
-        }
-        if (cantidadFinal > 0) {
-            try {
-                SimpleDateFormat a = new SimpleDateFormat("dd-MM-yyyy");
-                Date date = a.parse(TFDate.getText());
-                long fechaConversion = date.getTime();
-                java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
+                if (cantidadFinal > 0) {
+                    try {
+                        SimpleDateFormat a = new SimpleDateFormat("dd-MM-yyyy");
+                        Date date = a.parse(TFDate.getText());
+                        long fechaConversion = date.getTime();
+                        java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
 
-                int numAlbaran = generarCodigoAlbaran();
+                        // CREAMOS UN NUEVO ALBARAN
+                        objConAlbaran.ingresoAlbaran(numAlbaran, Integer.parseInt(TFCodClie.getText()), Integer.parseInt(TFnumPedido.getText()), fechaDate, "Pendiente");
+                        // CREAMOS UN NUEVA LINEA PEDIDO CON LOS ARTICULOS RESTANTES QUE QUEDAN POR ENVIAR
+                        objConLineaAlbaran.ingresoLineaAlbaran(numAlbaran, codArticulo, cantidadFinal, precioUnitario, iva);
 
-                objConAlbaran.ingresoAlbaran(numAlbaran, Integer.parseInt(TFCodClie.getText()), Integer.parseInt(TFnumPedido.getText()), fechaDate);
-                // CREA UNA NUEVA LINEA PEDIDO
-                objConLineaAlbaran.ingresoLineaAlbaran(numAlbaran, codArticulo, cantidadFinal, precioUnitario, iva);
-
-            } catch (ParseException ex) {
-                Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
-        }
 
-        JOptionPane.showMessageDialog(this, "Sus articulos han sido enviados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-        // LUEGO RESTAMOS LA CANTIDAD ELEGIDA DEL STOCK
+            //UPDATE DE LOS ARTICULOS RESTANTES A ENVIAR
+            objConLineaAlbaran.actualizarLineaAlbaran(cantidadFinal, numeroAlbaran, codArticulo);
+            //ACTUALIZAMOS EL ESTADO DE NUESTRO ALBARAN.
+            objConAlbaran.actualizarEstadoAlbaran(numeroAlbaran, "Enviado");
+        }
+        if (cantidadFinal >= 0) {
+            JOptionPane.showMessageDialog(this, "Sus articulos han sido enviados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+            // LUEGO RESTAMOS LA CANTIDAD ELEGIDA DEL STOCK
+            objConArticulos.actualizarStock(cantidadFinal, codArticulo);
+            int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea generar un informe e imprimirlo?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            if (seleccion == 0) {
+                // GENERAMOS UN DOCUMENTO JASPER REPORT
+
+            }
+            dispose();
+        }
 
 
     }//GEN-LAST:event_botonEnviarActionPerformed

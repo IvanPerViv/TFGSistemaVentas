@@ -23,7 +23,7 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
     }
 
     protected void cargaDeDatosAlbaran(String buscar) {
-        String[] nombreTablas = {"CÓDIGO ALBARÁN","CÓDIGO PEDIDO", "NOMBRE CLIENTE", "FECHA"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
+        String[] nombreTablas = {"CÓDIGO ALBARÁN", "CÓDIGO PEDIDO", "NOMBRE CLIENTE", "FECHA", "ESTADO"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         dftAlbaran = new DefaultTableModel(null, nombreTablas);
         tablaPedidos.setModel(dftAlbaran);
 
@@ -36,11 +36,12 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
             fila[1] = arAlbaran.get(i).getNumPedido();
             fila[2] = objConPedidos.mostrarCodPedido(arAlbaran.get(i).getCodCliente()); //SUBCONSULTA
             fila[3] = arAlbaran.get(i).getFecha();
+            fila[4] = arAlbaran.get(i).getEstado();
             dftAlbaran.addRow(fila);
         }
     }
 
-     protected void cargaDeDatosNumPedidos(int buscar) {
+    protected void cargaDeDatosNumPedidos(int buscar) {
         ArrayList<Pedidos> arPedidos = new ArrayList<>();
         arPedidos = objConPedidos.busquedaNumPedido(buscar);
 
@@ -62,7 +63,7 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
             contador++;
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -73,8 +74,8 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
         TFBuscar = new javax.swing.JTextField();
         buscadorPedidos = new javax.swing.JScrollPane();
         tablaPedidos = new javax.swing.JTable();
-        botonEliminarPedido = new javax.swing.JButton();
-        botonCambiarEstadoPedido = new javax.swing.JButton();
+        botonEliminar = new javax.swing.JButton();
+        botonVerDetalles = new javax.swing.JButton();
         mostrarNumPedido = new javax.swing.JRadioButton();
         TFnumPedido = new javax.swing.JTextField();
         BuscarNumPedido = new javax.swing.JButton();
@@ -109,14 +110,14 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
         tablaPedidos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         buscadorPedidos.setViewportView(tablaPedidos);
 
-        botonEliminarPedido.setText("ELIMINAR");
-        botonEliminarPedido.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botonEliminar.setText("ELIMINAR");
+        botonEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        botonCambiarEstadoPedido.setText("VER DETALLES");
-        botonCambiarEstadoPedido.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botonCambiarEstadoPedido.addActionListener(new java.awt.event.ActionListener() {
+        botonVerDetalles.setText("VER DETALLES");
+        botonVerDetalles.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botonVerDetalles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonCambiarEstadoPedidoActionPerformed(evt);
+                botonVerDetallesActionPerformed(evt);
             }
         });
 
@@ -163,8 +164,8 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(botonEliminarPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(botonCambiarEstadoPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(botonEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botonVerDetalles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 15, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -193,9 +194,9 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(botonCambiarEstadoPedido)
+                        .addComponent(botonVerDetalles)
                         .addGap(15, 15, 15)
-                        .addComponent(botonEliminarPedido))
+                        .addComponent(botonEliminar))
                     .addComponent(buscadorPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15))
         );
@@ -203,19 +204,24 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botonCambiarEstadoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCambiarEstadoPedidoActionPerformed
+    private void botonVerDetallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVerDetallesActionPerformed
         // boton ver detalles ALBARAN
         int filaSelecionada = tablaPedidos.getSelectedRow();
-
         if (filaSelecionada < 0) {
             JOptionPane.showMessageDialog(this, "Selecciona una fila de la tabla.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            int codPedido = Integer.parseInt(tablaPedidos.getValueAt(filaSelecionada, 1).toString());
-            Ven_albaran objAlbaraan = new Ven_albaran(codPedido);
-            Ven_principal.escritorio.add(objAlbaraan).setVisible(true);
+            int codAlbaran = Integer.parseInt(tablaPedidos.getValueAt(filaSelecionada, 0).toString());
+            String estado = tablaPedidos.getValueAt(filaSelecionada, 4).toString();
+            if (!estado.equals("Enviado")) {
+                Ven_albaran objAlbaraan = new Ven_albaran(codAlbaran);
+                Ven_principal.escritorio.add(objAlbaraan).setVisible(true);
+                dispose();
+            } else{
+                JOptionPane.showMessageDialog(this, "Su Albarán ha sido enviado.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
-        //dispose();
-    }//GEN-LAST:event_botonCambiarEstadoPedidoActionPerformed
+        
+    }//GEN-LAST:event_botonVerDetallesActionPerformed
 
     private void BuscarNumPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarNumPedidoActionPerformed
         limpiezaTabla();
@@ -223,7 +229,7 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_BuscarNumPedidoActionPerformed
 
     private void TFBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFBuscarKeyReleased
-       cargaDeDatosAlbaran(TFnumPedido.getText());
+        cargaDeDatosAlbaran(TFnumPedido.getText());
     }//GEN-LAST:event_TFBuscarKeyReleased
 
 
@@ -231,9 +237,9 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
     private javax.swing.JButton BuscarNumPedido;
     private javax.swing.JTextField TFBuscar;
     private javax.swing.JTextField TFnumPedido;
-    private javax.swing.JButton botonCambiarEstadoPedido;
-    private javax.swing.JButton botonEliminarPedido;
+    private javax.swing.JButton botonEliminar;
     private javax.swing.ButtonGroup botonGroup;
+    private javax.swing.JButton botonVerDetalles;
     private javax.swing.JScrollPane buscadorPedidos;
     private javax.swing.JRadioButton buscarPorPalabras;
     private javax.swing.JLabel informacion;
