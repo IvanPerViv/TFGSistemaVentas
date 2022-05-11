@@ -6,17 +6,29 @@ import Conexiones.Con_articulos;
 import Conexiones.Con_clientes;
 import Conexiones.Con_localidad_prov_pais;
 import Conexiones.Con_pedido;
+import Conexiones.Conexion;
 import Modelos.Albaran;
 import Modelos.Clientes;
 import Modelos.LineaAlbaran;
 import Utils.generarCodigos;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  * @author Iván Pérez
@@ -31,6 +43,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
     protected Con_localidad_prov_pais objConLocal;
     protected Con_albaran_linea objConLineaAlbaran;
     protected Con_pedido objConPedidos;
+    protected Conexion objCon;
 
     protected int numAlbaran;
     protected double precioUnitario, iva;
@@ -143,6 +156,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         }
         return numero;
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -420,19 +434,22 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
 
                         // CREAMOS UN NUEVO ALBARAN
                         objConAlbaran.ingresoAlbaran(numAlbaran, Integer.parseInt(TFCodClie.getText()), Integer.parseInt(TFnumPedido.getText()), fechaDate, "Pendiente");
+
+                        //UPDATE DE LOS ARTICULOS RESTANTES A ENVIAR
+                        objConLineaAlbaran.actualizarLineaAlbaran(cantidadFinal, numeroAlbaran, codArticulo);
+
                         // CREAMOS UN NUEVA LINEA PEDIDO CON LOS ARTICULOS RESTANTES QUE QUEDAN POR ENVIAR
                         objConLineaAlbaran.ingresoLineaAlbaran(numAlbaran, codArticulo, cantidadFinal, precioUnitario, iva);
 
                     } catch (ParseException ex) {
                         Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
                     }
+
                 }
             }
-
-            //UPDATE DE LOS ARTICULOS RESTANTES A ENVIAR
-            objConLineaAlbaran.actualizarLineaAlbaran(cantidadFinal, numeroAlbaran, codArticulo);
             //ACTUALIZAMOS EL ESTADO DE NUESTRO ALBARAN.
             objConAlbaran.actualizarEstadoAlbaran(numeroAlbaran, "Enviado");
+
         }
         if (cantidadFinal >= 0) {
             JOptionPane.showMessageDialog(this, "Sus articulos han sido enviados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
@@ -440,8 +457,40 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
             objConArticulos.actualizarStock(cantidadFinal, codArticulo);
             int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea generar un informe e imprimirlo?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
             if (seleccion == 0) {
-                // GENERAMOS UN DOCUMENTO JASPER REPORT
+                try {
+                    Connection con = null;
+                    // GENERAMOS UN DOCUMENTO JASPER REPORT
+                    con = DriverManager.getConnection("jdbc:mysql://localhost/sistema_ventas", "root", "");
+                    con.setAutoCommit(false);
+                    if (con != null) {
+                        System.out.println("CONEXION EXITOSA");
+                    }
 
+                    String ubicacion = "src/main/java/reportes/Albaran.jrxml";
+                    JasperReport jasperReport = JasperCompileManager.compileReport(ubicacion);
+                     Map<String, Object> params = new HashMap<>();
+                    params.put("codAlbaran", numeroAlbaran);
+                    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
+                    
+                    JasperViewer.viewReport(jasperPrint, false);
+
+//                    JRPdfExporter exporter = new JRPdfExporter();
+//                    exporter.setExporterInput(new SimpleExporterInput(print));
+//                    exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("src/main/java/reportes/Albaran.pdf"));
+//                    SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
+//                    exporter.setConfiguration(configuration);
+//                    exporter.exportReport();
+                    try {
+                        if (con != null) {
+                            con.rollback();
+                            con.close();
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                } catch (JRException | SQLException | NumberFormatException ex) {
+                    Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             dispose();
         }

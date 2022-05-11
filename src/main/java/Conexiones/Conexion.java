@@ -9,20 +9,21 @@ import java.sql.*;
  */
 public class Conexion extends javax.swing.JFrame {
 
-    protected Connection con;
+    protected Connection con = null;
     protected PreparedStatement pst;
     protected Propert prop;
 
     public Conexion() {
         prop = new Propert();
-        conexion(prop);
+        con = conexion(prop);
     }
 
-    public void conexion(Propert valorProperties) {
+    public Connection conexion(Propert valorProperties) {
         try {
             con = DriverManager.getConnection(valorProperties.URL + valorProperties.BBDD, valorProperties.USER, valorProperties.PASS);
         } catch (SQLException ex) {
             System.err.println("Fallo en la conexion con la BBDD" + ex.toString());
         }
+        return con;
     }
 }
