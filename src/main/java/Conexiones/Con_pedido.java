@@ -1,6 +1,6 @@
 package Conexiones;
 
-import Modelos.Pedidos;
+import Modelos.Pedido;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -19,7 +19,7 @@ public class Con_pedido {
 
     public Con_pedido() {
         objConexion = new Conexion();
-        con = objConexion.con;
+        con = objConexion.conexion();
     }
 
     public int codigoPedidos() {
@@ -58,7 +58,7 @@ public class Con_pedido {
     public ArrayList mostrarPedidos(String buscar) {
         String query = "SELECT * FROM `pedidos`where concat(num_pedido, fecha_pedido, cod_cliente, estado, observaciones) like'%" + buscar + "%'";
 
-        ArrayList<Pedidos> arPedidos = new ArrayList<>();
+        ArrayList<Pedido> arPedidos = new ArrayList<>();
         try (PreparedStatement pst = con.prepareStatement(query)) {
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
@@ -67,7 +67,7 @@ public class Con_pedido {
                     Date fechaPedido = rs.getDate(3);
                     String estado = rs.getString(4);
                     String observaciones = rs.getString(5);
-                    arPedidos.add(new Pedidos(numPedido, fechaPedido, codCliente, estado, observaciones));
+                    arPedidos.add(new Pedido(numPedido, fechaPedido, codCliente, estado, observaciones));
                 }
             }
         } catch (SQLException ex) {
@@ -78,7 +78,7 @@ public class Con_pedido {
     
     public ArrayList busquedaNumPedido(int buscar) {
         String query = "SELECT * FROM `pedidos` WHERE num_pedido =" + buscar;
-        ArrayList<Pedidos> arPedidos = new ArrayList<>();
+        ArrayList<Pedido> arPedidos = new ArrayList<>();
         
         try (PreparedStatement pst = con.prepareStatement(query)) {
             try (ResultSet rs = pst.executeQuery()) {
@@ -88,7 +88,7 @@ public class Con_pedido {
                     Date fechaPedido = rs.getDate(3);
                     String estado = rs.getString(4);
                     String observaciones = rs.getString(5);
-                    arPedidos.add(new Pedidos(numPedido, fechaPedido, codCliente, estado, observaciones));
+                    arPedidos.add(new Pedido(numPedido, fechaPedido, codCliente, estado, observaciones));
                 }
             }
         } catch (SQLException ex) {
@@ -110,7 +110,7 @@ public class Con_pedido {
 
     //SELECT * FROM `pedidos` INNER JOIN clientes USING(cod_cliente);
     //SELECT nombre_comercial FROM `pedidos` INNER JOIN clientes on pedidos.cod_pedido = clientes.cod_cliente where clientes.cod_cliente = '2';
-    public String mostrarCodPedido(int buscar) {
+    public String mostrarNombreCliente(int buscar) {
         String query = "SELECT nombre_comercial FROM `clientes` WHERE cod_cliente = '" + buscar + "'";
         String resultado = "";
         try (PreparedStatement pst = con.prepareStatement(query)) {

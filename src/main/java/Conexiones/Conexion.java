@@ -15,15 +15,23 @@ public class Conexion extends javax.swing.JFrame {
 
     public Conexion() {
         prop = new Propert();
-        con = conexion(prop);
     }
 
-    public Connection conexion(Propert valorProperties) {
+    public Connection conexion() {
         try {
-            con = DriverManager.getConnection(valorProperties.URL + valorProperties.BBDD, valorProperties.USER, valorProperties.PASS);
+            con = DriverManager.getConnection(prop.URL + prop.BBDD, prop.USER, prop.PASS);
         } catch (SQLException ex) {
             System.err.println("Fallo en la conexion con la BBDD" + ex.toString());
         }
         return con;
+    }
+
+    public void desconexion() {
+        try {
+            con.close();
+            System.out.println("Desconectar bd");
+        } catch (SQLException ex) {
+            System.err.println(ex.toString());
+        }
     }
 }

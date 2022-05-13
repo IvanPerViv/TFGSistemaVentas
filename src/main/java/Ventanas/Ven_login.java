@@ -1,6 +1,6 @@
 package Ventanas;
 
-import Conexiones.Con_usuarios;
+import Conexiones.Con_usuario;
 import Modelos.Usuarios;
 import Utils.Icono;
 import java.util.Objects;
@@ -12,12 +12,12 @@ import javax.swing.UIManager;
  */
 public class Ven_login extends javax.swing.JFrame {
 
-    protected Con_usuarios objUsers;
+    protected Con_usuario objUsers;
     protected Icono obIcon = new Icono();
     
     public Ven_login() {
         initComponents();
-        objUsers = new Con_usuarios();   
+        objUsers = new Con_usuario();   
         
         obIcon.getIconImage("VI_login/user.png");
         setLocationRelativeTo(null);

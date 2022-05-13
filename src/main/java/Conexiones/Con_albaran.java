@@ -14,17 +14,17 @@ public class Con_albaran {
 
     public Con_albaran() {
         objConexion = new Conexion();
-        con = objConexion.con;
+        con = objConexion.conexion();
     }
 
-    public boolean ingresoAlbaran(int cod_albaran, int cod_cliente, int num_pedido, java.sql.Date fecha, String estado) {
+    public boolean ingresoAlbaran(int codAlbaran, int codCliente, int numPedido, java.sql.Date fecha, String estado) {
         String query = "INSERT INTO `albaran`(`cod_albaran`, `cod_cliente`, `num_pedido`, `fecha`, `estado`) VALUES (?,?,?,?,?)";
         int comprobacion = 0;
 
         try (PreparedStatement pst = con.prepareStatement(query)) {
-            pst.setInt(1, cod_albaran);
-            pst.setInt(2, cod_cliente);
-            pst.setInt(3, num_pedido);
+            pst.setInt(1, codAlbaran);
+            pst.setInt(2, codCliente);
+            pst.setInt(3, numPedido);
             pst.setDate(4, fecha);
             pst.setString(5, estado);
 
@@ -39,6 +39,28 @@ public class Con_albaran {
         ArrayList<Albaran> arAlbaran = new ArrayList<>();
 
         String query = "SELECT * FROM `albaran` where concat(`cod_albaran`, `cod_cliente`, `num_pedido`, `fecha`, `estado`) like'%" + buscar + "%'";
+        try (PreparedStatement pst = con.prepareStatement(query)) {
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    int cod_albaran = rs.getInt(1);
+                    int cod_cliente = rs.getInt(2);
+                    int num_pedido = rs.getInt(3);
+                    java.sql.Date fecha = rs.getDate(4);
+                    String estado = rs.getString(5);
+
+                    arAlbaran.add(new Albaran(cod_albaran, cod_cliente, num_pedido, fecha, estado));
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+        }
+        return arAlbaran;
+    }
+    
+    public ArrayList mostrarPorCodCliente(int buscar) {
+        ArrayList<Albaran> arAlbaran = new ArrayList<>();
+        String query = "SELECT * FROM `albaran` where cod_cliente =" + buscar ;
+        
         try (PreparedStatement pst = con.prepareStatement(query)) {
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {

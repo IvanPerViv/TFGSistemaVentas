@@ -18,18 +18,18 @@ public class Con_pedido_linea {
 
     public Con_pedido_linea() {
         objConexion = new Conexion();
-        con = objConexion.con;
+        con = objConexion.conexion();
     }
 
-    public boolean ingresoLineasPedidos(int cod_pedido, int cod_articulo, int cantidad, Double precio_venta, double iva) {
+    public boolean ingresoLineasPedidos(int codPedido, int codArticulo, int cantidad, Double precioVenta, double iva) {
         String query = "INSERT INTO `lineas_pedidos`(pedido, articulo, cantidad, precio_venta, iva)"
                 + "VALUES (?,?,?,?,?)";
         int comprobacion = 0;
         try (PreparedStatement pst = con.prepareStatement(query)) {
-            pst.setInt(1, cod_pedido);
-            pst.setInt(2, cod_articulo);
+            pst.setInt(1, codPedido);
+            pst.setInt(2, codArticulo);
             pst.setInt(3, cantidad);
-            pst.setDouble(4, precio_venta);
+            pst.setDouble(4, precioVenta);
             pst.setDouble(5, iva);
 
             comprobacion = pst.executeUpdate();

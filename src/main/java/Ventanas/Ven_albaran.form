@@ -57,10 +57,7 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="botonEnviar" alignment="1" max="32767" attributes="0"/>
-                          <Component id="botonImprimir" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="botonEnviar" min="-2" pref="119" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
@@ -93,11 +90,9 @@
               <Component id="PANEL_cliente" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="PANEL_carrito" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               <Component id="botonEnviar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="botonImprimir" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -393,20 +388,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonEnviarActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="botonImprimir">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/VI_albaran/icons8-imprimir-50.png"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="IMPRIMIR"/>
-        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Hand Cursor"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonImprimirActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="TFCodAlbaran">

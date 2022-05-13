@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.swing.JComboBox;
 
 public class Con_localidad_prov_pais {
 
@@ -17,7 +16,7 @@ public class Con_localidad_prov_pais {
 
     public Con_localidad_prov_pais() {
         objConexion = new Conexion();
-        con = objConexion.con;
+        con = objConexion.conexion();
     }
 
     // PAIS //
@@ -60,7 +59,7 @@ public class Con_localidad_prov_pais {
     }
 
     public ArrayList MostrarPais(String buscar) {
-        ArrayList<Pais> art = new ArrayList<>();
+        ArrayList<Pais> arPais = new ArrayList<>();
 
         String query = "SELECT * FROM `pais` where concat(`cod_pais`, `nombre_pais`) like'%" + buscar + "%'";
         try (PreparedStatement pst = con.prepareStatement(query)) {
@@ -68,13 +67,13 @@ public class Con_localidad_prov_pais {
                 while (rs.next()) {
                     int cod = rs.getInt(1);
                     String nombrePoc = rs.getString(2);
-                    art.add(new Pais(cod, nombrePoc));
+                    arPais.add(new Pais(cod, nombrePoc));
                 }
             }
         } catch (SQLException ex) {
             System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
         }
-        return art;
+        return arPais;
     }
 
     public int codigoPais() {
@@ -134,7 +133,7 @@ public class Con_localidad_prov_pais {
     }
 
     public ArrayList MostrarProv(String buscar) {
-        ArrayList<Provincia> art = new ArrayList<>();
+        ArrayList<Provincia> arProvincia = new ArrayList<>();
 
         String query = "SELECT * FROM `provincia` where concat(`cod_provincia`, `nombre_prov`, `cod_pais`) like'%" + buscar + "%'";
         try (PreparedStatement pst = con.prepareStatement(query)) {
@@ -143,13 +142,13 @@ public class Con_localidad_prov_pais {
                     int cod = rs.getInt(1);
                     String nombrePoc = rs.getString(2);
                     int codPais = rs.getInt(3);
-                    art.add(new Provincia(cod, nombrePoc, codPais));
+                    arProvincia.add(new Provincia(cod, nombrePoc, codPais));
                 }
             }
         } catch (SQLException ex) {
             System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
         }
-        return art;
+        return arProvincia;
     }
 
     public int codigoProv() {
@@ -168,14 +167,14 @@ public class Con_localidad_prov_pais {
     }
 
     // LOCALIDAD //
-    public boolean ingresoLocalidad(int cod_localidad, String nombre_ciudad, int cod_provincia) {
+    public boolean ingresoLocalidad(int codLocalidad, String nombreCiudad, int codProvincia) {
         String query = "INSERT INTO `localidades`(`cod_localidad`, `nombre_ciudad`, `cod_provincia`) VALUES (?,?,?)";
         int comprobacion = 0;
 
         try (PreparedStatement pst = con.prepareStatement(query)) {
-            pst.setInt(1, cod_localidad);
-            pst.setString(2, nombre_ciudad);
-            pst.setInt(3, cod_provincia);
+            pst.setInt(1, codLocalidad);
+            pst.setString(2, nombreCiudad);
+            pst.setInt(3, codProvincia);
 
             comprobacion = pst.executeUpdate();
         } catch (SQLException ex) {
@@ -209,7 +208,7 @@ public class Con_localidad_prov_pais {
     }
 
     public ArrayList MostrarLocalidad(String buscar) {
-        ArrayList<Localidad> artLocal = new ArrayList<>();
+        ArrayList<Localidad> arLocalidad = new ArrayList<>();
 
         String query = "SELECT * FROM `localidades` where concat(`cod_localidad`, `nombre_ciudad`, `cod_provincia`) like'%" + buscar + "%'";
         try (PreparedStatement pst = con.prepareStatement(query)) {
@@ -218,13 +217,13 @@ public class Con_localidad_prov_pais {
                     int cod = rs.getInt(1);
                     String nombrePoc = rs.getString(2);
                     int codProv = rs.getInt(3);
-                    artLocal.add(new Localidad(cod, nombrePoc, codProv));
+                    arLocalidad.add(new Localidad(cod, nombrePoc, codProv));
                 }
             }
         } catch (SQLException ex) {
             System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
         }
-        return artLocal;
+        return arLocalidad;
     }
 
     public int codigoLocalidad() {
@@ -291,20 +290,20 @@ public class Con_localidad_prov_pais {
     
     
     public ArrayList consultarPais() {
-        ArrayList<Pais> artProv = new ArrayList<>();
+        ArrayList<Pais> arPais = new ArrayList<>();
         String query = "SELECT * FROM `pais`";
         try (PreparedStatement pst = con.prepareStatement(query)) {
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     int cod = rs.getInt(1);
                     String nombre = rs.getString(2);
-                    artProv.add(new Pais(cod, nombre));
+                    arPais.add(new Pais(cod, nombre));
                 }
             }
         } catch (SQLException ex) {
             System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
         }
-        return artProv;
+        return arPais;
     }
 
     public int consultarProvincia(String buscar) {

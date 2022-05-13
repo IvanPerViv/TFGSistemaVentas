@@ -2,15 +2,15 @@ package Ventanas;
 
 import Conexiones.Con_albaran;
 import Conexiones.Con_albaran_linea;
-import Conexiones.Con_articulos;
-import Conexiones.Con_clientes;
+import Conexiones.Con_articulo;
+import Conexiones.Con_cliente;
 import Conexiones.Con_localidad_prov_pais;
 import Conexiones.Con_pedido;
 import Conexiones.Conexion;
 import Modelos.Albaran;
-import Modelos.Clientes;
+import Modelos.Cliente;
 import Modelos.LineaAlbaran;
-import Utils.generarCodigos;
+import Utils.generacionDeCodigo;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -37,8 +37,8 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
 
     protected DefaultTableModel dftAlbaran;
 
-    protected Con_articulos objConArticulos;
-    protected Con_clientes objConClientes;
+    protected Con_articulo objConArticulos;
+    protected Con_cliente objConClientes;
     protected Con_albaran objConAlbaran;
     protected Con_localidad_prov_pais objConLocal;
     protected Con_albaran_linea objConLineaAlbaran;
@@ -50,9 +50,9 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
 
     public Ven_albaran(int codAlbaran) {
         initComponents();
-        objConArticulos = new Con_articulos();
+        objConArticulos = new Con_articulo();
         objConAlbaran = new Con_albaran();
-        objConClientes = new Con_clientes();
+        objConClientes = new Con_cliente();
         objConLocal = new Con_localidad_prov_pais();
         objConLineaAlbaran = new Con_albaran_linea();
         objConPedidos = new Con_pedido();
@@ -103,8 +103,8 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
     }
 
     protected void cargaDeDatosClientes(int codigoCliente) {
-        ArrayList<Clientes> arClientes = new ArrayList<>();
-        arClientes = objConClientes.mostrarNommbreCliente(codigoCliente);
+        ArrayList<Cliente> arClientes = new ArrayList<>();
+        arClientes = objConClientes.mostrarDatosClientes(codigoCliente);
 
         for (int i = 0; i < arClientes.size(); i++) {
             String nombreComercial = arClientes.get(i).getNombreComercial();
@@ -149,7 +149,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         int numero;
         int codigoAlbaran = objConAlbaran.codigoAlbaran();
         if (codigoAlbaran != 0) {
-            generarCodigos objGenCod = new generarCodigos();
+            generacionDeCodigo objGenCod = new generacionDeCodigo();
             numero = objGenCod.generarCod(codigoAlbaran);
         } else {
             numero = 1;
@@ -179,7 +179,6 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         TFDate = new javax.swing.JTextField();
         informacion3 = new javax.swing.JLabel();
         botonEnviar = new javax.swing.JButton();
-        botonImprimir = new javax.swing.JButton();
         TFCodAlbaran = new javax.swing.JTextField();
 
         setClosable(true);
@@ -328,15 +327,6 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
             }
         });
 
-        botonImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_albaran/icons8-imprimir-50.png"))); // NOI18N
-        botonImprimir.setText("IMPRIMIR");
-        botonImprimir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botonImprimir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonImprimirActionPerformed(evt);
-            }
-        });
-
         TFCodAlbaran.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         TFCodAlbaran.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         TFCodAlbaran.setBorder(null);
@@ -370,9 +360,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
                                     .addComponent(informacion4, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(botonEnviar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(botonImprimir, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addComponent(botonEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
@@ -396,11 +384,9 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
                 .addComponent(PANEL_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PANEL_carrito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(15, 15, 15)
                 .addComponent(botonEnviar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(botonImprimir)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -462,16 +448,13 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
                     // GENERAMOS UN DOCUMENTO JASPER REPORT
                     con = DriverManager.getConnection("jdbc:mysql://localhost/sistema_ventas", "root", "");
                     con.setAutoCommit(false);
-                    if (con != null) {
-                        System.out.println("CONEXION EXITOSA");
-                    }
 
                     String ubicacion = "src/main/java/reportes/Albaran.jrxml";
                     JasperReport jasperReport = JasperCompileManager.compileReport(ubicacion);
-                     Map<String, Object> params = new HashMap<>();
+                    Map<String, Object> params = new HashMap<>();
                     params.put("codAlbaran", numeroAlbaran);
                     JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
-                    
+
                     JasperViewer.viewReport(jasperPrint, false);
 
 //                    JRPdfExporter exporter = new JRPdfExporter();
@@ -498,10 +481,6 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_botonEnviarActionPerformed
 
-    private void botonImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonImprimirActionPerformed
-        // BOTON IMPRIMIR
-    }//GEN-LAST:event_botonImprimirActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PANEL_carrito;
     private javax.swing.JPanel PANEL_cliente;
@@ -513,7 +492,6 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
     public static javax.swing.JTextField TFTel;
     private javax.swing.JTextField TFnumPedido;
     private javax.swing.JButton botonEnviar;
-    private javax.swing.JButton botonImprimir;
     private javax.swing.JLabel informacion2;
     private javax.swing.JLabel informacion3;
     private javax.swing.JLabel informacion4;

@@ -50,7 +50,7 @@ public class Comprobaciones extends javax.swing.JFrame {
         }
         return comprobacion;
     }
-    
+
     public void ValidarNumeros(JTextField campo) {
         Pattern patron = Pattern.compile("[0-9]*");
         Matcher match = patron.matcher(campo.getText());
@@ -71,5 +71,19 @@ public class Comprobaciones extends javax.swing.JFrame {
             campo.setText("");
             campo.requestFocus();
         }
+    }
+
+    public int verificacionCodigoPedido(String datoEvaluar, JTable dtm) {
+        int comprobacion = 0;
+        try {
+            for (int i = 0; i < dtm.getRowCount(); i++) {
+                String nombreTabla = dtm.getValueAt(i, 1).toString();
+                if (datoEvaluar.equals(nombreTabla)) {
+                    comprobacion = 1;
+                }
+            }
+        } catch (Exception ex) {
+        }
+        return comprobacion;
     }
 }

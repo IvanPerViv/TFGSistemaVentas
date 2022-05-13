@@ -3,7 +3,7 @@ package Ventanas;
 import Conexiones.Con_albaran;
 import Conexiones.Con_pedido;
 import Modelos.Albaran;
-import Modelos.Pedidos;
+import Modelos.Pedido;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -34,7 +34,7 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
         for (int i = 0; i < arAlbaran.size(); i++) {
             fila[0] = arAlbaran.get(i).getCodAlbaran();
             fila[1] = arAlbaran.get(i).getNumPedido();
-            fila[2] = objConPedidos.mostrarCodPedido(arAlbaran.get(i).getCodCliente()); //SUBCONSULTA
+            fila[2] = objConPedidos.mostrarNombreCliente(arAlbaran.get(i).getCodCliente()); //SUBCONSULTA
             fila[3] = arAlbaran.get(i).getFecha();
             fila[4] = arAlbaran.get(i).getEstado();
             dftAlbaran.addRow(fila);
@@ -42,13 +42,13 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
     }
 
     protected void cargaDeDatosNumPedidos(int buscar) {
-        ArrayList<Pedidos> arPedidos = new ArrayList<>();
+        ArrayList<Pedido> arPedidos = new ArrayList<>();
         arPedidos = objConPedidos.busquedaNumPedido(buscar);
 
         Object[] fila = new Object[3];
         for (int i = 0; i < arPedidos.size(); i++) {
             fila[0] = arPedidos.get(i).getNum_pedido();
-            fila[1] = objConPedidos.mostrarCodPedido(arPedidos.get(i).getCod_cliente());
+            fila[1] = objConPedidos.mostrarNombreCliente(arPedidos.get(i).getCod_cliente());
             fila[2] = arPedidos.get(i).getFecha_pedido();
             dftAlbaran.addRow(fila);
         }
@@ -108,6 +108,7 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
             }
         ));
         tablaPedidos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tablaPedidos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         buscadorPedidos.setViewportView(tablaPedidos);
 
         botonEliminar.setText("ELIMINAR");
@@ -175,11 +176,11 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(informacion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(5, 5, 5)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(5, 5, 5)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

@@ -1,8 +1,8 @@
 package Ventanas;
 
-import Conexiones.Con_usuarios;
+import Conexiones.Con_usuario;
 import Modelos.Usuarios;
-import Utils.generarCodigos;
+import Utils.generacionDeCodigo;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -12,14 +12,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_crear_usuario extends JInternalFrame {
 
-    protected Con_usuarios objConUsuarios;
-    protected generarCodigos objGenCod;
+    protected Con_usuario objConUsuarios;
+    protected generacionDeCodigo objGenCod;
     protected DefaultTableModel dtmUser;
 
     public Ven_crear_usuario() {
         initComponents();
-        objConUsuarios = new Con_usuarios();
-        objGenCod = new generarCodigos();
+        objConUsuarios = new Con_usuario();
+        objGenCod = new generacionDeCodigo();
 
         bloquearBotones(false);
         TFCodigo.setEnabled(false);
@@ -325,6 +325,7 @@ public class Ven_crear_usuario extends JInternalFrame {
             }
         ));
         tablaArticulos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tablaArticulos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tablaArticulos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaArticulosMouseClicked(evt);

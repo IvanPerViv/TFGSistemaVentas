@@ -1,8 +1,8 @@
 package Ventanas;
 
-import Conexiones.Con_clientes;
+import Conexiones.Con_cliente;
 import Conexiones.Con_localidad_prov_pais;
-import Modelos.Clientes;
+import Modelos.Cliente;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -10,14 +10,16 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
 
     protected DefaultTableModel datosClientes;
     protected final String DATOVACIO = "";
-    protected Con_clientes objConexionClientes;
+    protected Con_cliente objConexionClientes;
     protected Con_localidad_prov_pais objLocal;
+    protected String nombreClase;
 
-    public Ven_tabla_cliente() {
+    public Ven_tabla_cliente(String nombreClase) {
         initComponents();
-        objConexionClientes = new Con_clientes();
+        objConexionClientes = new Con_cliente();
         objLocal = new Con_localidad_prov_pais();
-        
+        this.nombreClase = nombreClase;
+
         cargaDeDatosClientes(DATOVACIO);
     }
 
@@ -28,7 +30,7 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
 
         Object[] fila = new Object[nombreTablas.length];
 
-        ArrayList<Clientes> clieArray = new ArrayList<Clientes>();
+        ArrayList<Cliente> clieArray = new ArrayList<Cliente>();
         clieArray = objConexionClientes.mostrarClientesYBusqueda(buscar);
 
         for (int i = 0; i < clieArray.size(); i++) {
@@ -77,6 +79,7 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
             }
         ));
         tablaClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tablaClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tablaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaClientesMouseClicked(evt);
@@ -104,6 +107,9 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(10, 10, 10)
                         .addComponent(TFBuscar)
@@ -115,9 +121,7 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
                         .addComponent(informacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(informacion2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(informacion2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(328, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -126,8 +130,8 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
                 .addGap(6, 6, 6)
                 .addComponent(informacion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(TFBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -148,10 +152,20 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
     private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
         int fila = tablaClientes.getSelectedRow();
         if (evt.getClickCount() == 1) {
-            Ven_pedidos.TFCodClie.setText(tablaClientes.getValueAt(fila, 0).toString());
-            Ven_pedidos.TFNombreC.setText(tablaClientes.getValueAt(fila, 2).toString());
-            Ven_pedidos.TFDir.setText(tablaClientes.getValueAt(fila, 5).toString() + " , " + tablaClientes.getValueAt(fila, 6).toString() + " " + tablaClientes.getValueAt(fila, 4).toString());
-            Ven_pedidos.TFTel.setText(tablaClientes.getValueAt(fila, 7).toString());
+            switch (nombreClase) {
+                case "Ventanas.Ven_pedido":
+                    Ven_pedido.TFCodClie.setText(tablaClientes.getValueAt(fila, 0).toString());
+                    Ven_pedido.TFNombreC.setText(tablaClientes.getValueAt(fila, 2).toString());
+                    Ven_pedido.TFDir.setText(tablaClientes.getValueAt(fila, 5).toString() + " , " + tablaClientes.getValueAt(fila, 6).toString() + " " + tablaClientes.getValueAt(fila, 4).toString());
+                    Ven_pedido.TFTel.setText(tablaClientes.getValueAt(fila, 7).toString());
+                    break;
+                case "Ventanas.Ven_factura":
+                    Ven_factura.TFCodClie.setText(tablaClientes.getValueAt(fila, 0).toString());
+                    Ven_factura.TFNombreC.setText(tablaClientes.getValueAt(fila, 2).toString());
+                    Ven_factura.TFDir.setText(tablaClientes.getValueAt(fila, 5).toString() + " , " + tablaClientes.getValueAt(fila, 6).toString() + " " + tablaClientes.getValueAt(fila, 4).toString());
+                    Ven_factura.TFTel.setText(tablaClientes.getValueAt(fila, 7).toString());
+                    break;
+            }
         }
         dispose();
     }//GEN-LAST:event_tablaClientesMouseClicked
