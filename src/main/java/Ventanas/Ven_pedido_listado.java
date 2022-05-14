@@ -50,7 +50,7 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
         mostrarPedidos = new DefaultTableModel(null, nombreTablas);
         tablaPedidos.setModel(mostrarPedidos);
 
-        ArrayList<Pedido> arPedidos = new ArrayList<Pedido>();
+        ArrayList<Pedido> arPedidos = new ArrayList<>();
         arPedidos = objConPedidos.mostrarPedidos(buscar);
 
         Object[] fila = new Object[nombreTablas.length];
@@ -64,7 +64,7 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
     }
 
     protected void cargaDeDatosNumPedidos(int buscar) {
-        ArrayList<Pedido> arPedidos = new ArrayList<Pedido>();
+        ArrayList<Pedido> arPedidos = new ArrayList<>();
         arPedidos = objConPedidos.busquedaNumPedido(buscar);
 
         Object[] fila = new Object[4];

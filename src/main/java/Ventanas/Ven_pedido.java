@@ -133,7 +133,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
             IVA = calcularIva(subtotal, IVA);
             total = subtotal + IVA;
         }
-        TFSubtotal.setText(Double.toString(subtotal));
+        TFSubtotal.setText(Double.toString(Math.ceil(subtotal)));
         TFTotal.setText(Double.toString(Math.rint(total)));
     }
 

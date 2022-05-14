@@ -506,7 +506,7 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         // BOTON GUARDAR //
         if (comprobacionCampos()) {
-            int cod_art = Integer.parseInt(TFCodigo.getText());
+            int codArticulo = Integer.parseInt(TFCodigo.getText());
             String nombreProc = TFNombre.getText();
 
             double precioArticuloFinal = objComprobaciones.conversor(TFPrecio.getText());
@@ -514,7 +514,7 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
             int stock = Integer.parseInt(TFStock.getText());
             int categoria = objArticulo.mostrarNombreFamilia(TFFamilia.getText());
 
-            boolean comprobacion = objArticulo.ingresoDeArticulos(cod_art, nombreProc, categoria, precioArticuloFinal, iva, stock);
+            boolean comprobacion = objArticulo.ingresoDeArticulos(codArticulo, nombreProc, categoria, precioArticuloFinal, iva, stock);
 
             if (comprobacion == true) {
                 JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Información", JOptionPane.INFORMATION_MESSAGE);

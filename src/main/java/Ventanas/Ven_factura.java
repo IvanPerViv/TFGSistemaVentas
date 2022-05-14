@@ -1,11 +1,28 @@
 package Ventanas;
 
 import Conexiones.Con_factura;
+import Conexiones.Con_factura_linea;
+import Conexiones.Con_pedido_linea;
+import Modelos.LineaPedido;
 import Utils.Comprobaciones;
 import Utils.generacionDeCodigo;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -15,6 +32,8 @@ public class Ven_factura extends javax.swing.JInternalFrame {
 
     protected generacionDeCodigo objGenCod;
     protected Con_factura objConFactura;
+    protected Con_pedido_linea objConPedidoLinea;
+    protected Con_factura_linea objConFacturaLinea;
     protected Comprobaciones objComprobaciones;
 
     public static DefaultTableModel datosAlbaranes;
@@ -23,6 +42,8 @@ public class Ven_factura extends javax.swing.JInternalFrame {
         initComponents();
         objGenCod = new generacionDeCodigo();
         objConFactura = new Con_factura();
+        objConPedidoLinea = new Con_pedido_linea();
+        objConFacturaLinea = new Con_factura_linea();
         objComprobaciones = new Comprobaciones();
 
         cargaDatosTabla();
@@ -92,31 +113,49 @@ public class Ven_factura extends javax.swing.JInternalFrame {
     }
 
     protected void calcularPedido() {
-        double IVA = 0, total = 0, subtotal = 0, precio, totalArticulo = 0;
-        String prec, cant, iva;
-        int cantidad;
+        int codPedido = 0;
+        double precio = 0.0, cantidad = 0.0, totalArticulo = 0.0, subtotal = 0.0, sumaIva = 0.0, totalIva = 0.0, precioTotal = 0.0, precioConIva = 0.0;
+        ArrayList<LineaPedido> arLineaPedidos = new ArrayList<>();
 
         for (int i = 0; i < tablaAlbaranes.getRowCount(); i++) {
-            cant = tablaAlbaranes.getValueAt(i, 2).toString();
-            prec = tablaAlbaranes.getValueAt(i, 3).toString();
-            iva = tablaAlbaranes.getValueAt(i, 4).toString();
+            codPedido = Integer.parseInt(tablaAlbaranes.getValueAt(i, 2).toString());
 
-            precio = Double.parseDouble(prec);
-            cantidad = Integer.parseInt(cant);
-            IVA = Double.parseDouble(iva);
+            arLineaPedidos = objConPedidoLinea.mostrarLineasPedidos(codPedido);
+            for (int j = 0; j < arLineaPedidos.size(); j++) {
+                cantidad = arLineaPedidos.get(j).getCantidad();
+                precio = arLineaPedidos.get(j).getPrecioVenta();
+                sumaIva = arLineaPedidos.get(j).getIva();
 
-            totalArticulo = cantidad * precio;
-            subtotal = subtotal + totalArticulo;
-            IVA = calcularIva(subtotal, IVA);
-            total = subtotal + IVA;
+                totalArticulo = cantidad * precio;                     // SIN IVA
+                precioConIva = calcularIva(totalArticulo, sumaIva);    // CON IVA
+
+                subtotal = subtotal + totalArticulo;
+                totalIva += precioConIva;
+            }
+            precioTotal = subtotal + totalIva;
         }
-        TFSubtotal.setText(Double.toString(subtotal));
-        TFTotal.setText(Double.toString(Math.rint(total)));
+
+        TFSubtotal.setText(Double.toString(Math.ceil(subtotal))); // Redondear hacia arriba
+        TFTotal.setText(Double.toString(Math.rint(precioTotal)));
     }
 
     public double calcularIva(double cantidad, double iva) {
         double total;
         return total = (cantidad * iva) / 100;
+    }
+
+    protected boolean comprobacionCampos() {
+        boolean comprobacion = true;
+        if (objComprobaciones.ValidarCamposNumeros(TFSubtotal)) {
+            comprobacion = false;
+        }
+        if (objComprobaciones.ValidarCamposNumeros(TFTotal)) {
+            comprobacion = false;
+        }
+        if (fecha.getDate() == null) {
+            comprobacion = false;
+        }
+        return comprobacion;
     }
 
     @SuppressWarnings("unchecked")
@@ -154,7 +193,8 @@ public class Ven_factura extends javax.swing.JInternalFrame {
         TFSubtotal = new javax.swing.JTextField();
         jLabel31 = new javax.swing.JLabel();
         TFTotal = new javax.swing.JTextField();
-        botonRealizarPedido = new javax.swing.JButton();
+        botonRealizarFactura = new javax.swing.JButton();
+        botonCalculo = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -402,17 +442,31 @@ public class Ven_factura extends javax.swing.JInternalFrame {
         TFTotal.setDisabledTextColor(new java.awt.Color(0, 51, 153));
         TFTotal.setEnabled(false);
 
-        botonRealizarPedido.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        botonRealizarPedido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_pedidos/icons8-boleto-30.png"))); // NOI18N
-        botonRealizarPedido.setText("Realizar factura");
-        botonRealizarPedido.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        botonRealizarPedido.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        botonRealizarPedido.setMaximumSize(new java.awt.Dimension(140, 40));
-        botonRealizarPedido.setMinimumSize(new java.awt.Dimension(140, 40));
-        botonRealizarPedido.setPreferredSize(new java.awt.Dimension(140, 40));
-        botonRealizarPedido.addActionListener(new java.awt.event.ActionListener() {
+        botonRealizarFactura.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        botonRealizarFactura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_pedidos/icons8-boleto-30.png"))); // NOI18N
+        botonRealizarFactura.setText("Realizar factura");
+        botonRealizarFactura.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botonRealizarFactura.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        botonRealizarFactura.setMaximumSize(new java.awt.Dimension(140, 40));
+        botonRealizarFactura.setMinimumSize(new java.awt.Dimension(140, 40));
+        botonRealizarFactura.setPreferredSize(new java.awt.Dimension(140, 40));
+        botonRealizarFactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonRealizarPedidoActionPerformed(evt);
+                botonRealizarFacturaActionPerformed(evt);
+            }
+        });
+
+        botonCalculo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        botonCalculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_botonesGenerales/realizarVenta.png"))); // NOI18N
+        botonCalculo.setText("Calcular");
+        botonCalculo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        botonCalculo.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        botonCalculo.setMaximumSize(new java.awt.Dimension(140, 40));
+        botonCalculo.setMinimumSize(new java.awt.Dimension(140, 40));
+        botonCalculo.setPreferredSize(new java.awt.Dimension(140, 40));
+        botonCalculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCalculoActionPerformed(evt);
             }
         });
 
@@ -440,13 +494,18 @@ public class Ven_factura extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(PANEL_carrito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(panel_observaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(botonRealizarPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(botonRealizarFactura, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(botonCalculo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(15, 15, 15)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(TFSubtotal)
@@ -470,22 +529,26 @@ public class Ven_factura extends javax.swing.JInternalFrame {
                         .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(5, 5, 5)
                 .addComponent(PANEL_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PANEL_carrito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(PANEL_carrito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(TFSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(TFTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(botonRealizarPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(panel_observaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                        .addGap(0, 0, 0)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(botonCalculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addComponent(botonRealizarFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panel_observaciones, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -501,6 +564,7 @@ public class Ven_factura extends javax.swing.JInternalFrame {
     private void botonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLimpiarActionPerformed
         // BOTON LIMPIAR //
         limpiar();
+        limpiarTabla();
     }//GEN-LAST:event_botonLimpiarActionPerformed
 
     private void BotonBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarClienteActionPerformed
@@ -517,6 +581,7 @@ public class Ven_factura extends javax.swing.JInternalFrame {
             int codigoCliente = Integer.parseInt(TFCodClie.getText());
             Ven_tabla_albaran objTablaAlbaranes = new Ven_tabla_albaran(codigoCliente);
             Ven_principal.escritorio.add(objTablaAlbaranes).setVisible(true);
+
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(this, "Introduce los datos del cliente.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -533,39 +598,80 @@ public class Ven_factura extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_botonEliminarProcActionPerformed
 
-    private void botonRealizarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRealizarPedidoActionPerformed
+    private void botonRealizarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRealizarFacturaActionPerformed
         // BOTON REALIZAR FACTURA
-        int filaSeleccion = tablaAlbaranes.getRowCount();
-        if (filaSeleccion == 0) {
-            JOptionPane.showMessageDialog(this, "No existe ningun dato.\nRellene los datos correspondientes.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            int codFactura = Integer.parseInt(TFNumFactura.getText());
-            int codCliente = Integer.parseInt(TFCodClie.getText());
+        if (comprobacionCampos()) {
+            int filaSeleccion = tablaAlbaranes.getRowCount();
+            double subTotal = Double.parseDouble(TFSubtotal.getText());
+            double total = Double.parseDouble(TFTotal.getText());
+            boolean comprobacionFactura2 = false;
 
-            Date date = fecha.getDate();
-            long fechaConversion = date.getTime();
-            java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
+            if (filaSeleccion == 0) {
+                JOptionPane.showMessageDialog(this, "No existe ningun dato.\nRellene los datos correspondientes.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                int codFactura = Integer.parseInt(TFNumFactura.getText());
+                int codCliente = Integer.parseInt(TFCodClie.getText());
 
-            String area = AreaObs.getText();
+                Date date = fecha.getDate();
+                long fechaConversion = date.getTime();
+                java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
 
-            // INSERCION FACTURA //
-            boolean comprobacionFactura = objConFactura.ingresoFacturas(codFactura, codCliente, fechaDate, area);
+                String area = AreaObs.getText();
 
-            // INSERCION LINEAS-FACTURAS - numerofactura, codigoAlbaran, subtotal, total.
-//            for (int i = 0; i < filaSeleccion; i++) {
-//                int codigo = Integer.parseInt(tablaAlbaranes.getValueAt(i, 0).toString());
-//                String codCliente = tablaAlbaranes.getValueAt(i, 1).toString();
-//                int codPedido = Integer.parseInt(tablaAlbaranes.getValueAt(i, 2).toString());
-//                String fecha = tablaAlbaranes.getValueAt(i, 3).toString();
-//            }
-            if (comprobacionFactura == true) {
-                JOptionPane.showMessageDialog(this, "Su pedido ha sido reservado con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+                // INSERCION FACTURA
+                boolean comprobacionFactura = objConFactura.ingresoFacturas(codFactura, codCliente, fechaDate, area);
+
+                // INSERCION LINEAS-FACTURAS - numerofactura, codigoAlbaran, subtotal, total.
+                for (int i = 0; i < filaSeleccion; i++) {
+                    int codigoAlbaran = Integer.parseInt(tablaAlbaranes.getValueAt(i, 0).toString());
+                    comprobacionFactura2 = objConFacturaLinea.ingresoLineaFactura(codFactura, codigoAlbaran, subTotal, total);
+                }
+                if (comprobacionFactura == true && comprobacionFactura2 == true) {
+                    JOptionPane.showMessageDialog(this, "Su pedido ha sido reservado con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+                    int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea generar un informe e imprimirlo?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    if (seleccion == 0) {
+                        try {
+                            Connection con = null;
+                            // GENERAMOS UN DOCUMENTO JASPER REPORT
+                            con = DriverManager.getConnection("jdbc:mysql://localhost/sistema_ventas", "root", "");
+                            con.setAutoCommit(false);
+
+                            String ubicacion = "src/main/java/reportes/Facturas.jrxml";
+                            Map<String, Object> params = new HashMap<>();
+                            params.put("numCliente", codCliente);
+                            JasperReport jasperReport = JasperCompileManager.compileReport(ubicacion);
+                            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
+                            JasperViewer.viewReport(jasperPrint, false);
+
+//                    JRPdfExporter exporter = new JRPdfExporter();
+//                    exporter.setExporterInput(new SimpleExporterInput(print));
+//                    exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("src/main/java/reportes/Albaran.pdf"));
+//                    SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
+//                    exporter.setConfiguration(configuration);
+//                    exporter.exportReport();
+                            try {
+                                if (con != null) {
+                                    con.rollback();
+                                    con.close();
+                                }
+                            } catch (SQLException ex) {
+                                ex.printStackTrace();
+                            }
+                        } catch (JRException | SQLException | NumberFormatException ex) {
+                            Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
             }
 
+        } else {
+            JOptionPane.showMessageDialog(this, "Rellene los campos.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
+    }//GEN-LAST:event_botonRealizarFacturaActionPerformed
 
-
-    }//GEN-LAST:event_botonRealizarPedidoActionPerformed
+    private void botonCalculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCalculoActionPerformed
+        calcularPedido();
+    }//GEN-LAST:event_botonCalculoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -582,10 +688,11 @@ public class Ven_factura extends javax.swing.JInternalFrame {
     private javax.swing.JTextField TFTotal;
     private javax.swing.JToolBar barraHerramientas;
     private javax.swing.JButton botonAgregarProc;
+    private javax.swing.JButton botonCalculo;
     private javax.swing.JButton botonEliminarProc;
     private javax.swing.JButton botonLimpiar;
     private javax.swing.JButton botonNuevo;
-    private javax.swing.JButton botonRealizarPedido;
+    private javax.swing.JButton botonRealizarFactura;
     private com.toedter.calendar.JDateChooser fecha;
     private javax.swing.JLabel informacion2;
     private javax.swing.JLabel informacion4;

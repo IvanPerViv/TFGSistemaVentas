@@ -46,11 +46,11 @@ public class Con_albaran_linea {
         try ( PreparedStatement pst = con.prepareStatement(query)) {
             try ( ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
-                    int codAlbaran = rs.getInt(1);
-                    int codArt = rs.getInt(2);
-                    int cantidad = rs.getInt(3);
-                    double precioUni = rs.getDouble(4);
-                    double iva = rs.getDouble(5);
+                    int codAlbaran = rs.getInt("num_albaran");
+                    int codArt = rs.getInt("articulo");
+                    int cantidad = rs.getInt("cantidad");
+                    double precioUni = rs.getDouble("precio_uni");
+                    double iva = rs.getDouble("iva");
 
                     arAlbaran.add(new LineaAlbaran(codAlbaran, codArt, cantidad, precioUni, iva));
                 }

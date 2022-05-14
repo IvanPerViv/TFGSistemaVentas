@@ -121,6 +121,7 @@ public class Ven_tabla_albaran extends javax.swing.JInternalFrame {
             int codigo = Integer.parseInt(tablaAlbaranes.getValueAt(i, 0).toString());
             String codCliente = tablaAlbaranes.getValueAt(i, 1).toString();
             int codPedido = Integer.parseInt(tablaAlbaranes.getValueAt(i, 2).toString());
+            System.out.println(codPedido);
             String fecha = tablaAlbaranes.getValueAt(i, 3).toString();
 
             Object[] fila = {codigo, codCliente, codPedido, fecha};

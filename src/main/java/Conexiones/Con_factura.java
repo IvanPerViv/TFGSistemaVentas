@@ -51,5 +51,5 @@ public class Con_factura {
         }
         return comprobacion > 0;
     }
-
+    
 }

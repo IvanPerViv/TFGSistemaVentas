@@ -86,4 +86,13 @@ public class Comprobaciones extends javax.swing.JFrame {
         }
         return comprobacion;
     }
+
+    public boolean ValidarCamposNumeros(JTextField campo) {
+        boolean comprobacion = false;
+        if(campo.getText().equals("0.0")){
+            comprobacion = true;
+        }
+        return comprobacion;
+    }
+
 }

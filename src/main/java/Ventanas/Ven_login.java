@@ -19,7 +19,7 @@ public class Ven_login extends javax.swing.JFrame {
         initComponents();
         objUsers = new Con_usuario();   
         
-        obIcon.getIconImage("VI_login/user.png");
+        obIcon.getIconImage("VI_login/user_1.png");
         setLocationRelativeTo(null);
         
     }
@@ -53,7 +53,7 @@ public class Ven_login extends javax.swing.JFrame {
         informacion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setIconImage(obIcon.getIconImage("VI_login/user.png"));
+        setIconImage(obIcon.getIconImage("VI_login/user_1.png"));
         setResizable(false);
 
         Pnel_conexion.setBackground(new java.awt.Color(255, 255, 255));

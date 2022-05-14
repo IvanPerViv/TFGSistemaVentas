@@ -157,6 +157,18 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         return numero;
     }
 
+    protected int generarCodigoPedido() {
+        int numero;
+        int codigoPedido = objConPedidos.codigoPedidos();
+        if (codigoPedido != 0) {
+            generacionDeCodigo objGenCod = new generacionDeCodigo();
+            numero = objGenCod.generarCod(codigoPedido);
+        } else {
+            numero = 1;
+        }
+        return numero;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -399,8 +411,23 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
     private void botonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEnviarActionPerformed
         // BOTON ENVIAR
         int numeroAlbaran = Integer.parseInt(TFCodAlbaran.getText());
-        int codArticulo = 0, producto = 0, cantidadPedida = 0, cantidadEnviar = 0, cantidadFinal = 0;
+        int codArticulo = 0, producto = 0, cantidadPedida = 0, cantidadEnviar = 0;
         int numAlbaran = generarCodigoAlbaran();
+        int numPedido = generarCodigoPedido();
+        Map<String, Object> params = new HashMap<>();
+
+        try {
+            SimpleDateFormat a = new SimpleDateFormat("dd-MM-yyyy");
+            Date date = a.parse(TFDate.getText());
+            long fechaConversion = date.getTime();
+            java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
+
+            // CREAMOS UN NUEVO ALBARAN
+            objConAlbaran.ingresoAlbaran(numAlbaran, Integer.parseInt(TFCodClie.getText()), numPedido, fechaDate, "Pendiente");
+
+        } catch (ParseException ex) {
+            Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         for (int i = 0; i < tablaAlbaran.getRowCount(); i++) {
             codArticulo = Integer.parseInt(tablaAlbaran.getValueAt(i, 0).toString());
@@ -408,54 +435,39 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
             cantidadPedida = Integer.parseInt(tablaAlbaran.getValueAt(i, 2).toString());
             cantidadEnviar = Integer.parseInt(tablaAlbaran.getValueAt(i, 3).toString());
 
-            cantidadFinal = cantidadPedida - cantidadEnviar;
-            if (cantidadPedida >= cantidadEnviar) {
+            int cantidadFinal = cantidadPedida - cantidadEnviar;
+            if (cantidadPedida >= cantidadEnviar || cantidadFinal >= 0) {
 
-                if (cantidadFinal > 0) {
-                    try {
-                        SimpleDateFormat a = new SimpleDateFormat("dd-MM-yyyy");
-                        Date date = a.parse(TFDate.getText());
-                        long fechaConversion = date.getTime();
-                        java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
+                //UPDATE DE LOS ARTICULOS RESTANTES A ENVIAR
+                objConLineaAlbaran.actualizarLineaAlbaran(cantidadFinal, numeroAlbaran, codArticulo);
 
-                        // CREAMOS UN NUEVO ALBARAN
-                        objConAlbaran.ingresoAlbaran(numAlbaran, Integer.parseInt(TFCodClie.getText()), Integer.parseInt(TFnumPedido.getText()), fechaDate, "Pendiente");
+                // CREAMOS UN NUEVA LINEA PEDIDO CON LOS ARTICULOS RESTANTES QUE QUEDAN POR ENVIAR
+                objConLineaAlbaran.ingresoLineaAlbaran(numAlbaran, codArticulo, cantidadFinal, precioUnitario, iva);
 
-                        //UPDATE DE LOS ARTICULOS RESTANTES A ENVIAR
-                        objConLineaAlbaran.actualizarLineaAlbaran(cantidadFinal, numeroAlbaran, codArticulo);
+                //ACTUALIZAMOS EL ESTADO DE NUESTRO ALBARAN.
+                //objConAlbaran.actualizarEstadoAlbaran(numeroAlbaran, "Enviado");
 
-                        // CREAMOS UN NUEVA LINEA PEDIDO CON LOS ARTICULOS RESTANTES QUE QUEDAN POR ENVIAR
-                        objConLineaAlbaran.ingresoLineaAlbaran(numAlbaran, codArticulo, cantidadFinal, precioUnitario, iva);
+                params.put("codAlbaran", numeroAlbaran);
+                params.put("cantidadEnviada", cantidadEnviar);
 
-                    } catch (ParseException ex) {
-                        Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                }
+                // LUEGO RESTAMOS LA CANTIDAD ELEGIDA DEL STOCK
+                objConArticulos.actualizarStock(cantidadFinal, codArticulo);
             }
-            //ACTUALIZAMOS EL ESTADO DE NUESTRO ALBARAN.
-            objConAlbaran.actualizarEstadoAlbaran(numeroAlbaran, "Enviado");
 
         }
-        if (cantidadFinal >= 0) {
-            JOptionPane.showMessageDialog(this, "Sus articulos han sido enviados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-            // LUEGO RESTAMOS LA CANTIDAD ELEGIDA DEL STOCK
-            objConArticulos.actualizarStock(cantidadFinal, codArticulo);
-            int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea generar un informe e imprimirlo?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-            if (seleccion == 0) {
-                try {
-                    Connection con = null;
-                    // GENERAMOS UN DOCUMENTO JASPER REPORT
-                    con = DriverManager.getConnection("jdbc:mysql://localhost/sistema_ventas", "root", "");
-                    con.setAutoCommit(false);
+        JOptionPane.showMessageDialog(this, "Sus articulos han sido enviados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+        int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea generar un informe e imprimirlo?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        if (seleccion == 0) {
+            try {
+                Connection con = null;
+                // GENERAMOS UN DOCUMENTO JASPER REPORT
+                con = DriverManager.getConnection("jdbc:mysql://localhost/sistema_ventas", "root", "");
+                con.setAutoCommit(false);
 
-                    String ubicacion = "src/main/java/reportes/Albaran.jrxml";
-                    JasperReport jasperReport = JasperCompileManager.compileReport(ubicacion);
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("codAlbaran", numeroAlbaran);
-                    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
-
-                    JasperViewer.viewReport(jasperPrint, false);
+                String ubicacion = "src/main/java/reportes/Albaran.jrxml";
+                JasperReport jasperReport = JasperCompileManager.compileReport(ubicacion);
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
+                JasperViewer.viewReport(jasperPrint, false);
 
 //                    JRPdfExporter exporter = new JRPdfExporter();
 //                    exporter.setExporterInput(new SimpleExporterInput(print));
@@ -463,22 +475,19 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
 //                    SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
 //                    exporter.setConfiguration(configuration);
 //                    exporter.exportReport();
-                    try {
-                        if (con != null) {
-                            con.rollback();
-                            con.close();
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+                try {
+                    if (con != null) {
+                        con.rollback();
+                        con.close();
                     }
-                } catch (JRException | SQLException | NumberFormatException ex) {
-                    Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
+            } catch (JRException | SQLException | NumberFormatException ex) {
+                Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
             }
-            dispose();
         }
-
-
+        dispose();
     }//GEN-LAST:event_botonEnviarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
