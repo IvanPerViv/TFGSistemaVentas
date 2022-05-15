@@ -28,7 +28,7 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
         objArticulo = new Con_articulo();
         objFamilias = new Con_familia_articulo();
         objComprobaciones = new Comprobaciones();
-        
+
         bloquearBotones(false);
         cargaDeDatosArticulos(DATOVACIO);
         TFCodigo.setEnabled(false);
@@ -260,6 +260,9 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TFPrecioKeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TFPrecioKeyTyped(evt);
+            }
         });
 
         txtIva.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -269,11 +272,17 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TFIvaKeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TFIvaKeyTyped(evt);
+            }
         });
 
         TFStock.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TFStockKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TFStockKeyTyped(evt);
             }
         });
 
@@ -461,8 +470,8 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
         // BOTON ACTUALIZAR //
         int codigoUser = Integer.parseInt(TFCodigo.getText());
         String nombreArt = TFNombre.getText(),
-                iva = TFIva.getText(),
                 stockArt = TFStock.getText();
+        double iva = objComprobaciones.conversor(TFIva.getText());
         double precioArt = objComprobaciones.conversor(TFPrecio.getText());
         int categoriaFamilia = objArticulo.mostrarNombreFamilia(TFFamilia.getText());
 
@@ -510,7 +519,7 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
             String nombreProc = TFNombre.getText();
 
             double precioArticuloFinal = objComprobaciones.conversor(TFPrecio.getText());
-            int iva = Integer.parseInt(TFIva.getText());
+            double iva = objComprobaciones.conversor(TFIva.getText());
             int stock = Integer.parseInt(TFStock.getText());
             int categoria = objArticulo.mostrarNombreFamilia(TFFamilia.getText());
 
@@ -541,6 +550,7 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
         Ven_principal.escritorio.add(objFamilia).setVisible(true);
     }//GEN-LAST:event_botonFamiliaActionPerformed
 
+    
     private void TFNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFNombreKeyReleased
         TFNombre.setBorder(new LineBorder(Color.gray));
     }//GEN-LAST:event_TFNombreKeyReleased
@@ -556,6 +566,18 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
     private void TFStockKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFStockKeyReleased
         TFStock.setBorder(new LineBorder(Color.gray));
     }//GEN-LAST:event_TFStockKeyReleased
+
+    private void TFPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFPrecioKeyTyped
+        objComprobaciones.comprobacionNumeroDecimal(evt);
+    }//GEN-LAST:event_TFPrecioKeyTyped
+
+    private void TFIvaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFIvaKeyTyped
+       objComprobaciones.comprobacionNumeroDecimal(evt);
+    }//GEN-LAST:event_TFIvaKeyTyped
+
+    private void TFStockKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFStockKeyTyped
+         objComprobaciones.comprobacionNumeroEntero(evt);
+    }//GEN-LAST:event_TFStockKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

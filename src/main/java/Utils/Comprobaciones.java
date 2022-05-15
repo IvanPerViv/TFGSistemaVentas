@@ -2,6 +2,7 @@ package Utils;
 
 import static Ventanas.Ven_principal.escritorio;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.*;
@@ -51,17 +52,6 @@ public class Comprobaciones extends javax.swing.JFrame {
         return comprobacion;
     }
 
-    public void ValidarNumeros(JTextField campo) {
-        Pattern patron = Pattern.compile("[0-9]*");
-        Matcher match = patron.matcher(campo.getText());
-
-        if (!match.matches()) {
-            JOptionPane.showMessageDialog(this, "Debe contener un valor númerico.", "Información", JOptionPane.INFORMATION_MESSAGE);
-            campo.setText("");
-            campo.requestFocus();
-        }
-    }
-
     public void ValidarCodigoPostal(JTextField campo) {
         Pattern patronCVV = Pattern.compile("[0-9]{5}");
         Matcher matchCVV = patronCVV.matcher(campo.getText());
@@ -89,10 +79,23 @@ public class Comprobaciones extends javax.swing.JFrame {
 
     public boolean ValidarCamposNumeros(JTextField campo) {
         boolean comprobacion = false;
-        if(campo.getText().equals("0.0")){
+        if (campo.getText().equals("0.0")) {
             comprobacion = true;
         }
         return comprobacion;
     }
 
+    public void comprobacionNumeroDecimal(KeyEvent evt) {
+        char caracter = evt.getKeyChar();
+        if ((caracter < '0' || caracter > '9') && (caracter != '.') && (caracter != ',')) {
+            evt.consume();
+        }
+    }
+    
+    public void comprobacionNumeroEntero(KeyEvent evt) {
+        char caracter = evt.getKeyChar();
+        if (caracter < '0' || caracter > '9') {
+            evt.consume();
+        }
+    }
 }

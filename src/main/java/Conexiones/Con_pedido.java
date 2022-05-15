@@ -37,7 +37,7 @@ public class Con_pedido {
         return codigo;
     }
 
-    public boolean ingresoPedidos(int num_pedido, java.sql.Date fecha_pedido, int cod_cliente, String estado, String observaciones) {
+    public boolean ingresoPedidos(int num_pedido,  int cod_cliente, java.sql.Date fecha_pedido, String estado, String observaciones) {
         String query = "INSERT INTO `pedidos`(num_pedido, cod_cliente, fecha_pedido, estado, observaciones)"
                 + "VALUES (?,?,?,?,?)";
         int comprobacion = 0;

@@ -3,14 +3,12 @@ package Ventanas;
 import Conexiones.Con_albaran;
 import Conexiones.Con_albaran_linea;
 import Conexiones.Con_articulo;
-import Conexiones.Con_cliente;
 import Conexiones.Con_pedido;
 import Conexiones.Con_pedido_linea;
 import Modelos.LineaPedido;
 import Modelos.Pedido;
 import Utils.Comprobaciones;
 import Utils.generacionDeCodigo;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -21,7 +19,8 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
     protected Con_pedido objConPedidos;
     protected Con_articulo objConArticulos;
     protected Con_pedido_linea obLineaPedido;
-    protected Con_albaran objAlbaran;   
+    protected Con_albaran objAlbaran;
+    protected Con_pedido_linea objConLineaPedido;
     protected Con_albaran_linea objConAlbaranLinea;
 
     protected final Comprobaciones objComprobaciones;
@@ -35,7 +34,8 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
         obLineaPedido = new Con_pedido_linea();
         objAlbaran = new Con_albaran();
         objConAlbaranLinea = new Con_albaran_linea();
-        
+        objConLineaPedido = new Con_pedido_linea();
+
         cargaDeDatosPedidos("");
     }
 
@@ -43,6 +43,20 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
         TFCodPedido.setText("");
         TFNombreCliente.setText("");
         TFTotalPedido.setText("");
+    }
+
+    // CARGAMOS LOS DATOS DE LINEA-PEDIDO y buscamos el dato de cantidad que queremos.
+    protected ArrayList cargaDeDatosLinea(int buscar) {
+        ArrayList<LineaPedido> arLineaPedido = new ArrayList<>();
+        ArrayList<Integer> numeros = new ArrayList<>();
+
+        arLineaPedido = objConLineaPedido.mostrarLineasPedidos(buscar);
+
+        for (int i = 0; i < arLineaPedido.size(); i++) {
+            int cantidad = arLineaPedido.get(i).getCantidad();
+            numeros.add(cantidad);
+        }
+        return numeros;
     }
 
     protected void cargaDeDatosPedidos(String buscar) {
@@ -53,14 +67,19 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
         ArrayList<Pedido> arPedidos = new ArrayList<>();
         arPedidos = objConPedidos.mostrarPedidos(buscar);
 
+        //COMPROBAMOS QUE LA CANTIDAD DE Linea-pedido no sea cero, de ser asi, que no muestre los datos.
+        
         Object[] fila = new Object[nombreTablas.length];
         for (int i = 0; i < arPedidos.size(); i++) {
+            int numPedido = arPedidos.get(i).getNum_pedido();
             fila[0] = arPedidos.get(i).getNum_pedido();
             fila[1] = objConPedidos.mostrarNombreCliente(arPedidos.get(i).getCod_cliente());
             fila[2] = arPedidos.get(i).getEstado();
             fila[3] = arPedidos.get(i).getFecha_pedido();
-            mostrarPedidos.addRow(fila);
+          
+             mostrarPedidos.addRow(fila);
         }
+
     }
 
     protected void cargaDeDatosNumPedidos(int buscar) {
@@ -195,7 +214,7 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
         txtEstado.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtEstado.setText("Estado Pedido");
 
-        jComboEstadoPedido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "Enviado", "Anulado" }));
+        jComboEstadoPedido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Enviado", "Anulado" }));
         jComboEstadoPedido.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         botonEliminarPedido.setText("ELIMINAR");
@@ -371,17 +390,25 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
         if (filaSelecionada < 0) {
             JOptionPane.showMessageDialog(this, "Selecciona una fila de la tabla.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         } else {
-
             int codPedido = Integer.parseInt(tablaPedidos.getValueAt(filaSelecionada, 0).toString());
             estado = tablaPedidos.getValueAt(filaSelecionada, 2).toString();
-            Ven_tabla_pedido_listado_verdetalle objTablaPedidosListadoVerDetalles = new Ven_tabla_pedido_listado_verdetalle(codPedido);
-            Ven_principal.escritorio.add(objTablaPedidosListadoVerDetalles).setVisible(true);
+
+            switch (estado) {
+                case "Enviado":
+                    JOptionPane.showMessageDialog(this, "El pedido ya ha sido enviado.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+
+                case "Pendiente":
+                    Ven_tabla_pedido_listado_verdetalle objTablaPedidosListadoVerDetalles = new Ven_tabla_pedido_listado_verdetalle(codPedido);
+                    Ven_principal.escritorio.add(objTablaPedidosListadoVerDetalles).setVisible(true);
+                    break;
+            }
         }
     }//GEN-LAST:event_botonVerDetallesActionPerformed
 
     private void botonEliminarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarPedidoActionPerformed
         // BOTON BORRAR
-        int filaSelecionada = tablaPedidos.getSelectedRow();        
+        int filaSelecionada = tablaPedidos.getSelectedRow();
         if (filaSelecionada < 0) {
             JOptionPane.showMessageDialog(this, "Selecciona una fila de la tabla.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -440,7 +467,7 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
                         int cantidad = arLineaPedido.get(i).getCantidad();
                         double precioUnitario = arLineaPedido.get(i).getPrecioVenta();
                         double iva = arLineaPedido.get(i).getIva();
-                        
+
                         //SE GENERA UN NUEVO LINEA-ALBARAN CON LOS DATOS DE LINEA-PEDIDO.
                         objConAlbaranLinea.ingresoLineaAlbaran(codigoAlbaran, codArticulo, cantidad, precioUnitario, iva);
                     }

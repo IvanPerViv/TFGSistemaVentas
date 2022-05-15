@@ -302,10 +302,9 @@
     <Component class="javax.swing.JComboBox" name="jComboEstadoPedido">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="3">
-            <StringItem index="0" value="Pendiente"/>
-            <StringItem index="1" value="Enviado"/>
-            <StringItem index="2" value="Anulado"/>
+          <StringArray count="2">
+            <StringItem index="0" value="Enviado"/>
+            <StringItem index="1" value="Anulado"/>
           </StringArray>
         </Property>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">

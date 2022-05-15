@@ -7,10 +7,10 @@ public class Articulo {
 
     int codArticulo;
     String nombreProducto;
-    double precioCompra;
-    int stock, IVA, familia;
+    double precioCompra, IVA;
+    int stock, familia;
 
-    public Articulo(int cod_articulo, String nombre_producto, int familia, double precio_compra, int IVA, int stock) {
+    public Articulo(int cod_articulo, String nombre_producto, int familia, double precio_compra, double IVA, int stock) {
         this.codArticulo = cod_articulo;
         this.nombreProducto = nombre_producto;
         this.familia = familia;
@@ -27,11 +27,11 @@ public class Articulo {
         this.familia = familia;
     }
 
-    public int getIVA() {
+    public double getIVA() {
         return IVA;
     }
 
-    public void setIVA(int IVA) {
+    public void setIVA(double IVA) {
         this.IVA = IVA;
     }
 

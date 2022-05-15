@@ -150,6 +150,7 @@ Ventanas\Ven_localidad.class
 Ventanas\Ven_pedido$6.class
 Ventanas\Ven_login$1.class
 Ventanas\Ven_pedido_listado$3.class
+Conexiones\Con_factura_linea.class
 Ventanas\Ven_crear_usuario$5.class
 Ventanas\Ven_cliente$12.class
 Ventanas\Ven_pedido_listado$4.class

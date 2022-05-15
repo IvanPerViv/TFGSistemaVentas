@@ -29,7 +29,6 @@ public class Conexion extends javax.swing.JFrame {
     public void desconexion() {
         try {
             con.close();
-            System.out.println("Desconectar bd");
         } catch (SQLException ex) {
             System.err.println(ex.toString());
         }

@@ -4,8 +4,8 @@ import Conexiones.Con_albaran;
 import Conexiones.Con_cliente;
 import Conexiones.Con_pedido;
 import Modelos.Albaran;
-import static Ventanas.Ven_factura.datosAlbaranes;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -43,7 +43,6 @@ public class Ven_tabla_albaran extends javax.swing.JInternalFrame {
         }
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -63,7 +62,7 @@ public class Ven_tabla_albaran extends javax.swing.JInternalFrame {
 
         tablaAlbaranes.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         tablaAlbaranes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        tablaAlbaranes.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tablaAlbaranes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         buscadorAlbaranes.setViewportView(tablaAlbaranes);
 
         jButton1.setText("ENVIAR");
@@ -115,19 +114,31 @@ public class Ven_tabla_albaran extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int[] datosTablaAlbaran = tablaAlbaranes.getSelectedRows();
+        int cantidadFilas = tablaAlbaranes.getSelectedRowCount(); //SABER CUANTAS FILAS ESTAN SELECIONADAS
+        int filaSeleccionda = tablaAlbaranes.getSelectedRow(); // Fila SELECCIONADA
         
-        for (int i = 0; i < datosTablaAlbaran.length; i++) {            
-            int codigo = Integer.parseInt(tablaAlbaranes.getValueAt(i, 0).toString());
-            String codCliente = tablaAlbaranes.getValueAt(i, 1).toString();
-            int codPedido = Integer.parseInt(tablaAlbaranes.getValueAt(i, 2).toString());
-            System.out.println(codPedido);
-            String fecha = tablaAlbaranes.getValueAt(i, 3).toString();
+        if (cantidadFilas == 1) {
+            int codigo = Integer.parseInt(tablaAlbaranes.getValueAt(filaSeleccionda, 0).toString());
+            String codCliente = tablaAlbaranes.getValueAt(filaSeleccionda, 1).toString();
+            int codPedido = Integer.parseInt(tablaAlbaranes.getValueAt(filaSeleccionda, 2).toString());
+            String fecha = tablaAlbaranes.getValueAt(filaSeleccionda, 3).toString();
 
             Object[] fila = {codigo, codCliente, codPedido, fecha};
             Ven_factura.datosAlbaranes.addRow(fila);
+        } else {
+            int[] cantidadDeFilas = tablaAlbaranes.getSelectedRows();
+            
+            for (int i = 0; i < cantidadDeFilas.length; i++) {
+                int codigo = Integer.parseInt(tablaAlbaranes.getValueAt(i, 0).toString());
+                String codCliente = tablaAlbaranes.getValueAt(i, 1).toString();
+                int codPedido = Integer.parseInt(tablaAlbaranes.getValueAt(i, 2).toString());
+                String fecha = tablaAlbaranes.getValueAt(i, 3).toString();
+
+                Object[] fila = {codigo, codCliente, codPedido, fecha};
+                Ven_factura.datosAlbaranes.addRow(fila);
+            }
         }
-        
+
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

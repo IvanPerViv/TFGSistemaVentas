@@ -17,6 +17,7 @@
     clientes.nombre_comercial AS nombre_comercial,
     clientes.telefono AS telefono_cliente,
     clientes.dirrecion_fiscal AS direccion_fiscal,
+    clientes.codigo_postal AS codigo_postal,
     localidades.nombre_ciudad AS nombre_ciudad
 FROM
 lineas_albaran INNER JOIN albaran ON num_albaran = cod_albaran
@@ -44,6 +45,9 @@ where albaran.cod_albaran = $P!{codAlbaran}]]>
 	</field>
 	<field name="telefono_cliente" class="java.lang.Integer"/>
 	<field name="direccion_fiscal" class="java.lang.String"/>
+	<field name="codigo_postal" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="nombre_ciudad" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -121,29 +125,33 @@ where albaran.cod_albaran = $P!{codAlbaran}]]>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="20" width="51" height="20" uuid="67c58afa-9677-45f8-bb14-10609320c45b"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
+					<paragraph rightIndent="3"/>
 				</textElement>
 				<text><![CDATA[Nombre:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="0" width="51" height="20" uuid="59aa68c5-00fc-428a-9dfa-6ce8d94d3d3a"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
+					<paragraph rightIndent="3"/>
 				</textElement>
 				<text><![CDATA[ID:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="43" width="51" height="20" uuid="6aff0153-2139-434d-be80-65972109479a"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
+					<paragraph rightIndent="3"/>
 				</textElement>
 				<text><![CDATA[Dirección:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="229" y="20" width="49" height="20" uuid="9e9b81a7-20df-4aec-a80a-eb96e452dec3"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font isBold="true"/>
+				<reportElement x="251" y="20" width="49" height="20" uuid="9e9b81a7-20df-4aec-a80a-eb96e452dec3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+					<paragraph rightIndent="3"/>
 				</textElement>
 				<text><![CDATA[Telf:]]></text>
 			</staticText>
@@ -151,9 +159,10 @@ where albaran.cod_albaran = $P!{codAlbaran}]]>
 				<reportElement x="262" y="87" width="1" height="20" uuid="027a8f24-cb36-4244-a1e5-2f0e044cd499"/>
 			</line>
 			<staticText>
-				<reportElement x="229" y="43" width="49" height="20" uuid="303faf22-18d5-41cd-b658-4842a65f790e"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font isBold="true"/>
+				<reportElement x="251" y="43" width="49" height="20" uuid="303faf22-18d5-41cd-b658-4842a65f790e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+					<paragraph rightIndent="3"/>
 				</textElement>
 				<text><![CDATA[Ciudad:]]></text>
 			</staticText>
@@ -181,22 +190,22 @@ where albaran.cod_albaran = $P!{codAlbaran}]]>
 				<textFieldExpression><![CDATA[$F{codigo_cliente}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="51" y="20" width="138" height="20" uuid="9b1d97c9-7133-4465-887a-eafb629f062b"/>
+				<reportElement x="51" y="20" width="193" height="20" uuid="9b1d97c9-7133-4465-887a-eafb629f062b"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nombre_comercial}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="51" y="43" width="138" height="20" uuid="c585d5cb-fe42-4fed-a5a8-c40302e88169"/>
+				<reportElement x="51" y="43" width="193" height="20" uuid="c585d5cb-fe42-4fed-a5a8-c40302e88169"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{direccion_fiscal}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{direccion_fiscal}+" "+ $F{nombre_ciudad}+" "+$F{codigo_postal}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="278" y="43" width="100" height="20" uuid="016e2e65-c4e7-4a6e-b3e5-da2dc1650a30"/>
+				<reportElement x="300" y="43" width="100" height="20" uuid="016e2e65-c4e7-4a6e-b3e5-da2dc1650a30"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{nombre_ciudad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="278" y="20" width="99" height="20" uuid="ef4569c7-7332-4f57-9266-4be31ddfc80b"/>
+				<reportElement x="300" y="20" width="99" height="20" uuid="ef4569c7-7332-4f57-9266-4be31ddfc80b"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{telefono_cliente}]]></textFieldExpression>
 			</textField>
@@ -239,14 +248,9 @@ where albaran.cod_albaran = $P!{codAlbaran}]]>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="378" y="20" width="61" height="20" uuid="7f0622ce-b4f0-4882-b6a8-6c728bd0e243"/>
+				<reportElement x="388" y="20" width="94" height="20" uuid="7f0622ce-b4f0-4882-b6a8-6c728bd0e243"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement x="442" y="20" width="40" height="20" uuid="6995d57f-142e-43c9-b93f-ab5bcc3a296f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"+" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

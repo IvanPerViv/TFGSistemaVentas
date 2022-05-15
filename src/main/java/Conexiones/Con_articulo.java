@@ -17,7 +17,7 @@ public class Con_articulo {
         con = objConexion.conexion();
     }
 
-    public boolean ingresoDeArticulos(int codArticulo, String nombreProducto, int familia, double precioCompra, int iva, int stock) {
+    public boolean ingresoDeArticulos(int codArticulo, String nombreProducto, int familia, double precioCompra, double iva, int stock) {
         String query = "INSERT INTO `articulos`(`cod_articulo`, `nombre_producto`, `familia`, `precio_compra`, `IVA`,`stock`) VALUES (?,?,?,?,?,?)";
         int comprobacion = 0;
 
@@ -46,7 +46,7 @@ public class Con_articulo {
         }
     }
 
-    public boolean actualizarArticulos(int codArticulo, String nomProc, int familia, double precioCompra, String iva, String stock) {
+    public boolean actualizarArticulos(int codArticulo, String nomProc, int familia, double precioCompra, double iva, String stock) {
         int comprobacion = 0;
         String query = "UPDATE `articulos` set cod_articulo ='" + codArticulo
                 + "',nombre_producto ='" + nomProc
@@ -75,7 +75,7 @@ public class Con_articulo {
                     String nombrePoc = rs.getString(2);
                     int familia = rs.getInt(3);
                     double precioCompra = rs.getDouble(4);
-                    int iva = rs.getInt(5);
+                    double iva = rs.getDouble(5);
                     int stock = rs.getInt(6);
                     arArticulo.add(new Articulo(cod, nombrePoc, familia, precioCompra, iva, stock));
                 }

@@ -430,6 +430,9 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TFCantidadKeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                TFCantidadKeyTyped(evt);
+            }
         });
 
         txtCantidad1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -726,7 +729,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
     private void botonAgregarProcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarProcActionPerformed
         // Agregar Datos       
         int numVerificacionArticulo = objComprobaciones.verificacionCodigoPedido(TFNombreProc.getText(), tablaPedidos);
-        
+
         if (comprobacionCampos()) {
             if (numVerificacionArticulo == 0) { // VERIFICACION DE QUE EL ARTICULO NO SEA EL MISMO.
                 DefaultTableModel modelo = (DefaultTableModel) tablaPedidos.getModel();
@@ -761,11 +764,6 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_botonEliminarProcActionPerformed
 
-    private void TFCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFCantidadKeyReleased
-        objComprobaciones.ValidarNumeros(TFCantidad);
-        comprobarStock();
-    }//GEN-LAST:event_TFCantidadKeyReleased
-
     private void botonRealizarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRealizarPedidoActionPerformed
         // Boton realizar pedido //
         int Seleccionada = tablaPedidos.getRowCount();
@@ -781,14 +779,14 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
             String estado = "Pendiente";
             String area = AreaObs.getText();
 
-            boolean comprobacionPedido = objConPedidos.ingresoPedidos(numPedido, fechaDate, codigoCliente, estado, area);
+            boolean comprobacionPedido = objConPedidos.ingresoPedidos(numPedido, codigoCliente,fechaDate, estado, area);
 
             for (int i = 0; i < tablaPedidos.getRowCount(); i++) {
                 int codArticulo = Integer.parseInt(tablaPedidos.getValueAt(i, 0).toString());
                 String Producto = tablaPedidos.getValueAt(i, 1).toString();
                 int cantidad = Integer.parseInt(tablaPedidos.getValueAt(i, 2).toString());
                 double precioUnitario = Double.parseDouble(tablaPedidos.getValueAt(i, 3).toString());
-                double iva = Integer.parseInt(tablaPedidos.getValueAt(i, 4).toString());
+                double iva = Double.parseDouble(tablaPedidos.getValueAt(i, 4).toString());
                 objPedidoLinea.ingresoLineasPedidos(numPedido, codArticulo, cantidad, precioUnitario, iva); //TAABLA N:N
             }
 
@@ -803,6 +801,14 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
         bloquearCampos(false);
 
     }//GEN-LAST:event_botonRealizarPedidoActionPerformed
+
+    private void TFCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFCantidadKeyTyped
+        objComprobaciones.comprobacionNumeroEntero(evt);
+    }//GEN-LAST:event_TFCantidadKeyTyped
+
+    private void TFCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFCantidadKeyReleased
+        comprobarStock();
+    }//GEN-LAST:event_TFCantidadKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea AreaObs;
