@@ -99,13 +99,10 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
     }
 
     protected void generarNumeroPedido() {
-        int codArticulo = objConPedidos.codigoPedidos();
-        if (codArticulo != 0) {
-            int numero = objGenCod.generarCod(codArticulo);
-            TFnumPedido.setText(String.valueOf(numero));
-        } else {
-            TFnumPedido.setText("1");
-        }
+        int codPedido = objConPedidos.codigoPedidos();
+        int numero = objGenCod.generarCod(codPedido);
+
+        TFnumPedido.setText(codPedido != 0 ? String.valueOf(numero) : "1");
     }
 
     protected void cargaDeDatosArticulos() {
@@ -712,7 +709,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
 
     private void BotonBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarClienteActionPerformed
         // BOTON BUSCAR CLIENTE
-        String nombreDeClase = Thread.currentThread().getStackTrace()[1].getClassName().toString();
+        String nombreDeClase = "Ven_pedido";
 
         Ven_tabla_cliente objTabClie = new Ven_tabla_cliente(nombreDeClase);
         Ven_principal.escritorio.add(objTabClie).setVisible(true);
@@ -779,7 +776,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
             String estado = "Pendiente";
             String area = AreaObs.getText();
 
-            boolean comprobacionPedido = objConPedidos.ingresoPedidos(numPedido, codigoCliente,fechaDate, estado, area);
+            boolean comprobacionPedido = objConPedidos.ingresoPedidos(numPedido, codigoCliente, fechaDate, estado, area);
 
             for (int i = 0; i < tablaPedidos.getRowCount(); i++) {
                 int codArticulo = Integer.parseInt(tablaPedidos.getValueAt(i, 0).toString());

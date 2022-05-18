@@ -153,13 +153,13 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
         int fila = tablaClientes.getSelectedRow();
         if (evt.getClickCount() == 1) {
             switch (nombreClase) {
-                case "Ventanas.Ven_pedido":
+                case "Ven_pedido":
                     Ven_pedido.TFCodClie.setText(tablaClientes.getValueAt(fila, 0).toString());
                     Ven_pedido.TFNombreC.setText(tablaClientes.getValueAt(fila, 2).toString());
                     Ven_pedido.TFDir.setText(tablaClientes.getValueAt(fila, 5).toString() + " , " + tablaClientes.getValueAt(fila, 6).toString() + " " + tablaClientes.getValueAt(fila, 4).toString());
                     Ven_pedido.TFTel.setText(tablaClientes.getValueAt(fila, 7).toString());
                     break;
-                case "Ventanas.Ven_factura":
+                case "Ven_factura":
                     Ven_factura.TFCodClie.setText(tablaClientes.getValueAt(fila, 0).toString());
                     Ven_factura.TFNombreC.setText(tablaClientes.getValueAt(fila, 2).toString());
                     Ven_factura.TFDir.setText(tablaClientes.getValueAt(fila, 5).toString() + " , " + tablaClientes.getValueAt(fila, 6).toString() + " " + tablaClientes.getValueAt(fila, 4).toString());

@@ -2,7 +2,6 @@ package Ventanas;
 
 import Conexiones.Con_albaran;
 import Conexiones.Con_albaran_linea;
-import Conexiones.Con_articulo;
 import Conexiones.Con_pedido;
 import Conexiones.Con_pedido_linea;
 import Modelos.LineaPedido;
@@ -17,10 +16,8 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
 
     protected DefaultTableModel mostrarPedidos;
     protected Con_pedido objConPedidos;
-    protected Con_articulo objConArticulos;
     protected Con_pedido_linea obLineaPedido;
     protected Con_albaran objAlbaran;
-    protected Con_pedido_linea objConLineaPedido;
     protected Con_albaran_linea objConAlbaranLinea;
 
     protected final Comprobaciones objComprobaciones;
@@ -30,11 +27,9 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
         initComponents();
         objConPedidos = new Con_pedido();
         objComprobaciones = new Comprobaciones();
-        objConArticulos = new Con_articulo();
         obLineaPedido = new Con_pedido_linea();
         objAlbaran = new Con_albaran();
         objConAlbaranLinea = new Con_albaran_linea();
-        objConLineaPedido = new Con_pedido_linea();
 
         cargaDeDatosPedidos("");
     }
@@ -45,20 +40,6 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
         TFTotalPedido.setText("");
     }
 
-    // CARGAMOS LOS DATOS DE LINEA-PEDIDO y buscamos el dato de cantidad que queremos.
-    protected ArrayList cargaDeDatosLinea(int buscar) {
-        ArrayList<LineaPedido> arLineaPedido = new ArrayList<>();
-        ArrayList<Integer> numeros = new ArrayList<>();
-
-        arLineaPedido = objConLineaPedido.mostrarLineasPedidos(buscar);
-
-        for (int i = 0; i < arLineaPedido.size(); i++) {
-            int cantidad = arLineaPedido.get(i).getCantidad();
-            numeros.add(cantidad);
-        }
-        return numeros;
-    }
-
     protected void cargaDeDatosPedidos(String buscar) {
         String[] nombreTablas = {"CÓDIGO PEDIDO", "NOMBRE CLIENTE", "ESTADO", "FECHA"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         mostrarPedidos = new DefaultTableModel(null, nombreTablas);
@@ -66,8 +47,6 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
 
         ArrayList<Pedido> arPedidos = new ArrayList<>();
         arPedidos = objConPedidos.mostrarPedidos(buscar);
-
-        //COMPROBAMOS QUE LA CANTIDAD DE Linea-pedido no sea cero, de ser asi, que no muestre los datos.
         
         Object[] fila = new Object[nombreTablas.length];
         for (int i = 0; i < arPedidos.size(); i++) {

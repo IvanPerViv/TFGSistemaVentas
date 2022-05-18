@@ -2,7 +2,6 @@ Modelos\Localidad.class
 Ventanas\Ven_albaran_listado$2.class
 Ventanas\Ven_principal$13.class
 Ventanas\Ven_factura$2.class
-Ventanas\Ven_factura_listado$1.class
 Ventanas\Ven_cliente$6.class
 Conexiones\Conexion.class
 Ventanas\Ven_localidad$2.class
@@ -28,7 +27,6 @@ Utils\generacionDeCodigo.class
 Ventanas\Ven_tema.class
 Ventanas\Ven_localidad$7.class
 Ventanas\Ven_albaran_listado$3.class
-Ventanas\Ven_factura_listado$2.class
 Ventanas\Ven_factura$1.class
 Ventanas\Ven_cliente_tabla_localidad$2.class
 Ventanas\Ven_principal$3.class
@@ -53,7 +51,6 @@ Modelos\Albaran.class
 Modelos\LineaAlbaran.class
 Ventanas\Ven_crear_usuario.class
 Ventanas\Ven_tabla_articulo$2.class
-Ventanas\Ven_principal$14.class
 Ventanas\Ven_localidad$3.class
 Ventanas\Ven_principal$7.class
 Ventanas\Ven_cliente.class
@@ -101,7 +98,6 @@ Ventanas\Ven_articulo$11.class
 Modelos\Factura.class
 Ventanas\Ven_tabla_albaran.class
 Ventanas\Ven_pedido$5.class
-Utils\Propert.class
 Ventanas\Ven_factura$5.class
 Conexiones\Con_familia_articulo.class
 Ventanas\Ven_articulo_familia$6.class
@@ -113,6 +109,7 @@ Ventanas\Ven_articulo$8.class
 Ventanas\Ven_cliente$4.class
 Conexiones\Con_pedido_linea.class
 Ventanas\Ven_pais$6.class
+Utils\cargaBaseDatos.class
 Ventanas\Ven_cliente$3.class
 Ventanas\Ven_tema$1.class
 Modelos\LineaFactura.class
@@ -133,7 +130,6 @@ Ventanas\Ven_articulo$5.class
 Ventanas\Ven_login.class
 Modelos\Usuarios.class
 Ventanas\Ven_prov$6.class
-Ventanas\Ven_factura_listado.class
 Ventanas\Ven_albaran_listado$1.class
 Ventanas\Ven_tabla_articulo.class
 Ventanas\Ven_crear_usuario$6.class

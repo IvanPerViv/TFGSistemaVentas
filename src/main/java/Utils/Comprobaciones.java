@@ -26,8 +26,9 @@ public class Comprobaciones extends javax.swing.JFrame {
 
     public boolean comprobacionVentanaAbierta(JInternalFrame frame) {
         JInternalFrame[] ventansActivas = escritorio.getAllFrames();
-        for (int i = 0; i < ventansActivas.length; i++) {
-            if (frame.getClass().isInstance(ventansActivas[i])) {
+        
+        for(JInternalFrame jif : ventansActivas){
+            if (frame.getClass().isInstance(jif)) {
                 JOptionPane.showMessageDialog(this, "La ventana '" + frame.getTitle() + "' esta en uso.", "Información", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             }
@@ -87,7 +88,7 @@ public class Comprobaciones extends javax.swing.JFrame {
 
     public void comprobacionNumeroDecimal(KeyEvent evt) {
         char caracter = evt.getKeyChar();
-        if ((caracter < '0' || caracter > '9') && (caracter != '.') && (caracter != ',')) {
+        if ((caracter < '0' || caracter > '9') && caracter != '.' && caracter != ',') {
             evt.consume();
         }
     }

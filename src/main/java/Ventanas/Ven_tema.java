@@ -1,5 +1,6 @@
 package Ventanas;
 
+import Utils.Comprobaciones;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
@@ -9,29 +10,26 @@ import javax.swing.UIManager;
  */
 public class Ven_tema extends javax.swing.JInternalFrame {
 
-    int tema;
-
     public Ven_tema() {
         initComponents();
     }
 
-    public void cambiarDeTema(int tema) {
+    public void cambiarDeTema(String tema) {
         try {
             switch (tema) {
-                case 0:
+                case "modoClaro":
                     UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatLightLaf());
                     dispose();
                     break;
-                case 1:
+                case "modoOscuro":
                     UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatDarkLaf());
                     dispose();
                     break;
-                case 2:
+                case "modoWindows":
                     UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
                     dispose();
-                    break;    
-                    
-                    
+                    break;
+
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -355,13 +353,13 @@ public class Ven_tema extends javax.swing.JInternalFrame {
         int seleccion = JOptionPane.showConfirmDialog(this, "Importante, cierre antes TODAS la ventanas para continuar.", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (seleccion == 0) {
             if (jRadioButton1.isSelected()) {
-                cambiarDeTema(0);
+                cambiarDeTema("modoClaro");
             }
             if (jRadioButton2.isSelected()) {
-                cambiarDeTema(1);
+                cambiarDeTema("modoOscuro");
             }
             if (jRadioButton3.isSelected()) {
-                cambiarDeTema(2);
+                cambiarDeTema("modoWindows");
             }
         }
     }//GEN-LAST:event_botonAplicarActionPerformed

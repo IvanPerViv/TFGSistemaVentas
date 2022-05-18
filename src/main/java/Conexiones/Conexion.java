@@ -1,6 +1,6 @@
 package Conexiones;
 
-import Utils.Propert;
+import Utils.cargaBaseDatos;
 import java.sql.*;
 
 /**
@@ -11,10 +11,10 @@ public class Conexion extends javax.swing.JFrame {
 
     protected Connection con = null;
     protected PreparedStatement pst;
-    protected Propert prop;
+    protected cargaBaseDatos prop;
 
     public Conexion() {
-        prop = new Propert();
+        prop = new cargaBaseDatos();
     }
 
     public Connection conexion() {

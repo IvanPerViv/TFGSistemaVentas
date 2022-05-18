@@ -9,6 +9,7 @@ D:\TFG\SistemaVentasTFGIvan\src\main\java\Modelos\LineaFactura.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_pedido_listado.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Modelos\Albaran.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Conexiones\Conexion.java
+D:\TFG\SistemaVentasTFGIvan\src\main\java\Utils\cargaBaseDatos.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Utils\Comprobaciones.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_articulo_familia.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_tema.java
@@ -25,7 +26,6 @@ D:\TFG\SistemaVentasTFGIvan\src\main\java\Conexiones\Con_localidad_prov_pais.jav
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Conexiones\Con_pedido_linea.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_cliente.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_prov.java
-D:\TFG\SistemaVentasTFGIvan\src\main\java\Utils\Propert.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_pedido.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_login.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_cliente_tabla_localidad.java
@@ -35,7 +35,6 @@ D:\TFG\SistemaVentasTFGIvan\src\main\java\Conexiones\Con_factura.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Modelos\LineaPedido.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_tabla_pedido_listado_verdetalle.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Conexiones\Con_familia_articulo.java
-D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_factura_listado.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Modelos\Articulo.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Ventanas\Ven_tabla_albaran.java
 D:\TFG\SistemaVentasTFGIvan\src\main\java\Modelos\Cliente.java

@@ -58,5 +58,4 @@ public class LineaPedido {
     public void setIva(double iva) {
         this.iva = iva;
     }
-
 }

@@ -17,20 +17,21 @@ import javax.swing.table.DefaultTableModel;
 public class Ven_cliente extends javax.swing.JInternalFrame {
 
     protected DefaultTableModel datosClientes;
-    protected final String DATOVACIO = "";
-    
-    protected Con_localidad_prov_pais objLocal;
-    protected Con_cliente objConexionClientes;
-    protected Comprobaciones objComprobacione;
+
+    protected Con_localidad_prov_pais objConLocal;
+    protected Con_cliente objConClientes;
+    protected Comprobaciones objComprobaciones;
+    protected generacionDeCodigo objGenCod;
 
     public Ven_cliente() {
         initComponents();
-        objLocal = new Con_localidad_prov_pais();
-        objConexionClientes = new Con_cliente();
-        objComprobacione = new Comprobaciones();
-        
+        objConLocal = new Con_localidad_prov_pais();
+        objConClientes = new Con_cliente();
+        objComprobaciones = new Comprobaciones();
+        objGenCod = new generacionDeCodigo();
+
         bloquear(false);
-        cargaDeDatosClientes(DATOVACIO);
+        cargaDeDatosClientes("");
         TFCodigo.setEnabled(false);
         TFCiudad.setEnabled(false);
     }
@@ -65,15 +66,10 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
     }
 
     protected void generarCodigoCliente() {
-        Con_cliente con = new Con_cliente();
-        int codigoCliente = con.codigoClientes();
-        if (codigoCliente != 0) {
-            generacionDeCodigo objGenCod = new generacionDeCodigo();
-            int numero = objGenCod.generarCod(codigoCliente);
-            TFCodigo.setText(String.valueOf(numero));
-        } else {
-            TFCodigo.setText("1");
-        }
+        int codigoCliente = objConClientes.codigoClientes();
+        int numero = objGenCod.generarCod(codigoCliente);
+        
+        TFCodigo.setText(codigoCliente != 0 ? String.valueOf(numero): "1");
     }
 
     protected void cargaDeDatosClientes(String buscar) {
@@ -84,7 +80,7 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
         Object[] fila = new Object[nombreTablas.length];
 
         ArrayList<Cliente> clieArray = new ArrayList<Cliente>();
-        clieArray = objConexionClientes.mostrarClientesYBusqueda(buscar);
+        clieArray = objConClientes.mostrarClientesYBusqueda(buscar);
 
         for (int i = 0; i < clieArray.size(); i++) {
             fila[0] = clieArray.get(i).getCodClientes();
@@ -93,7 +89,7 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
             fila[3] = clieArray.get(i).getNif();
             fila[4] = clieArray.get(i).getCodPostal();
             fila[5] = clieArray.get(i).getDirFiscal();
-            fila[6] = objLocal.consultarLocalidadNombre(clieArray.get(i).getLocalidad()); //Integer.parseInt
+            fila[6] = objConLocal.consultarLocalidadNombre(clieArray.get(i).getLocalidad()); //Integer.parseInt
             fila[7] = clieArray.get(i).getTelf();
             fila[8] = clieArray.get(i).getEmail();
             datosClientes.addRow(fila);
@@ -102,25 +98,25 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
 
     protected boolean comprobacionCampos() {
         boolean comprobacion = true;
-        if (objComprobacione.comprobacionJTextField(TFNif)) {
+        if (objComprobaciones.comprobacionJTextField(TFNif)) {
             comprobacion = false;
         }
-        if (objComprobacione.comprobacionJTextField(TFNombre)) {
+        if (objComprobaciones.comprobacionJTextField(TFNombre)) {
             comprobacion = false;
         }
-        if (objComprobacione.comprobacionJTextField(TFNombreComercial)) {
+        if (objComprobaciones.comprobacionJTextField(TFNombreComercial)) {
             comprobacion = false;
         }
-        if (objComprobacione.comprobacionJTextField(TFDir)) {
+        if (objComprobaciones.comprobacionJTextField(TFDir)) {
             comprobacion = false;
         }
-        if (objComprobacione.comprobacionJTextField(TFCp)) {
+        if (objComprobaciones.comprobacionJTextField(TFCp)) {
             comprobacion = false;
         }
-        if (objComprobacione.comprobacionJTextField(TFTelef)) {
+        if (objComprobaciones.comprobacionJTextField(TFTelef)) {
             comprobacion = false;
         }
-        if (objComprobacione.comprobacionJTextField(TFEmail)) {
+        if (objComprobaciones.comprobacionJTextField(TFEmail)) {
             comprobacion = false;
         }
         return comprobacion;
@@ -559,15 +555,15 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
             String nif = TFNif.getText();
             int codPostal = Integer.parseInt(TFCp.getText());
             String dirrecion = TFDir.getText();
-            int localidad = objLocal.consultarLocalidad(TFCiudad.getText());
+            int localidad = objConLocal.consultarLocalidad(TFCiudad.getText());
             int telef = Integer.parseInt(TFTelef.getText());
             String email = TFEmail.getText();
 
-            boolean comprobacion = objConexionClientes.ingresoClientes(codigoUser, nombre, nombreComercial, nif, codPostal, dirrecion, localidad, telef, email);
+            boolean comprobacion = objConClientes.ingresoClientes(codigoUser, nombre, nombreComercial, nif, codPostal, dirrecion, localidad, telef, email);
 
             if (comprobacion == true) {
                 JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-                cargaDeDatosClientes(DATOVACIO);
+                cargaDeDatosClientes("");
                 limpiarDatos();
                 bloquear(false);
                 botonNuevo.setEnabled(true);
@@ -584,8 +580,8 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
         int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea eliminar el registro?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
         if (seleccion == 0) {
             int codigoUser = Integer.parseInt(TFCodigo.getText());
-            objConexionClientes.eliminarRegistroCliente(codigoUser);
-            cargaDeDatosClientes(DATOVACIO);
+            objConClientes.eliminarRegistroCliente(codigoUser);
+            cargaDeDatosClientes("");
             JOptionPane.showMessageDialog(this, "Datos eliminados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
 
@@ -618,15 +614,15 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
         String nif = TFNif.getText();
         int codPostal = Integer.parseInt(TFCp.getText());
         String dirrecion = TFDir.getText();
-        int localidad = objLocal.consultarLocalidad(TFCiudad.getText());
+        int localidad = objConLocal.consultarLocalidad(TFCiudad.getText());
         int telef = Integer.parseInt(TFTelef.getText());
         String email = TFEmail.getText();
 
-        boolean comprobacion = objConexionClientes.actualizarClientes(codigoUser, nombre, nombreComercial, nif, codPostal, dirrecion, localidad, telef, email);
+        boolean comprobacion = objConClientes.actualizarClientes(codigoUser, nombre, nombreComercial, nif, codPostal, dirrecion, localidad, telef, email);
 
         if (comprobacion != true) {
             JOptionPane.showMessageDialog(this, "Datos actualizados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-            cargaDeDatosClientes(DATOVACIO);
+            cargaDeDatosClientes("");
             bloquear(false);
             botonNuevo.setEnabled(true);
             limpiarDatos();
@@ -673,7 +669,7 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_TFEmailKeyReleased
 
     private void TFCpFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TFCpFocusLost
-        objComprobacione.ValidarCodigoPostal(TFCp);
+        objComprobaciones.ValidarCodigoPostal(TFCp);
     }//GEN-LAST:event_TFCpFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

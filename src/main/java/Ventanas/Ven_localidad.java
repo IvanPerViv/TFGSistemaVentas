@@ -31,7 +31,7 @@ public class Ven_localidad extends javax.swing.JInternalFrame {
         objetoLocalidad = new Con_localidad_prov_pais();
         objGenCod = new generacionDeCodigo();
         objComprobaciones = new Comprobaciones();
-        
+
         cargarDatosLocalidad("");
         TFCodigoLocal.setEnabled(false);
         bloquear(false);
@@ -52,13 +52,10 @@ public class Ven_localidad extends javax.swing.JInternalFrame {
     }
 
     protected void generarCodigoProvincia() {
-        int codProv = objetoLocalidad.codigoProv();
-        if (codProv != 0) {
-            int numero = objGenCod.generarCod(codProv);
-            TFCodigoLocal.setText(String.valueOf(numero));
-        } else {
-            TFCodigoLocal.setText("1");
-        }
+        int codLocalidad = objetoLocalidad.codigoLocalidad();
+        int numero = objGenCod.generarCod(codLocalidad);
+
+        TFCodigoLocal.setText(codLocalidad != 0 ? String.valueOf(numero) : "1");
     }
 
     protected void cargarDatosLocalidad(String buscar) {

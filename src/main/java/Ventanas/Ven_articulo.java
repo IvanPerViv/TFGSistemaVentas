@@ -19,18 +19,20 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
     protected Con_articulo objArticulo;
     protected Con_familia_articulo objFamilias;
     protected final Comprobaciones objComprobaciones;
+    protected generacionDeCodigo objGenCod;
 
     protected DefaultTableModel art;
-    protected final String DATOVACIO = "";
 
     public Ven_articulo() {
         initComponents();
         objArticulo = new Con_articulo();
         objFamilias = new Con_familia_articulo();
         objComprobaciones = new Comprobaciones();
+        objGenCod = new generacionDeCodigo();
+        
 
         bloquearBotones(false);
-        cargaDeDatosArticulos(DATOVACIO);
+        cargaDeDatosArticulos("");
         TFCodigo.setEnabled(false);
         TFFamilia.setEnabled(false);
     }
@@ -57,14 +59,10 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
     }
 
     protected void generarCodigoArticulo() {
-        int codArticulo = objArticulo.codigoArticulos();
-        if (codArticulo != 0) {
-            generacionDeCodigo objGenCod = new generacionDeCodigo();
-            int numero = objGenCod.generarCod(codArticulo);
-            TFCodigo.setText(String.valueOf(numero));
-        } else {
-            TFCodigo.setText("1");
-        }
+        int codigoArticulo = objArticulo.codigoArticulos();
+        int numero = objGenCod.generarCod(codigoArticulo);
+        
+        TFCodigo.setText(codigoArticulo != 0 ? String.valueOf(numero): "1");
     }
 
     protected void cargaDeDatosArticulos(String buscar) {
@@ -479,7 +477,7 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
 
         if (comprobacion != true) {
             JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-            cargaDeDatosArticulos(DATOVACIO);
+            cargaDeDatosArticulos("");
             limpiarDatos();
             bloquearBotones(false);
         }
@@ -492,7 +490,7 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
         if (seleccion == 0) {
             int codigoUser = Integer.parseInt(TFCodigo.getText());
             objArticulo.eliminarRegistroArticulo(codigoUser);
-            cargaDeDatosArticulos(DATOVACIO);
+            cargaDeDatosArticulos("");
             JOptionPane.showMessageDialog(this, "Datos eliminados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_botonEliminarActionPerformed
@@ -527,7 +525,7 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
 
             if (comprobacion == true) {
                 JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Información", JOptionPane.INFORMATION_MESSAGE);
-                cargaDeDatosArticulos(DATOVACIO);
+                cargaDeDatosArticulos("");
                 limpiarDatos();
                 bloquearBotones(false);
                 botonNuevo.setEnabled(true);

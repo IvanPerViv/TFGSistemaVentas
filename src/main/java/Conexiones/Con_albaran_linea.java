@@ -75,18 +75,4 @@ public class Con_albaran_linea {
         return comprobacion > 0;
     }
 
-    public int maxCodLineaAlbaran() {
-        String query = "select max(cod_linea_albaran) from `lineas_albaran`";
-        int codigo = 0;
-        try ( PreparedStatement pst = con.prepareStatement(query)) {
-            try ( ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    codigo = rs.getInt(1);
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
-        }
-        return codigo;
-    }
-}
+  }

@@ -14,14 +14,14 @@ public class Ven_login extends javax.swing.JFrame {
 
     protected Con_usuario objUsers;
     protected Icono obIcon = new Icono();
-    
+
     public Ven_login() {
         initComponents();
-        objUsers = new Con_usuario();   
-        
+        objUsers = new Con_usuario();
+
         obIcon.getIconImage("VI_login/user_1.png");
         setLocationRelativeTo(null);
-        
+
     }
 
     public void tema() {
@@ -228,19 +228,16 @@ public class Ven_login extends javax.swing.JFrame {
     private void BotonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonLoginActionPerformed
         String usuario = usuarioText.getText();
         String pass = passText.getText();
+        try {
+            Usuarios objUsuarios = objUsers.recuperarDatosUsuarios(usuario, pass);
+            String rolUsuario = objUsers.mostrarNombreRol(objUsuarios.getRol());
 
-        Usuarios objUsuarios = objUsers.recuperarDatosUsuarios(usuario, pass);
-        String rolUsuario = objUsers.mostrarNombreRol(objUsuarios.getRol());
-
-        if (!Objects.isNull(objUsuarios)) {
             if (usuario.equals(objUsuarios.getUsuario()) && pass.equals(objUsuarios.getContraseña())) {
                 new Ven_principal(rolUsuario, usuario).setVisible(true);
                 dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Usuario incorrecto.", "ERROR!", JOptionPane.ERROR_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Creedenciales incorrectas.", "ERROR!", JOptionPane.ERROR_MESSAGE);
+        } catch (NullPointerException ex) {
+            JOptionPane.showMessageDialog(this, "Creedenciales incorrectas.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_BotonLoginActionPerformed
 

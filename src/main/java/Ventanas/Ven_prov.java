@@ -27,7 +27,7 @@ public class Ven_prov extends javax.swing.JInternalFrame {
         objetoProv = new Con_localidad_prov_pais();
         objGenCod = new generacionDeCodigo();
         objComprobaciones = new Comprobaciones();
-        
+
         cargarDatosProvincia("");
         TFProv.setEnabled(false);
         bloquear(false);
@@ -48,12 +48,9 @@ public class Ven_prov extends javax.swing.JInternalFrame {
 
     protected void generarCodigoProvincia() {
         int codProv = objetoProv.codigoProv();
-        if (codProv != 0) {
-            int numero = objGenCod.generarCod(codProv);
-            TFProv.setText(String.valueOf(numero));
-        } else {
-            TFProv.setText("1");
-        }
+        int numero = objGenCod.generarCod(codProv);
+
+        TFProv.setText(codProv != 0 ? String.valueOf(numero) : "1");
     }
 
     protected void cargarDatosProvincia(String buscar) {

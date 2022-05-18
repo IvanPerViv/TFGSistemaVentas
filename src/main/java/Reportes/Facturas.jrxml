@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Factura" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d22696a7-3e7e-4b09-9f2b-5e7c5c3640c9">
-	<property name="ireport.zoom" value="1.4641000000000026"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="numCliente" class="java.lang.Integer">
@@ -35,8 +35,7 @@ INNER JOIN clientes ON pedidos.cod_cliente = clientes.cod_cliente
 INNER JOIN localidades ON clientes.localidad_fiscal = localidades.cod_localidad
 INNER JOIN factura on clientes.cod_cliente = factura.cliente
 INNER JOIN lineas_factura ON factura.cod_factura = lineas_factura.num_factura
-where clientes.cod_cliente = $P{numCliente}
-GROUP BY nombre_prodcuto]]>
+where clientes.cod_cliente = $P{numCliente} group by lineas_factura.num_factura]]>
 	</queryString>
 	<field name="cantidad" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -269,16 +268,14 @@ GROUP BY nombre_prodcuto]]>
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="434" y="1" width="63" height="19" uuid="2dd14544-dc90-48a1-bc42-b2e0bb04a0d4"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isStrikeThrough="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{precio_uni}+"€"]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="499" y="1" width="56" height="20" uuid="92071983-32be-47e0-8953-b323e912ee39"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{iva}+"%"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="434" y="1" width="63" height="20" uuid="c55f19a5-3143-4169-a57e-6278294a9dc4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{precio_uni}+"€"]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

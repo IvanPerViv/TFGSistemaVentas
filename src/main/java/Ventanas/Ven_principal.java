@@ -67,7 +67,6 @@ public class Ven_principal extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         BH_ventas1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
         BH_ayuda = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
 
@@ -316,19 +315,6 @@ public class Ven_principal extends javax.swing.JFrame {
         });
         BH_ventas1.add(jMenuItem3);
 
-        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        jMenuItem5.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/listado.png"))); // NOI18N
-        jMenuItem5.setText("Listado facturas.");
-        jMenuItem5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenuItem5.setPreferredSize(new java.awt.Dimension(280, 60));
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
-            }
-        });
-        BH_ventas1.add(jMenuItem5);
-
         barraSupHerra.add(BH_ventas1);
 
         BH_ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_principal/conf.png"))); // NOI18N
@@ -436,11 +422,6 @@ public class Ven_principal extends javax.swing.JFrame {
         mostarVentana(vFacturas);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        Ven_factura_listado vFacturasListado = new Ven_factura_listado();
-        mostarVentana(vFacturasListado);
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu BH_articulos;
     private javax.swing.JMenu BH_ayuda;
@@ -465,7 +446,6 @@ public class Ven_principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;

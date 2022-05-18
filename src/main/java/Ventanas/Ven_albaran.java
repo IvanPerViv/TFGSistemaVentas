@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -44,7 +45,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
     protected Con_localidad_prov_pais objConLocal;
     protected Con_albaran_linea objConLineaAlbaran;
     protected Con_pedido objConPedidos;
-    protected Conexion objCon;
+    protected Conexion con;
     protected Con_pedido_linea objConPedidoLinea;
 
     protected int numAlbaran;
@@ -58,6 +59,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         objConLocal = new Con_localidad_prov_pais();
         objConLineaAlbaran = new Con_albaran_linea();
         objConPedidos = new Con_pedido();
+        con = new Conexion();
         objConPedidoLinea = new Con_pedido_linea();
 
         cargaDeDatosArticulos(codAlbaran);
@@ -146,18 +148,6 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
 
             dftAlbaran.addRow(fila);
         }
-    }
-
-    protected int generarCodigoAlbaran() {
-        int numero;
-        int codigoAlbaran = objConAlbaran.codigoAlbaran();
-        if (codigoAlbaran != 0) {
-            generacionDeCodigo objGenCod = new generacionDeCodigo();
-            numero = objGenCod.generarCod(codigoAlbaran);
-        } else {
-            numero = 1;
-        }
-        return numero;
     }
 
     protected int generarCodigoPedido() {
@@ -417,7 +407,6 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         int numPedido = generarCodigoPedido();
         Map<String, Object> params = new HashMap<>();
 
-        
         for (int i = 0; i < tablaAlbaran.getRowCount(); i++) {
             int codArticulo = Integer.parseInt(tablaAlbaran.getValueAt(i, 0).toString());
             int producto = objConArticulos.mostrarCodigoArticulo(tablaAlbaran.getValueAt(i, 1).toString());
@@ -427,65 +416,55 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
             int cantidadFinal = cantidadPedida - cantidadEnviar;
             if (cantidadPedida >= cantidadEnviar) {
                 //UPDATE DE LOS ARTICULOS RESTANTES A ENVIAR
-                objConLineaAlbaran.actualizarLineaAlbaran(cantidadFinal, numeroAlbaran, codArticulo);
-                
+                objConLineaAlbaran.actualizarLineaAlbaran(cantidadEnviar, numeroAlbaran, codArticulo);
+
                 try {
                     SimpleDateFormat a = new SimpleDateFormat("dd-MM-yyyy");
                     Date date = a.parse(TFDate.getText());
                     long fechaConversion = date.getTime();
                     java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
 
-                    if (cantidadPedida > 0) {
+                    if (cantidadFinal > 0) {
                         //CREAMOS UN NUEVO PEDIDO
                         objConPedidos.ingresoPedidos(numPedido, Integer.parseInt(TFCodClie.getText()), fechaDate, "Pendiente", "");
                         // Nueva Linea de PEDIDO
                         objConPedidoLinea.ingresoLineasPedidos(numPedido, codArticulo, cantidadFinal, precioUnitario, iva);
-                        
-                        //ACTUALIZAMOS LINEA-ALBARAN
-                        objConAlbaran.actualizarEstadoAlbaran(numeroAlbaran, "Enviado");
                     }
-
+                    //ACTUALIZAMOS ALBARAN
+                    objConAlbaran.actualizarEstadoAlbaran(numeroAlbaran, "Enviado");
                 } catch (ParseException ex) {
                     Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                
-
-                params.put("codAlbaran", numeroAlbaran);
-                params.put("cantidadEnviada", cantidadEnviar);
-
                 // LUEGO RESTAMOS LA CANTIDAD ELEGIDA DEL STOCK
                 objConArticulos.actualizarStock(cantidadEnviar, codArticulo);
-
+                params.put("codAlbaran", numeroAlbaran);
             }
-
         }
-//        JOptionPane.showMessageDialog(this, "Sus articulos han sido enviados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-//        int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea generar un informe e imprimirlo?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-//        if (seleccion == 0) {
-//            try {
-//                Connection con = null;
-//                // GENERAMOS UN DOCUMENTO JASPER REPORT
-//                con = DriverManager.getConnection("jdbc:mysql://localhost/sistema_ventas", "root", "");
-//                con.setAutoCommit(false);
-//
-//                String ubicacion = "src/main/java/reportes/Albaran.jrxml";
-//                JasperReport jasperReport = JasperCompileManager.compileReport(ubicacion);
-//                JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, con);
-//                JasperViewer.viewReport(jasperPrint, false);
-//
-//                try {
-//                    if (con != null) {
-//                        con.rollback();
-//                        con.close();
-//                    }
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            } catch (JRException | SQLException | NumberFormatException ex) {
-//                Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        JOptionPane.showMessageDialog(this, "Sus articulos han sido enviados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+        int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea generar un informe e imprimirlo?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        if (seleccion == 0) {
+            try {
+                Connection conn = con.conexion();
+                String ubicacion = "src/main/java/reportes/Albaran.jrxml";
+
+                JasperReport jasperReport = JasperCompileManager.compileReport(ubicacion);
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, conn);
+
+                int comprobacion = JOptionPane.showConfirmDialog(this, "¿Desea exportar el archivo a PDF?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION);
+                if (comprobacion == 0) {
+                    //EXPORTAR A PDF.
+                    String nombreArchivoPDF = JOptionPane.showInputDialog("Introduzca el nombre para el PDF: ");
+
+                    JasperExportManager.exportReportToPdfFile(jasperPrint, "reportes_PDF/" + nombreArchivoPDF + ".pdf");
+                    JasperViewer.viewReport(jasperPrint, false);
+                } else {
+                    JasperViewer.viewReport(jasperPrint, false);
+                }
+                con.desconexion();
+            } catch (JRException | NumberFormatException ex) {
+                Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         dispose();
     }//GEN-LAST:event_botonEnviarActionPerformed
 

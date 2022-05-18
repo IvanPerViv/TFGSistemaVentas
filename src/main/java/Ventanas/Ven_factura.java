@@ -8,13 +8,10 @@ import Modelos.LineaPedido;
 import Utils.Comprobaciones;
 import Utils.generacionDeCodigo;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -108,13 +105,10 @@ public class Ven_factura extends javax.swing.JInternalFrame {
     }
 
     protected void generarNumeroFactura() {
-        int codFactura = objConFactura.codigoFactura();
-        if (codFactura != 0) {
-            int numero = objGenCod.generarCod(codFactura);
-            TFNumFactura.setText(String.valueOf(numero));
-        } else {
-            TFNumFactura.setText("1");
-        }
+         int codFactura = objConFactura.codigoFactura();
+         int numero = objGenCod.generarCod(codFactura);
+        
+        TFNumFactura.setText(codFactura != 0 ? String.valueOf(numero): "1");
     }
 
     protected void calcularPedido() {
@@ -574,7 +568,7 @@ public class Ven_factura extends javax.swing.JInternalFrame {
 
     private void BotonBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarClienteActionPerformed
         // BOTON BUSCAR CLIENTE
-        String nombreDeClase = Thread.currentThread().getStackTrace()[1].getClassName().toString();
+        String nombreDeClase = "Ven_factura";
 
         Ven_tabla_cliente objTabClie = new Ven_tabla_cliente(nombreDeClase);
         Ven_principal.escritorio.add(objTabClie).setVisible(true);

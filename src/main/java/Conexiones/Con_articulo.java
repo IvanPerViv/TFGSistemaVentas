@@ -176,20 +176,4 @@ public class Con_articulo {
 
     }
 
-    //DEVOLVER EL NUMERO DE STOCK POR ARTICULO
-    public int mostrarStockArticulo(int codPedido) {
-        String query = "SELECT stock FROM `articulos` WHERE cod_articulo=" + codPedido;
-        int resultado = 0;
-        try (PreparedStatement pst = con.prepareStatement(query)) {
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    resultado = rs.getInt(1);
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
-        }
-        return resultado;
-    }
-
 }

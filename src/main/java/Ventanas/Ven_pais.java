@@ -22,7 +22,7 @@ public class Ven_pais extends javax.swing.JInternalFrame {
         objPais = new Con_localidad_prov_pais();
         objGenCod = new generacionDeCodigo();
         objComprobaciones = new Comprobaciones();
-        
+
         cargarDatosPais("");
         TFCodPais.setEnabled(false);
         bloquear(false);
@@ -42,12 +42,9 @@ public class Ven_pais extends javax.swing.JInternalFrame {
 
     protected void generarCodigoPais() {
         int codPais = objPais.codigoPais();
-        if (codPais != 0) {
-            int numero = objGenCod.generarCod(codPais);
-            TFCodPais.setText(String.valueOf(numero));
-        } else {
-            TFCodPais.setText("1");
-        }
+        int numero = objGenCod.generarCod(codPais);
+
+        TFCodPais.setText(codPais != 0 ? String.valueOf(numero) : "1");
     }
 
     protected void cargarDatosPais(String buscar) {
