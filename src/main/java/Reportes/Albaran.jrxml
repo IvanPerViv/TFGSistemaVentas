@@ -98,33 +98,34 @@ where albaran.cod_albaran = $P!{codAlbaran}]]>
 		</band>
 	</title>
 	<columnHeader>
-		<band height="90">
+		<band height="107">
 			<rectangle>
-				<reportElement x="0" y="70" width="337" height="20" forecolor="#FF9900" backcolor="#FFC6AA" uuid="ea71c352-f106-4b1e-a9d7-ddae0a840636"/>
+				<reportElement x="0" y="86" width="337" height="20" forecolor="#FF9900" backcolor="#FFC6AA" uuid="ea71c352-f106-4b1e-a9d7-ddae0a840636"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="1" y="71" width="162" height="19" uuid="2113ceba-a8e1-47c9-aa05-bf489a77f861"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement x="1" y="87" width="162" height="19" uuid="2113ceba-a8e1-47c9-aa05-bf489a77f861"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12" isBold="true"/>
+					<paragraph leftIndent="3"/>
 				</textElement>
 				<text><![CDATA[NOMBRE ARTICULO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="275" y="70" width="52" height="20" uuid="af8700db-f6ee-4d17-abf4-08a236b678bf"/>
+				<reportElement x="275" y="86" width="52" height="20" uuid="af8700db-f6ee-4d17-abf4-08a236b678bf"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PRECIO UNI.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="165" y="70" width="68" height="20" uuid="3f846eaa-6c65-4ff0-a869-bbecfbd19fa4"/>
+				<reportElement x="165" y="86" width="68" height="20" uuid="3f846eaa-6c65-4ff0-a869-bbecfbd19fa4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CANTIDAD]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="236" y="70" width="36" height="20" uuid="f90b77e9-58d7-4504-a006-e421218d2f35"/>
+				<reportElement x="236" y="86" width="36" height="20" uuid="f90b77e9-58d7-4504-a006-e421218d2f35"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12" isBold="true"/>
 				</textElement>
@@ -139,7 +140,7 @@ where albaran.cod_albaran = $P!{codAlbaran}]]>
 				<text><![CDATA[Nombre:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="236" y="0" width="48" height="20" uuid="6aff0153-2139-434d-be80-65972109479a"/>
+				<reportElement x="49" y="41" width="48" height="20" uuid="6aff0153-2139-434d-be80-65972109479a"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" isBold="true"/>
 					<paragraph rightIndent="3"/>
@@ -147,7 +148,7 @@ where albaran.cod_albaran = $P!{codAlbaran}]]>
 				<text><![CDATA[Dirección:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="236" y="20" width="48" height="20" uuid="9e9b81a7-20df-4aec-a80a-eb96e452dec3"/>
+				<reportElement x="234" y="41" width="48" height="20" uuid="9e9b81a7-20df-4aec-a80a-eb96e452dec3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" isBold="true" isStrikeThrough="false"/>
 					<paragraph rightIndent="3"/>
@@ -163,7 +164,7 @@ where albaran.cod_albaran = $P!{codAlbaran}]]>
 				<textFieldExpression><![CDATA[$F{nombre_comercial}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="284" y="0" width="127" height="20" uuid="c585d5cb-fe42-4fed-a5a8-c40302e88169"/>
+				<reportElement x="97" y="41" width="136" height="20" uuid="c585d5cb-fe42-4fed-a5a8-c40302e88169"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma"/>
 					<paragraph leftIndent="3"/>
@@ -171,7 +172,7 @@ where albaran.cod_albaran = $P!{codAlbaran}]]>
 				<textFieldExpression><![CDATA[$F{direccion_fiscal}+" "+ $F{nombre_ciudad}+" "+$F{codigo_postal}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="284" y="20" width="127" height="20" uuid="ef4569c7-7332-4f57-9266-4be31ddfc80b"/>
+				<reportElement x="282" y="41" width="127" height="20" uuid="ef4569c7-7332-4f57-9266-4be31ddfc80b"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma"/>
 					<paragraph leftIndent="3"/>
@@ -195,27 +196,20 @@ where albaran.cod_albaran = $P!{codAlbaran}]]>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="97" y="40" width="230" height="20" uuid="ed61817a-bddd-42d5-a33d-ccacc71ac175"/>
+				<reportElement x="97" y="62" width="230" height="20" uuid="ed61817a-bddd-42d5-a33d-ccacc71ac175"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Tahoma"/>
+					<paragraph leftIndent="3"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="40" width="97" height="20" uuid="3836c309-b051-4b61-8823-97bab6a9dbb6"/>
+				<reportElement x="0" y="62" width="97" height="20" uuid="3836c309-b051-4b61-8823-97bab6a9dbb6"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Times New Roman" isBold="true" isStrikeThrough="false"/>
 					<paragraph rightIndent="3"/>
 				</textElement>
 				<text><![CDATA[Email:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="192" y="1" width="100" height="20" uuid="63e26aa5-7fe5-4052-9bc4-1333f8e1460f"/>
-				<text><![CDATA[cantidad]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="181" y="1" width="100" height="20" uuid="ab39d94e-ba57-4683-ba80-4b05e399a91d"/>
-				<text><![CDATA[cantidad]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

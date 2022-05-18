@@ -8,11 +8,10 @@ import javax.swing.table.DefaultTableModel;
 
 public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
 
-    protected DefaultTableModel datosClientes;
-    protected final String DATOVACIO = "";
-    protected Con_cliente objConexionClientes;
-    protected Con_localidad_prov_pais objLocal;
-    protected String nombreClase;
+    private DefaultTableModel dtmArticulos;
+    private Con_cliente objConexionClientes;
+    private Con_localidad_prov_pais objLocal;
+    private String nombreClase;
 
     public Ven_tabla_cliente(String nombreClase) {
         initComponents();
@@ -20,30 +19,30 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
         objLocal = new Con_localidad_prov_pais();
         this.nombreClase = nombreClase;
 
-        cargaDeDatosClientes(DATOVACIO);
+        cargaDeDatosClientes("");
     }
 
-    protected void cargaDeDatosClientes(String buscar) {
+    private void cargaDeDatosClientes(String buscar) {
         String[] nombreTablas = {"Cod", "Nombre", "N. Comercial", "NIF", "C.Postal", "Dirreción", "Localidad", "Telefono", "Email"}; //Cargamos en un array el nombre que tendran nuestras columnas.
-        datosClientes = new DefaultTableModel(null, nombreTablas);
-        tablaClientes.setModel(datosClientes);
+        dtmArticulos = new DefaultTableModel(null, nombreTablas);
+        tablaClientes.setModel(dtmArticulos);
 
         Object[] fila = new Object[nombreTablas.length];
 
-        ArrayList<Cliente> clieArray = new ArrayList<Cliente>();
-        clieArray = objConexionClientes.mostrarClientesYBusqueda(buscar);
+        ArrayList<Cliente> arCliente = new ArrayList<Cliente>();
+        arCliente = objConexionClientes.mostrarClientesYBusqueda(buscar);
 
-        for (int i = 0; i < clieArray.size(); i++) {
-            fila[0] = clieArray.get(i).getCodClientes();
-            fila[1] = clieArray.get(i).getNombre();
-            fila[2] = clieArray.get(i).getNombreComercial();
-            fila[3] = clieArray.get(i).getNif();
-            fila[4] = clieArray.get(i).getCodPostal();
-            fila[5] = clieArray.get(i).getDirFiscal();
-            fila[6] = objLocal.consultarLocalidadNombre(clieArray.get(i).getLocalidad()); //Integer.parseInt
-            fila[7] = clieArray.get(i).getTelf();
-            fila[8] = clieArray.get(i).getEmail();
-            datosClientes.addRow(fila);
+        for (int i = 0; i < arCliente.size(); i++) {
+            fila[0] = arCliente.get(i).getCodClientes();
+            fila[1] = arCliente.get(i).getNombre();
+            fila[2] = arCliente.get(i).getNombreComercial();
+            fila[3] = arCliente.get(i).getNif();
+            fila[4] = arCliente.get(i).getCodPostal();
+            fila[5] = arCliente.get(i).getDirFiscal();
+            fila[6] = objLocal.consultarLocalidadNombre(arCliente.get(i).getLocalidad()); //Integer.parseInt
+            fila[7] = arCliente.get(i).getTelf();
+            fila[8] = arCliente.get(i).getEmail();
+            dtmArticulos.addRow(fila);
         }
     }
 

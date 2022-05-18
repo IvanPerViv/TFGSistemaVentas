@@ -7,21 +7,22 @@ import Conexiones.Con_pedido_linea;
 import Modelos.LineaPedido;
 import Modelos.Pedido;
 import Utils.Comprobaciones;
-import Utils.generacionDeCodigo;
+import Utils.GenerarCodigo;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Ven_pedido_listado extends javax.swing.JInternalFrame {
 
-    protected DefaultTableModel mostrarPedidos;
-    protected Con_pedido objConPedidos;
-    protected Con_pedido_linea obLineaPedido;
-    protected Con_albaran objAlbaran;
-    protected Con_albaran_linea objConAlbaranLinea;
+    private DefaultTableModel dtmPedido;
+    private Con_pedido objConPedidos;
+    private Con_pedido_linea obLineaPedido;
+    private Con_albaran objAlbaran;
+    private Con_albaran_linea objConAlbaranLinea;
+    private GenerarCodigo objGenCod;
 
-    protected final Comprobaciones objComprobaciones;
-    protected String estado;
+    private final Comprobaciones objComprobaciones;
+    private String estado;
 
     public Ven_pedido_listado() {
         initComponents();
@@ -30,71 +31,67 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
         obLineaPedido = new Con_pedido_linea();
         objAlbaran = new Con_albaran();
         objConAlbaranLinea = new Con_albaran_linea();
+        objGenCod = new GenerarCodigo();
 
         cargaDeDatosPedidos("");
     }
 
-    protected void limpiarDatos() {
+    private void limpiarDatos() {
         TFCodPedido.setText("");
         TFNombreCliente.setText("");
         TFTotalPedido.setText("");
     }
 
-    protected void cargaDeDatosPedidos(String buscar) {
+    private void cargaDeDatosPedidos(String buscar) {
         String[] nombreTablas = {"CÓDIGO PEDIDO", "NOMBRE CLIENTE", "ESTADO", "FECHA"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
-        mostrarPedidos = new DefaultTableModel(null, nombreTablas);
-        tablaPedidos.setModel(mostrarPedidos);
+        dtmPedido = new DefaultTableModel(null, nombreTablas);
+        tablaPedidos.setModel(dtmPedido);
 
         ArrayList<Pedido> arPedidos = new ArrayList<>();
         arPedidos = objConPedidos.mostrarPedidos(buscar);
-        
-        Object[] fila = new Object[nombreTablas.length];
+
+        Object[] columna = new Object[nombreTablas.length];
         for (int i = 0; i < arPedidos.size(); i++) {
             int numPedido = arPedidos.get(i).getNum_pedido();
-            fila[0] = arPedidos.get(i).getNum_pedido();
-            fila[1] = objConPedidos.mostrarNombreCliente(arPedidos.get(i).getCod_cliente());
-            fila[2] = arPedidos.get(i).getEstado();
-            fila[3] = arPedidos.get(i).getFecha_pedido();
-          
-             mostrarPedidos.addRow(fila);
+            columna[0] = arPedidos.get(i).getNum_pedido();
+            columna[1] = objConPedidos.mostrarNombreCliente(arPedidos.get(i).getCod_cliente());
+            columna[2] = arPedidos.get(i).getEstado();
+            columna[3] = arPedidos.get(i).getFecha_pedido();
+
+            dtmPedido.addRow(columna);
         }
 
     }
 
-    protected void cargaDeDatosNumPedidos(int buscar) {
+    private void cargaDeDatosNumPedidos(int buscar) {
         ArrayList<Pedido> arPedidos = new ArrayList<>();
         arPedidos = objConPedidos.busquedaNumPedido(buscar);
 
-        Object[] fila = new Object[4];
+        Object[] columna = new Object[4];
         for (int i = 0; i < arPedidos.size(); i++) {
-            fila[0] = arPedidos.get(i).getNum_pedido();
-            fila[1] = objConPedidos.mostrarNombreCliente(arPedidos.get(i).getCod_cliente());
-            fila[2] = arPedidos.get(i).getEstado();
-            fila[3] = arPedidos.get(i).getFecha_pedido();
-            mostrarPedidos.addRow(fila);
+            columna[0] = arPedidos.get(i).getNum_pedido();
+            columna[1] = objConPedidos.mostrarNombreCliente(arPedidos.get(i).getCod_cliente());
+            columna[2] = arPedidos.get(i).getEstado();
+            columna[3] = arPedidos.get(i).getFecha_pedido();
+            dtmPedido.addRow(columna);
         }
     }
 
-    public void limpiezaTabla() {
-        DefaultTableModel tablaTemporal = (DefaultTableModel) tablaPedidos.getModel();
+    private void limpiezaTabla() {
+        DefaultTableModel dtmPedido = (DefaultTableModel) tablaPedidos.getModel();
         int filas = tablaPedidos.getRowCount();
         int contador = 0;
         while (filas > contador) {
-            tablaTemporal.removeRow(0);
+            dtmPedido.removeRow(0);
             contador++;
         }
     }
 
-    protected int generarCodigoAlbaran() {
-        int numero;
+    private int generarCodigoAlbaran() {
         int codigoAlbaran = objAlbaran.codigoAlbaran();
-        if (codigoAlbaran != 0) {
-            generacionDeCodigo objGenCod = new generacionDeCodigo();
-            numero = objGenCod.generarCod(codigoAlbaran);
-        } else {
-            numero = 1;
-        }
-        return numero;
+        int numero = objGenCod.generarCod(codigoAlbaran);
+
+        return numero = (codigoAlbaran != 0 ? numero : 1);
     }
 
     @SuppressWarnings("unchecked")
@@ -372,16 +369,8 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
             int codPedido = Integer.parseInt(tablaPedidos.getValueAt(filaSelecionada, 0).toString());
             estado = tablaPedidos.getValueAt(filaSelecionada, 2).toString();
 
-            switch (estado) {
-                case "Enviado":
-                    JOptionPane.showMessageDialog(this, "El pedido ya ha sido enviado.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-                    break;
-
-                case "Pendiente":
-                    Ven_tabla_pedido_listado_verdetalle objTablaPedidosListadoVerDetalles = new Ven_tabla_pedido_listado_verdetalle(codPedido);
-                    Ven_principal.escritorio.add(objTablaPedidosListadoVerDetalles).setVisible(true);
-                    break;
-            }
+            Ven_tabla_pedido_listado_verdetalle objTablaPedidosListadoVerDetalles = new Ven_tabla_pedido_listado_verdetalle(codPedido);
+            Ven_principal.escritorio.add(objTablaPedidosListadoVerDetalles).setVisible(true);
         }
     }//GEN-LAST:event_botonVerDetallesActionPerformed
 
@@ -411,53 +400,53 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
 
     private void botonCambiarEstadoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCambiarEstadoPedidoActionPerformed
         // BOTON CAMBIAR ESTADO
+        int filaSelecionada = tablaPedidos.getSelectedRow();
 
-        int fila = tablaPedidos.getSelectedRow();
-        int codPedido = Integer.parseInt(tablaPedidos.getValueAt(fila, 0).toString());
-        String codCliente = tablaPedidos.getValueAt(fila, 1).toString();
-        String fecha = tablaPedidos.getValueAt(fila, 3).toString();
+        int codPedido = Integer.parseInt(tablaPedidos.getValueAt(filaSelecionada, 0).toString());
+        String codCliente = tablaPedidos.getValueAt(filaSelecionada, 1).toString();
+        String estadoReal = tablaPedidos.getValueAt(filaSelecionada, 2).toString();
+        String fecha = tablaPedidos.getValueAt(filaSelecionada, 3).toString();
         java.sql.Date fechaConversion = java.sql.Date.valueOf(fecha); // CONVERSION STRING TO SQL.DATE
 
         int codCLiente = objConPedidos.mostrarCodCliente(codCliente);
         String estado = jComboEstadoPedido.getSelectedItem().toString();
         int codigoAlbaran = generarCodigoAlbaran();
 
-        switch (estado) {
+        boolean continar = true;
+        if (!estadoReal.equals("Enviado")) {
+            switch (estado) {
+                case "Enviado":
+                    //GENERA ALBARAN
+                    int seleccion = JOptionPane.showConfirmDialog(this, "¿Estas seguro?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    if (seleccion == 0) {
+                        //SE ACTUALIZA EL ESTADO.
+                        objConPedidos.actualizarEstadoPedido(codPedido, estado);
+                        JOptionPane.showMessageDialog(this, "Se ha generado un nuevo Albaran.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
 
-            case "Pendiente":
-                //SE ACTUALIZA EL ESTADO.
-                objConPedidos.actualizarEstadoPedido(codPedido, estado);
-                break;
-            case "Enviado":
-                //GENERA ALBARAN
-                int seleccion = JOptionPane.showConfirmDialog(this, "¿Estas seguro?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-                if (seleccion == 0) {
-                    //SE ACTUALIZA EL ESTADO.
-                    objConPedidos.actualizarEstadoPedido(codPedido, estado);
-                    JOptionPane.showMessageDialog(this, "Se ha generado un nuevo Albaran.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+                        //SE GENERA UN NUEVO ALBARAN
+                        objAlbaran.ingresoAlbaran(codigoAlbaran, codCLiente, codPedido, fechaConversion, "Pendiente");
 
-                    //SE GENERA UN NUEVO ALBARAN
-                    objAlbaran.ingresoAlbaran(codigoAlbaran, codCLiente, codPedido, fechaConversion, "Pendiente");
+                        ArrayList<LineaPedido> arLineaPedido = new ArrayList<>();
+                        arLineaPedido = obLineaPedido.mostrarLineasPedidos(codPedido); //CARGAMOS LOS DATOS DE LINEA-PEDIDO PARA EL PEDIDO
+                        for (int i = 0; i < arLineaPedido.size(); i++) {
+                            int codArticulo = arLineaPedido.get(i).getCodArticulo();
+                            int cantidad = arLineaPedido.get(i).getCantidad();
+                            double precioUnitario = arLineaPedido.get(i).getPrecioVenta();
+                            double iva = arLineaPedido.get(i).getIva();
 
-                    ArrayList<LineaPedido> arLineaPedido = new ArrayList<>();
-                    arLineaPedido = obLineaPedido.mostrarLineasPedidos(codPedido); //CARGAMOS LOS DATOS DE LINEA-PEDIDO PARA EL PEDIDO
-                    for (int i = 0; i < arLineaPedido.size(); i++) {
-                        int codArticulo = arLineaPedido.get(i).getCodArticulo();
-                        int cantidad = arLineaPedido.get(i).getCantidad();
-                        double precioUnitario = arLineaPedido.get(i).getPrecioVenta();
-                        double iva = arLineaPedido.get(i).getIva();
-
-                        //SE GENERA UN NUEVO LINEA-ALBARAN CON LOS DATOS DE LINEA-PEDIDO.
-                        objConAlbaranLinea.ingresoLineaAlbaran(codigoAlbaran, codArticulo, cantidad, precioUnitario, iva);
+                            //SE GENERA UN NUEVO LINEA-ALBARAN CON LOS DATOS DE LINEA-PEDIDO.
+                            objConAlbaranLinea.ingresoLineaAlbaran(codigoAlbaran, codArticulo, cantidad, precioUnitario, iva);
+                        }
                     }
-                }
-                break;
-            case "Anulado":
-                objConPedidos.actualizarEstadoPedido(codPedido, estado);
-                break;
+                    break;
+                case "Anulado":
+                    objConPedidos.actualizarEstadoPedido(codPedido, estado);
+                    break;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "El pedido ya fue realizado.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
         cargaDeDatosPedidos("");
-
     }//GEN-LAST:event_botonCambiarEstadoPedidoActionPerformed
 
     private void BuscarNumPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarNumPedidoActionPerformed

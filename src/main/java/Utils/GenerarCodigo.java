@@ -4,7 +4,7 @@ package Utils;
  *
  * @author Iván Pérez
  */
-public class generacionDeCodigo {
+public class GenerarCodigo {
 
     protected int codigoInicial = 1;
     

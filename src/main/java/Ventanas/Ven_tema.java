@@ -1,6 +1,5 @@
 package Ventanas;
 
-import Utils.Comprobaciones;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
@@ -14,7 +13,7 @@ public class Ven_tema extends javax.swing.JInternalFrame {
         initComponents();
     }
 
-    public void cambiarDeTema(String tema) {
+    private void cambiarDeTema(String tema) {
         try {
             switch (tema) {
                 case "modoClaro":

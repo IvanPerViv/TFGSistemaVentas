@@ -9,8 +9,8 @@ import javax.swing.*;
  */
 public class Ven_principal extends javax.swing.JFrame {
 
-    protected Comprobaciones objComprobaciones = new Comprobaciones();
-    protected Icono obIcon = new Icono();
+    private Comprobaciones objComprobaciones = new Comprobaciones();
+    private Icono obIcon = new Icono();
 
     public Ven_principal(String rolUsuario, String nomUser) {
         initComponents();
@@ -23,14 +23,14 @@ public class Ven_principal extends javax.swing.JFrame {
         setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
 
-    public void comprobacionUsuario(String usuario) {
+    private void comprobacionUsuario(String usuario) {
         if (!usuario.equals("Administrador")) {
             i_CrearUser.disable();
             i_CrearUser.setVisible(false);
         }
     }
 
-    public void mostarVentana(JInternalFrame frame) {
+    private void mostarVentana(JInternalFrame frame) {
         if (objComprobaciones.comprobacionVentanaAbierta(frame) != true) {
             escritorio.add(frame);
             frame.show();

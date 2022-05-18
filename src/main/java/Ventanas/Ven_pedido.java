@@ -3,7 +3,7 @@ package Ventanas;
 import Conexiones.Con_pedido;
 import Conexiones.Con_pedido_linea;
 import Utils.Comprobaciones;
-import Utils.generacionDeCodigo;
+import Utils.GenerarCodigo;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -13,17 +13,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_pedido extends javax.swing.JInternalFrame {
 
-    protected Comprobaciones objComprobaciones;
-    protected Con_pedido objConPedidos;
-    protected Con_pedido_linea objPedidoLinea;
-    protected generacionDeCodigo objGenCod;
+    private Comprobaciones objComprobaciones;
+    private Con_pedido objConPedidos;
+    private Con_pedido_linea objPedidoLinea;
+    private GenerarCodigo objGenCod;
 
     public Ven_pedido() {
         initComponents();
         objComprobaciones = new Comprobaciones();
         objConPedidos = new Con_pedido();
         objPedidoLinea = new Con_pedido_linea();
-        objGenCod = new generacionDeCodigo();
+        objGenCod = new GenerarCodigo();
 
         bloquearCampos(false);
         bloquearBotones(false);
@@ -31,7 +31,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
         cargaDeDatosArticulos();
     }
 
-    protected void bloquearCampos(boolean bloquear) {
+    private void bloquearCampos(boolean bloquear) {
         TFnumPedido.setEnabled(bloquear);
 
         //Cliente
@@ -49,7 +49,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
         TFCantidad.setEnabled(bloquear);
     }
 
-    protected void bloquearBotones(boolean bloquear) {
+    private void bloquearBotones(boolean bloquear) {
         botonLimpiar.setEnabled(bloquear);
 
         fecha.setEnabled(bloquear);
@@ -59,7 +59,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
         botonEliminarProc.setEnabled(bloquear);
     }
 
-    protected void limpiar() {
+    private void limpiar() {
         bloquearBotones(true);
         TFnumPedido.setText("");
         TFCodClie.setText("");
@@ -79,7 +79,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
         TFTotal.setText("");
     }
 
-    protected void limpiarArticulos() {
+    private void limpiarArticulos() {
         TFCodProd.setText("");
         TFPrecio.setText("");
         TFNombreProc.setText("");
@@ -88,30 +88,30 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
         TFCantidad.setText("");
     }
 
-    protected void limpiarTabla() {
-        DefaultTableModel tablaTemporal = (DefaultTableModel) tablaPedidos.getModel();
+    private void limpiarTabla() {
+        DefaultTableModel dtmPedido = (DefaultTableModel) tablaPedidos.getModel();
         int filas = tablaPedidos.getRowCount();
         int contador = 0;
         while (filas > contador) {
-            tablaTemporal.removeRow(0);
+            dtmPedido.removeRow(0);
             contador++;
         }
     }
 
-    protected void generarNumeroPedido() {
+    private void generarNumeroPedido() {
         int codPedido = objConPedidos.codigoPedidos();
         int numero = objGenCod.generarCod(codPedido);
 
         TFnumPedido.setText(codPedido != 0 ? String.valueOf(numero) : "1");
     }
 
-    protected void cargaDeDatosArticulos() {
+    private void cargaDeDatosArticulos() {
         String[] nombreTablas = {"Cod.Articulo", "Producto", "Cantidad", "Precio", "IVA"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         DefaultTableModel proc = new DefaultTableModel(null, nombreTablas);
         tablaPedidos.setModel(proc);
     }
 
-    protected void calcularPedido() {
+    private void calcularPedido() {
         double IVA = 0, total = 0, subtotal = 0, precio, totalArticulo = 0;
         String prec, cant, iva;
         int cantidad;
@@ -134,12 +134,12 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
         TFTotal.setText(Double.toString(Math.rint(total)));
     }
 
-    public double calcularIva(double cantidad, double iva) {
+    private double calcularIva(double cantidad, double iva) {
         double total;
         return total = (cantidad * iva) / 100;
     }
 
-    public void comprobarStock() {
+    private void comprobarStock() {
         int stock = Integer.parseInt(TFStock.getText());
         int cantidad = Integer.parseInt(TFCantidad.getText());
         if (cantidad > stock) {
@@ -148,7 +148,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
         }
     }
 
-    protected boolean comprobacionCampos() {
+    private boolean comprobacionCampos() {
         boolean comprobacion = true;
         if (objComprobaciones.comprobacionJTextFieldSinPintar(TFNombreC)) {
             comprobacion = false;

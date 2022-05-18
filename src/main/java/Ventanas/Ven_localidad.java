@@ -8,7 +8,7 @@ import Conexiones.Con_localidad_prov_pais;
 import Modelos.Localidad;
 import Modelos.Provincia;
 import Utils.Comprobaciones;
-import Utils.generacionDeCodigo;
+import Utils.GenerarCodigo;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -21,15 +21,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_localidad extends javax.swing.JInternalFrame {
 
-    protected Con_localidad_prov_pais objetoLocalidad;
-    protected generacionDeCodigo objGenCod;
-    protected Comprobaciones objComprobaciones;
-    protected DefaultTableModel datosLocalidad;
+    private Con_localidad_prov_pais objetoLocalidad;
+    private GenerarCodigo objGenCod;
+    private Comprobaciones objComprobaciones;
+    private DefaultTableModel dtmLocalidad;
 
     public Ven_localidad() {
         initComponents();
         objetoLocalidad = new Con_localidad_prov_pais();
-        objGenCod = new generacionDeCodigo();
+        objGenCod = new GenerarCodigo();
         objComprobaciones = new Comprobaciones();
 
         cargarDatosLocalidad("");
@@ -37,7 +37,7 @@ public class Ven_localidad extends javax.swing.JInternalFrame {
         bloquear(false);
     }
 
-    protected void bloquear(boolean blockeo) {
+    private void bloquear(boolean blockeo) {
         botonEliminar.setEnabled(blockeo);
         botonActualizar.setEnabled(blockeo);
         botonGuardar.setEnabled(blockeo);
@@ -47,46 +47,45 @@ public class Ven_localidad extends javax.swing.JInternalFrame {
         TFCiudad.setEnabled(blockeo);
     }
 
-    protected void limpiarDatos() {
+    private void limpiarDatos() {
         TFCiudad.setText("");
     }
 
-    protected void generarCodigoProvincia() {
+    private void generarCodigoProvincia() {
         int codLocalidad = objetoLocalidad.codigoLocalidad();
         int numero = objGenCod.generarCod(codLocalidad);
 
         TFCodigoLocal.setText(codLocalidad != 0 ? String.valueOf(numero) : "1");
     }
 
-    protected void cargarDatosLocalidad(String buscar) {
+    private void cargarDatosLocalidad(String buscar) {
         String[] nombreTablas = {"Cod", "Nombre ciudad", "Provincia"}; //Cargamos en un array el nombre que tendran nuestras columnas.
-        datosLocalidad = new DefaultTableModel(null, nombreTablas);
-        tablaLocalidad.setModel(datosLocalidad);
+        dtmLocalidad = new DefaultTableModel(null, nombreTablas);
+        tablaLocalidad.setModel(dtmLocalidad);
 
-        Object[] fila = new Object[nombreTablas.length];
+        Object[] columna = new Object[nombreTablas.length];
 
-        ArrayList<Localidad> artLocal = new ArrayList<Localidad>();
-        artLocal = objetoLocalidad.MostrarLocalidad(buscar);
+        ArrayList<Localidad> arLocalidad = new ArrayList<>();
+        arLocalidad = objetoLocalidad.MostrarLocalidad(buscar);
 
-        for (int i = 0; i < artLocal.size(); i++) {
-            fila[0] = artLocal.get(i).getCodLocalidad();
-            fila[1] = artLocal.get(i).getNombreCiudad();
-            fila[2] = objetoLocalidad.buscarProvinciaPorCodigo(artLocal.get(i).getCodProv());
-            datosLocalidad.addRow(fila);
+        for (int i = 0; i < arLocalidad.size(); i++) {
+            columna[0] = arLocalidad.get(i).getCodLocalidad();
+            columna[1] = arLocalidad.get(i).getNombreCiudad();
+            columna[2] = objetoLocalidad.buscarProvinciaPorCodigo(arLocalidad.get(i).getCodProv());
+            dtmLocalidad.addRow(columna);
         }
     }
 
-    protected void rellenarBomboBoxProv() {
-        ArrayList<Provincia> artPais = new ArrayList<>();
-        artPais = objetoLocalidad.consultarProvincia();
+    private void rellenarBomboBoxProv() {
+        ArrayList<Provincia> arProvincia = new ArrayList<>();
+        arProvincia = objetoLocalidad.consultarProvincia();
 
-        for (int i = 0; i < artPais.size(); i++) {
-            comboProv.addItem(artPais.get(i).getNombreProvincia());
-            //comboPais.addItem(new Pais(artPais.get(i).getCod(), artPais.get(i).getPais()));
+        for (int i = 0; i < arProvincia.size(); i++) {
+            comboProv.addItem(arProvincia.get(i).getNombreProvincia());
         }
     }
 
-    protected boolean comprobacionCampos() {
+    private boolean comprobacionCampos() {
         boolean comprobacion = true;
         if (objComprobaciones.comprobacionJTextField(TFCiudad)) {
             comprobacion = false;
@@ -367,7 +366,6 @@ public class Ven_localidad extends javax.swing.JInternalFrame {
 
         if (comprobacion != true) {
             JOptionPane.showMessageDialog(this, "Datos actualizados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-
             bloquear(false);
             botonNuevo.setEnabled(true);
             limpiarDatos();
@@ -378,12 +376,11 @@ public class Ven_localidad extends javax.swing.JInternalFrame {
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         // BOTON GUARDAR
         if (comprobacionCampos()) {
-            int codLocal = Integer.parseInt(TFCodigoLocal.getText());
-            int nombreProvincia = objetoLocalidad.consultarProvincia(comboProv.getSelectedItem().toString());
+            int codLocal = Integer.parseInt(TFCodigoLocal.getText()),
+                nombreProvincia = objetoLocalidad.consultarProvincia(comboProv.getSelectedItem().toString());
             String ciudad = TFCiudad.getText();
 
             boolean comprobacion = objetoLocalidad.ingresoLocalidad(codLocal, ciudad, nombreProvincia);
-
             if (comprobacion == true) {
                 JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
                 cargarDatosLocalidad("");

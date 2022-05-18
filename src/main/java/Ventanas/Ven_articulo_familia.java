@@ -3,26 +3,32 @@ package Ventanas;
 import Conexiones.Con_articulo;
 import Conexiones.Con_familia_articulo;
 import Modelos.FamiliaArticulo;
-import Utils.generacionDeCodigo;
+import Utils.GenerarCodigo;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Ven_articulo_familia extends javax.swing.JInternalFrame {
 
-    protected Con_familia_articulo objFamilias;
-    protected Con_articulo objArticulo;
+    private Con_familia_articulo objFamilias;
+    private Con_articulo objArticulo;
+    private Con_familia_articulo objConFamiliaArticulo; 
+    private GenerarCodigo objGenCod;
 
     public Ven_articulo_familia() {
         initComponents();
         objFamilias = new Con_familia_articulo();
         objArticulo = new Con_articulo();
+        objConFamiliaArticulo = new Con_familia_articulo();
+        objGenCod = new GenerarCodigo();
+        
         bloquearBotones(false);
         TFCodigo.setEnabled(false);
+        
         cargaDeDatosFamilia("");
     }
 
-    public void bloquearBotones(boolean bloquear) {
+    private void bloquearBotones(boolean bloquear) {
         botonEliminar.setEnabled(bloquear);
         botonGuardar.setEnabled(bloquear);
         botonActualizar.setEnabled(bloquear);
@@ -30,34 +36,28 @@ public class Ven_articulo_familia extends javax.swing.JInternalFrame {
         TFNombreFamilia.setEnabled(bloquear);
     }
 
-    protected void generarCodigoFamilia() {
-        Con_familia_articulo conFam = new Con_familia_articulo();
-        int codArticulo = conFam.codigoFamilia();
-        if (codArticulo != 0) {
-            generacionDeCodigo objGenCod = new generacionDeCodigo();
-
-            int numGenerado = objGenCod.generarCod(codArticulo);
-            TFCodigo.setText(String.valueOf(numGenerado));
-        } else {
-            TFCodigo.setText("1");
-        }
+    private void generarCodigoFamilia() {
+        int codFamilia = objConFamiliaArticulo.codigoFamilia();
+        int numGenerado = objGenCod.generarCod(codFamilia);
+        
+        TFCodigo.setText(codFamilia != 0 ? String.valueOf(numGenerado):"1");
     }
 
-    protected void cargaDeDatosFamilia(String buscar) {
+    private void cargaDeDatosFamilia(String buscar) {
 
         String[] nombreTablas = {"Codigo", "Nombre de la Categoria"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         DefaultTableModel art = new DefaultTableModel(null, nombreTablas);
         tablaFamilias.setModel(art);
 
-        Object[] fila = new Object[nombreTablas.length];
+        Object[] columna = new Object[nombreTablas.length];
 
-        ArrayList<FamiliaArticulo> artFamilia = new ArrayList<>();
-        artFamilia = objFamilias.mostrarArticulosYBusqueda(buscar);
+        ArrayList<FamiliaArticulo> arFamilia = new ArrayList<>();
+        arFamilia = objFamilias.mostrarArticulosYBusqueda(buscar);
 
-        for (int i = 0; i < artFamilia.size(); i++) {
-            fila[0] = artFamilia.get(i).getCodFamilia();
-            fila[1] = artFamilia.get(i).getNombreFamilia();
-            art.addRow(fila);
+        for (int i = 0; i < arFamilia.size(); i++) {
+            columna[0] = arFamilia.get(i).getCodFamilia();
+            columna[1] = arFamilia.get(i).getNombreFamilia();
+            art.addRow(columna);
         }
     }
 
@@ -316,12 +316,10 @@ public class Ven_articulo_familia extends javax.swing.JInternalFrame {
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         //Boton guardar registro familia
-
         int codFamilia = Integer.parseInt(TFCodigo.getText());
         String nombreFamilia = TFNombreFamilia.getText();
 
         boolean comprobacion = objFamilias.ingresoFamiliaArticulos(codFamilia, nombreFamilia);
-
         if (comprobacion == true) {
             JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Información", JOptionPane.INFORMATION_MESSAGE);
             cargaDeDatosFamilia("");
@@ -336,7 +334,6 @@ public class Ven_articulo_familia extends javax.swing.JInternalFrame {
         String nombreFamilia = TFNombreFamilia.getText();
 
         boolean comprobacion = objFamilias.actualizarFamiliaArticulos(codFamilia, nombreFamilia);
-
         if (comprobacion != true) {
             JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Información", JOptionPane.INFORMATION_MESSAGE);
             cargaDeDatosFamilia("");

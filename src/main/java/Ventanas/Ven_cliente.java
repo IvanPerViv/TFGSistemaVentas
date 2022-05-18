@@ -4,7 +4,7 @@ import Conexiones.Con_cliente;
 import Conexiones.Con_localidad_prov_pais;
 import Modelos.Cliente;
 import Utils.Comprobaciones;
-import Utils.generacionDeCodigo;
+import Utils.GenerarCodigo;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -16,27 +16,27 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_cliente extends javax.swing.JInternalFrame {
 
-    protected DefaultTableModel datosClientes;
+    private DefaultTableModel dtmCliente;
 
-    protected Con_localidad_prov_pais objConLocal;
-    protected Con_cliente objConClientes;
-    protected Comprobaciones objComprobaciones;
-    protected generacionDeCodigo objGenCod;
+    private Con_localidad_prov_pais objConLocal;
+    private Con_cliente objConClientes;
+    private Comprobaciones objComprobaciones;
+    private GenerarCodigo objGenCod;
 
     public Ven_cliente() {
         initComponents();
         objConLocal = new Con_localidad_prov_pais();
         objConClientes = new Con_cliente();
         objComprobaciones = new Comprobaciones();
-        objGenCod = new generacionDeCodigo();
+        objGenCod = new GenerarCodigo();
 
         bloquear(false);
-        cargaDeDatosClientes("");
         TFCodigo.setEnabled(false);
         TFCiudad.setEnabled(false);
+        cargaDeDatosClientes("");
     }
 
-    protected void bloquear(boolean blockeo) {
+    private void bloquear(boolean blockeo) {
         botonCancelar.setEnabled(blockeo);
         botonGuardar.setEnabled(blockeo);
         botonActualizar.setEnabled(blockeo);
@@ -52,7 +52,7 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
 
     }
 
-    protected void limpiarDatos() {
+    private void limpiarDatos() {
         TFCodigo.setText("");
         TFNombre.setText("");
         TFNombreComercial.setText("");
@@ -65,38 +65,38 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
 
     }
 
-    protected void generarCodigoCliente() {
+    private void generarCodigoCliente() {
         int codigoCliente = objConClientes.codigoClientes();
         int numero = objGenCod.generarCod(codigoCliente);
-        
-        TFCodigo.setText(codigoCliente != 0 ? String.valueOf(numero): "1");
+
+        TFCodigo.setText(codigoCliente != 0 ? String.valueOf(numero) : "1");
     }
 
-    protected void cargaDeDatosClientes(String buscar) {
+    private void cargaDeDatosClientes(String buscar) {
         String[] nombreTablas = {"Cod", "Nombre", "N. Comercial", "NIF", "C.Postal", "Dirreción", "Localidad", "Telefono", "Email"}; //Cargamos en un array el nombre que tendran nuestras columnas.
-        datosClientes = new DefaultTableModel(null, nombreTablas);
-        tablaClientes.setModel(datosClientes);
+        dtmCliente = new DefaultTableModel(null, nombreTablas);
+        tablaClientes.setModel(dtmCliente);
 
-        Object[] fila = new Object[nombreTablas.length];
+        Object[] columna = new Object[nombreTablas.length];
 
-        ArrayList<Cliente> clieArray = new ArrayList<Cliente>();
-        clieArray = objConClientes.mostrarClientesYBusqueda(buscar);
+        ArrayList<Cliente> arCliente = new ArrayList<Cliente>();
+        arCliente = objConClientes.mostrarClientesYBusqueda(buscar);
 
-        for (int i = 0; i < clieArray.size(); i++) {
-            fila[0] = clieArray.get(i).getCodClientes();
-            fila[1] = clieArray.get(i).getNombre();
-            fila[2] = clieArray.get(i).getNombreComercial();
-            fila[3] = clieArray.get(i).getNif();
-            fila[4] = clieArray.get(i).getCodPostal();
-            fila[5] = clieArray.get(i).getDirFiscal();
-            fila[6] = objConLocal.consultarLocalidadNombre(clieArray.get(i).getLocalidad()); //Integer.parseInt
-            fila[7] = clieArray.get(i).getTelf();
-            fila[8] = clieArray.get(i).getEmail();
-            datosClientes.addRow(fila);
+        for (int i = 0; i < arCliente.size(); i++) {
+            columna[0] = arCliente.get(i).getCodClientes();
+            columna[1] = arCliente.get(i).getNombre();
+            columna[2] = arCliente.get(i).getNombreComercial();
+            columna[3] = arCliente.get(i).getNif();
+            columna[4] = arCliente.get(i).getCodPostal();
+            columna[5] = arCliente.get(i).getDirFiscal();
+            columna[6] = objConLocal.consultarLocalidadNombre(arCliente.get(i).getLocalidad()); //Integer.parseInt
+            columna[7] = arCliente.get(i).getTelf();
+            columna[8] = arCliente.get(i).getEmail();
+            dtmCliente.addRow(columna);
         }
     }
 
-    protected boolean comprobacionCampos() {
+    private boolean comprobacionCampos() {
         boolean comprobacion = true;
         if (objComprobaciones.comprobacionJTextField(TFNif)) {
             comprobacion = false;
@@ -549,18 +549,18 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         // BOTON GUARDAR //
         if (comprobacionCampos()) {
-            int codigoUser = Integer.parseInt(TFCodigo.getText());
-            String nombre = TFNombre.getText();
-            String nombreComercial = TFNombreComercial.getText();
-            String nif = TFNif.getText();
-            int codPostal = Integer.parseInt(TFCp.getText());
-            String dirrecion = TFDir.getText();
-            int localidad = objConLocal.consultarLocalidad(TFCiudad.getText());
-            int telef = Integer.parseInt(TFTelef.getText());
-            String email = TFEmail.getText();
+            int codigoUser = Integer.parseInt(TFCodigo.getText()),
+                    codPostal = Integer.parseInt(TFCp.getText()),
+                    localidad = objConLocal.consultarLocalidad(TFCiudad.getText()),
+                    telef = Integer.parseInt(TFTelef.getText());
+
+            String nombre = TFNombre.getText(),
+                    nombreComercial = TFNombreComercial.getText(),
+                    nif = TFNif.getText(),
+                    dirrecion = TFDir.getText(),
+                    email = TFEmail.getText();
 
             boolean comprobacion = objConClientes.ingresoClientes(codigoUser, nombre, nombreComercial, nif, codPostal, dirrecion, localidad, telef, email);
-
             if (comprobacion == true) {
                 JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
                 cargaDeDatosClientes("");
@@ -592,6 +592,7 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
         int filaSelecionada = tablaClientes.rowAtPoint(evt.getPoint());
         bloquear(true);
         botonGuardar.setEnabled(false);
+
         TFCodigo.setText(tablaClientes.getValueAt(filaSelecionada, 0).toString());
         TFNombre.setText(tablaClientes.getValueAt(filaSelecionada, 1).toString());
         TFNombreComercial.setText(tablaClientes.getValueAt(filaSelecionada, 2).toString());
@@ -607,25 +608,25 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
     private void botonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarActionPerformed
         //BOTON MODIFICAR
         bloquear(true);
+        int codigoUser = Integer.parseInt(TFCodigo.getText()),
+                codPostal = Integer.parseInt(TFCp.getText()),
+                localidad = objConLocal.consultarLocalidad(TFCiudad.getText()),
+                telef = Integer.parseInt(TFTelef.getText());
 
-        int codigoUser = Integer.parseInt(TFCodigo.getText());
-        String nombre = TFNombre.getText();
-        String nombreComercial = TFNombreComercial.getText();
-        String nif = TFNif.getText();
-        int codPostal = Integer.parseInt(TFCp.getText());
-        String dirrecion = TFDir.getText();
-        int localidad = objConLocal.consultarLocalidad(TFCiudad.getText());
-        int telef = Integer.parseInt(TFTelef.getText());
-        String email = TFEmail.getText();
+        String nombre = TFNombre.getText(),
+                nombreComercial = TFNombreComercial.getText(),
+                nif = TFNif.getText(),
+                dirrecion = TFDir.getText(),
+                email = TFEmail.getText();
 
         boolean comprobacion = objConClientes.actualizarClientes(codigoUser, nombre, nombreComercial, nif, codPostal, dirrecion, localidad, telef, email);
-
         if (comprobacion != true) {
             JOptionPane.showMessageDialog(this, "Datos actualizados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             cargaDeDatosClientes("");
+            limpiarDatos();
             bloquear(false);
             botonNuevo.setEnabled(true);
-            limpiarDatos();
+
         }
     }//GEN-LAST:event_botonActualizarActionPerformed
 

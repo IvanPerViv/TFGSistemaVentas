@@ -7,7 +7,7 @@ import java.io.IOException;
  *
  * @author Iván Pérez
  */
-public class cargaBaseDatos {
+public class CargaBBDD {
 
     public final String RUTAPROPERTIES = "./src/main/java/Utils/config.properties";
     public final String URL = cargaProperties("url");

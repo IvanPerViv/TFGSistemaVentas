@@ -4,7 +4,7 @@ import Conexiones.Con_localidad_prov_pais;
 import Modelos.Pais;
 import Modelos.Provincia;
 import Utils.Comprobaciones;
-import Utils.generacionDeCodigo;
+import Utils.GenerarCodigo;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -17,15 +17,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_prov extends javax.swing.JInternalFrame {
 
-    protected Con_localidad_prov_pais objetoProv;
-    protected generacionDeCodigo objGenCod;
-    protected Comprobaciones objComprobaciones;
-    protected DefaultTableModel datosPais;
+    private Con_localidad_prov_pais objetoProv;
+    private GenerarCodigo objGenCod;
+    private Comprobaciones objComprobaciones;
+    private DefaultTableModel dtmProvincia;
 
     public Ven_prov() {
         initComponents();
         objetoProv = new Con_localidad_prov_pais();
-        objGenCod = new generacionDeCodigo();
+        objGenCod = new GenerarCodigo();
         objComprobaciones = new Comprobaciones();
 
         cargarDatosProvincia("");
@@ -33,7 +33,7 @@ public class Ven_prov extends javax.swing.JInternalFrame {
         bloquear(false);
     }
 
-    protected void bloquear(boolean blockeo) {
+    private void bloquear(boolean blockeo) {
         botonEliminar.setEnabled(blockeo);
         botonActualizar.setEnabled(blockeo);
         botonGuardar.setEnabled(blockeo);
@@ -42,46 +42,45 @@ public class Ven_prov extends javax.swing.JInternalFrame {
         comboPais.setEnabled(blockeo);
     }
 
-    protected void limpiarDatos() {
+    private void limpiarDatos() {
         TFprov.setText("");
     }
 
-    protected void generarCodigoProvincia() {
+    private void generarCodigoProvincia() {
         int codProv = objetoProv.codigoProv();
         int numero = objGenCod.generarCod(codProv);
 
         TFProv.setText(codProv != 0 ? String.valueOf(numero) : "1");
     }
 
-    protected void cargarDatosProvincia(String buscar) {
+    private void cargarDatosProvincia(String buscar) {
         String[] nombreTablas = {"Cod", "Provincia", "Pais"}; //Cargamos en un array el nombre que tendran nuestras columnas.
-        datosPais = new DefaultTableModel(null, nombreTablas);
-        tablaProv.setModel(datosPais);
+        dtmProvincia = new DefaultTableModel(null, nombreTablas);
+        tablaProv.setModel(dtmProvincia);
 
-        Object[] fila = new Object[nombreTablas.length];
+        Object[] columna = new Object[nombreTablas.length];
 
         ArrayList<Provincia> arProv = new ArrayList<Provincia>();
         arProv = objetoProv.MostrarProv(buscar);
 
         for (int i = 0; i < arProv.size(); i++) {
-            fila[0] = arProv.get(i).getCodProv();
-            fila[1] = arProv.get(i).getNombreProvincia();
-            fila[2] = objetoProv.buscarPaisPorCodigo(arProv.get(i).getCodPais()); //Subconsulta.
-            datosPais.addRow(fila);
+            columna[0] = arProv.get(i).getCodProv();
+            columna[1] = arProv.get(i).getNombreProvincia();
+            columna[2] = objetoProv.buscarPaisPorCodigo(arProv.get(i).getCodPais()); //Subconsulta.
+            dtmProvincia.addRow(columna);
         }
     }
 
-    protected void rellenarBomboBox() {
-        ArrayList<Pais> artPais = new ArrayList<>();
-        artPais = objetoProv.consultarPais();
+    private void rellenarBomboBox() {
+        ArrayList<Pais> arPais = new ArrayList<>();
+        arPais = objetoProv.consultarPais();
 
-        for (int i = 0; i < artPais.size(); i++) {
-            comboPais.addItem(artPais.get(i).getPais());
-            //comboPais.addItem(new Pais(artPais.get(i).getCod(), artPais.get(i).getPais()));
+        for (int i = 0; i < arPais.size(); i++) {
+            comboPais.addItem(arPais.get(i).getPais());
         }
     }
 
-    protected boolean comprobacionCampos() {
+    private boolean comprobacionCampos() {
         boolean comprobacion = true;
         if (objComprobaciones.comprobacionJTextField(TFprov)) {
             comprobacion = false;
@@ -377,13 +376,11 @@ public class Ven_prov extends javax.swing.JInternalFrame {
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         // BOTON GUARDAR
         if (comprobacionCampos()) {
-            int codProv = Integer.parseInt(TFProv.getText());
-            int nombrePais = objetoProv.buscarNombrePorCodigo(comboPais.getSelectedItem().toString());
-
+            int codProv = Integer.parseInt(TFProv.getText()),
+                    nombrePais = objetoProv.buscarNombrePorCodigo(comboPais.getSelectedItem().toString());
             String nombreProv = TFprov.getText();
 
             boolean comprobacion = objetoProv.ingresoProv(codProv, nombreProv, nombrePais);
-
             if (comprobacion == true) {
                 JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
                 cargarDatosProvincia("");

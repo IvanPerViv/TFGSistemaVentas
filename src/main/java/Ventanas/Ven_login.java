@@ -3,7 +3,6 @@ package Ventanas;
 import Conexiones.Con_usuario;
 import Modelos.Usuarios;
 import Utils.Icono;
-import java.util.Objects;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
@@ -12,8 +11,8 @@ import javax.swing.UIManager;
  */
 public class Ven_login extends javax.swing.JFrame {
 
-    protected Con_usuario objUsers;
-    protected Icono obIcon = new Icono();
+    private Con_usuario objUsers;
+    private Icono obIcon = new Icono();
 
     public Ven_login() {
         initComponents();
@@ -24,7 +23,7 @@ public class Ven_login extends javax.swing.JFrame {
 
     }
 
-    public void tema() {
+    private void tema() {
         try {
             UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatLightLaf());
         } catch (Exception ex) {

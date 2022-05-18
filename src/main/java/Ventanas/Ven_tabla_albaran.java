@@ -14,8 +14,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_tabla_albaran extends javax.swing.JInternalFrame {
 
-    protected Con_albaran objConAlbaran;
-    protected Con_pedido objConPedidos;
+    private Con_albaran objConAlbaran;
+    private Con_pedido objConPedidos;
 
     public Ven_tabla_albaran(int codigoCliente) {
         initComponents();
@@ -24,22 +24,22 @@ public class Ven_tabla_albaran extends javax.swing.JInternalFrame {
         cargaDatosAlbaran(codigoCliente);
     }
 
-    protected void cargaDatosAlbaran(int buscar) {
+    private void cargaDatosAlbaran(int buscar) {
         String[] nombreTablas = {"CÓDIGO ALBARÁN", "CLIENTE", "NºPEDIDO", "FECHA"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         DefaultTableModel dtm = new DefaultTableModel(null, nombreTablas);
         tablaAlbaranes.setModel(dtm);
 
-        Object[] fila = new Object[nombreTablas.length];
+        Object[] columna = new Object[nombreTablas.length];
 
         ArrayList<Albaran> arAlbaran = new ArrayList<>();
         arAlbaran = objConAlbaran.mostrarPorCodCliente(buscar);
 
         for (int i = 0; i < arAlbaran.size(); i++) {
-            fila[0] = arAlbaran.get(i).getCodAlbaran();
-            fila[1] = objConPedidos.mostrarNombreCliente(arAlbaran.get(i).getCodCliente()); //SUBCONSULTA PARA SABER EL NOMBRE DEL CLIENTE
-            fila[2] = arAlbaran.get(i).getNumPedido();
-            fila[3] = arAlbaran.get(i).getFecha();
-            dtm.addRow(fila);
+            columna[0] = arAlbaran.get(i).getCodAlbaran();
+            columna[1] = objConPedidos.mostrarNombreCliente(arAlbaran.get(i).getCodCliente()); //SUBCONSULTA PARA SABER EL NOMBRE DEL CLIENTE
+            columna[2] = arAlbaran.get(i).getNumPedido();
+            columna[3] = arAlbaran.get(i).getFecha();
+            dtm.addRow(columna);
         }
     }
 
@@ -124,7 +124,7 @@ public class Ven_tabla_albaran extends javax.swing.JInternalFrame {
             String fecha = tablaAlbaranes.getValueAt(filaSeleccionda, 3).toString();
 
             Object[] fila = {codigo, codCliente, codPedido, fecha};
-            Ven_factura.datosAlbaranes.addRow(fila);
+            Ven_factura.dtmFactura.addRow(fila);
         } else {
             int[] cantidadDeFilas = tablaAlbaranes.getSelectedRows();
             
@@ -135,7 +135,7 @@ public class Ven_tabla_albaran extends javax.swing.JInternalFrame {
                 String fecha = tablaAlbaranes.getValueAt(i, 3).toString();
 
                 Object[] fila = {codigo, codCliente, codPedido, fecha};
-                Ven_factura.datosAlbaranes.addRow(fila);
+                Ven_factura.dtmFactura.addRow(fila);
             }
         }
 

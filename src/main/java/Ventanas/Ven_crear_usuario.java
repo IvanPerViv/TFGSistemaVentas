@@ -2,7 +2,7 @@ package Ventanas;
 
 import Conexiones.Con_usuario;
 import Modelos.Usuarios;
-import Utils.generacionDeCodigo;
+import Utils.GenerarCodigo;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -12,21 +12,21 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_crear_usuario extends JInternalFrame {
 
-    protected Con_usuario objConUsuarios;
-    protected generacionDeCodigo objGenCod;
-    protected DefaultTableModel dtmUser;
+    private Con_usuario objConUsuarios;
+    private GenerarCodigo objGenCod;
+    private DefaultTableModel dtmUsuario;
 
     public Ven_crear_usuario() {
         initComponents();
         objConUsuarios = new Con_usuario();
-        objGenCod = new generacionDeCodigo();
+        objGenCod = new GenerarCodigo();
 
         bloquearBotones(false);
         TFCodigo.setEnabled(false);
         cargaDatosUsuarios("");
     }
 
-    public void bloquearBotones(boolean bloquear) {
+    private void bloquearBotones(boolean bloquear) {
         botonGuardar.setEnabled(bloquear);
         botonActualizar.setEnabled(bloquear);
 
@@ -37,7 +37,7 @@ public class Ven_crear_usuario extends JInternalFrame {
         jComboRol.setEnabled(bloquear);
     }
 
-    public void limpiarDatos() {
+    private void limpiarDatos() {
         TFUsuario.setText("");
         TFNombre.setText("");
         TFApellidos.setText("");
@@ -45,34 +45,31 @@ public class Ven_crear_usuario extends JInternalFrame {
 
     }
 
-    protected void generarCodigoArticulo() {
-        int codArticulo = objConUsuarios.codigoUsuarios();
-        if (codArticulo != 0) {
-            int numero = objGenCod.generarCod(codArticulo);
-            TFCodigo.setText(String.valueOf(numero));
-        } else {
-            TFCodigo.setText("1");
-        }
+    private void generarCodigoUsuario() {
+        int codUsuario = objConUsuarios.codigoUsuarios();
+        int numero = objGenCod.generarCod(codUsuario);
+
+        TFCodigo.setText(codUsuario != 0 ? String.valueOf(numero) : "1");
     }
 
-    protected void cargaDatosUsuarios(String buscar) {
+    private void cargaDatosUsuarios(String buscar) {
         String[] nombreTablas = {"Codigo", "Usuario", "Nombre", "Apellidos", "Contraseña", "Rol"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
-        dtmUser = new DefaultTableModel(null, nombreTablas);
-        tablaArticulos.setModel(dtmUser);
+        dtmUsuario = new DefaultTableModel(null, nombreTablas);
+        tablaArticulos.setModel(dtmUsuario);
 
-        Object[] fila = new Object[nombreTablas.length];
+        Object[] columna = new Object[nombreTablas.length];
 
-        ArrayList<Usuarios> arUser = new ArrayList<>();
-        arUser = objConUsuarios.mostrarUsuarios(buscar);
+        ArrayList<Usuarios> arUsuarios = new ArrayList<>();
+        arUsuarios = objConUsuarios.mostrarUsuarios(buscar);
 
-        for (int i = 0; i < arUser.size(); i++) {
-            fila[0] = arUser.get(i).getCod_usuario();
-            fila[1] = arUser.get(i).getUsuario();
-            fila[2] = arUser.get(i).getNombre();
-            fila[3] = arUser.get(i).getApellidos();
-            fila[4] = arUser.get(i).getContraseña();
-            fila[5] = objConUsuarios.mostrarNombreRol(arUser.get(i).getRol());// SUBCONSULTA
-            dtmUser.addRow(fila);
+        for (int i = 0; i < arUsuarios.size(); i++) {
+            columna[0] = arUsuarios.get(i).getCod_usuario();
+            columna[1] = arUsuarios.get(i).getUsuario();
+            columna[2] = arUsuarios.get(i).getNombre();
+            columna[3] = arUsuarios.get(i).getApellidos();
+            columna[4] = arUsuarios.get(i).getContraseña();
+            columna[5] = objConUsuarios.mostrarNombreRol(arUsuarios.get(i).getRol());// SUBCONSULTA
+            dtmUsuario.addRow(columna);
         }
     }
 
@@ -398,7 +395,7 @@ public class Ven_crear_usuario extends JInternalFrame {
     private void botonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoActionPerformed
         bloquearBotones(true);
         limpiarDatos();
-        generarCodigoArticulo();
+        generarCodigoUsuario();
         TFUsuario.requestFocus();
     }//GEN-LAST:event_botonNuevoActionPerformed
 
@@ -416,36 +413,32 @@ public class Ven_crear_usuario extends JInternalFrame {
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         //Boton guardar registro familia
         int codUser = Integer.parseInt(TFCodigo.getText());
-        String usuario = TFUsuario.getText();
-        String nombre = TFNombre.getText();
-        String apellidos = TFApellidos.getText();
-        String pass = TFContraseña.getText();
-
-        String combo = jComboRol.getSelectedItem().toString();
+        String usuario = TFUsuario.getText(),
+                nombre = TFNombre.getText(),
+                apellidos = TFApellidos.getText(),
+                pass = TFContraseña.getText(),
+                combo = jComboRol.getSelectedItem().toString();
         int rol = objConUsuarios.mostrarNombreRol(combo);
-        System.out.println(rol);
 
         boolean comprobacion = objConUsuarios.ingresoUsuarios(codUser, usuario, nombre, apellidos, pass, rol);
-
         if (comprobacion == true) {
             JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Información", JOptionPane.INFORMATION_MESSAGE);
             cargaDatosUsuarios("");
             bloquearBotones(false);
-
         }
     }//GEN-LAST:event_botonGuardarActionPerformed
 
     private void botonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarActionPerformed
         // Boton actualizar
         int codUser = Integer.parseInt(TFCodigo.getText());
-        String usuario = TFUsuario.getText();
-        String nombre = TFNombre.getText();
-        String apellidos = TFApellidos.getText();
-        String pass = TFContraseña.getText();
+        String usuario = TFUsuario.getText(),
+                nombre = TFNombre.getText(),
+                apellidos = TFApellidos.getText(),
+                pass = TFContraseña.getText(),
+                combo = jComboRol.getSelectedItem().toString();
         int rol = objConUsuarios.mostrarNombreRol(jComboRol.getSelectedItem().toString()); //SUBCONSULTA
 
         boolean comprobacion = objConUsuarios.actualizarUsuarios(codUser, usuario, nombre, apellidos, pass, rol);
-
         if (comprobacion != true) {
             JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Información", JOptionPane.INFORMATION_MESSAGE);
             cargaDatosUsuarios("");

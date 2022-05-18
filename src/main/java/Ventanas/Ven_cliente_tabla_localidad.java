@@ -2,7 +2,7 @@ package Ventanas;
 
 import Conexiones.Con_localidad_prov_pais;
 import Modelos.Localidad;
-import Utils.generacionDeCodigo;
+import Utils.GenerarCodigo;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -12,33 +12,33 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_cliente_tabla_localidad extends javax.swing.JInternalFrame {
 
-    protected Con_localidad_prov_pais objLocalidad;
-    protected generacionDeCodigo objGenCod;
-    protected DefaultTableModel datosLocalidades;
+    private Con_localidad_prov_pais objLocalidad;
+    private GenerarCodigo objGenCod;
+    private DefaultTableModel dtmLocalidaad;
 
     public Ven_cliente_tabla_localidad() {
         initComponents();
         objLocalidad = new Con_localidad_prov_pais();
-        objGenCod = new generacionDeCodigo();
+        objGenCod = new GenerarCodigo();
         
         cargarDatosLocalidad("");
     }
 
-    protected void cargarDatosLocalidad(String buscar) {
+    private void cargarDatosLocalidad(String buscar) {
         String[] nombreTablas = {"Cod", "Nombre ciudad", "Provincia"}; //Cargamos en un array el nombre que tendran nuestras columnas.
-        datosLocalidades = new DefaultTableModel(null, nombreTablas);
-        tablaLocalidades.setModel(datosLocalidades);
+        dtmLocalidaad = new DefaultTableModel(null, nombreTablas);
+        tablaLocalidades.setModel(dtmLocalidaad);
 
-        Object[] fila = new Object[nombreTablas.length];
+        Object[] columna = new Object[nombreTablas.length];
 
-        ArrayList<Localidad> artLocal = new ArrayList<Localidad>();
-        artLocal = objLocalidad.MostrarLocalidad(buscar);
+        ArrayList<Localidad> arLocalidad = new ArrayList<Localidad>();
+        arLocalidad = objLocalidad.MostrarLocalidad(buscar);
 
-        for (int i = 0; i < artLocal.size(); i++) {
-            fila[0] = artLocal.get(i).getCodLocalidad();
-            fila[1] = artLocal.get(i).getNombreCiudad();
-            fila[2] = objLocalidad.buscarProvinciaPorCodigo(artLocal.get(i).getCodProv());
-            datosLocalidades.addRow(fila);
+        for (int i = 0; i < arLocalidad.size(); i++) {
+            columna[0] = arLocalidad.get(i).getCodLocalidad();
+            columna[1] = arLocalidad.get(i).getNombreCiudad();
+            columna[2] = objLocalidad.buscarProvinciaPorCodigo(arLocalidad.get(i).getCodProv());
+            dtmLocalidaad.addRow(columna);
         }
     }
 

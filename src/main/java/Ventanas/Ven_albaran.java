@@ -11,10 +11,8 @@ import Conexiones.Conexion;
 import Modelos.Albaran;
 import Modelos.Cliente;
 import Modelos.LineaAlbaran;
-import Utils.generacionDeCodigo;
+import Utils.GenerarCodigo;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.text.*;
 import java.util.*;
 import java.util.Date;
@@ -37,19 +35,20 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public final class Ven_albaran extends javax.swing.JInternalFrame {
 
-    protected DefaultTableModel dftAlbaran;
+    private DefaultTableModel dftAlbaran;
 
-    protected Con_articulo objConArticulos;
-    protected Con_cliente objConClientes;
-    protected Con_albaran objConAlbaran;
-    protected Con_localidad_prov_pais objConLocal;
-    protected Con_albaran_linea objConLineaAlbaran;
-    protected Con_pedido objConPedidos;
-    protected Conexion con;
-    protected Con_pedido_linea objConPedidoLinea;
+    private Con_articulo objConArticulos;
+    private Con_cliente objConClientes;
+    private Con_albaran objConAlbaran;
+    private Con_localidad_prov_pais objConLocal;
+    private Con_albaran_linea objConLineaAlbaran;
+    private Con_pedido objConPedidos;
+    private Conexion con;
+    private Con_pedido_linea objConPedidoLinea;
+    private GenerarCodigo objGenCod;
 
-    protected int numAlbaran;
-    protected double precioUnitario, iva;
+    private int numAlbaran;
+    private double precioUnitario, iva;
 
     public Ven_albaran(int codAlbaran) {
         initComponents();
@@ -61,6 +60,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         objConPedidos = new Con_pedido();
         con = new Conexion();
         objConPedidoLinea = new Con_pedido_linea();
+        objGenCod = new GenerarCodigo();
 
         cargaDeDatosArticulos(codAlbaran);
         this.numAlbaran = codAlbaran;
@@ -68,7 +68,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         cargaDatosAlbaran();
     }
 
-    protected void bloquearCampos(boolean bloquear) {
+    private void bloquearCampos(boolean bloquear) {
         TFnumPedido.setEnabled(bloquear);
         TFDate.setEnabled(bloquear);
 
@@ -80,7 +80,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
 
     }
 
-    protected void cargaDatosAlbaran() {
+    private void cargaDatosAlbaran() {
         ArrayList<Albaran> arAlbaran = new ArrayList<>();
         arAlbaran = objConAlbaran.mostrarAlbaran(String.valueOf(numAlbaran));
 
@@ -99,7 +99,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         cargaDeDatosClientes(codCliente);
     }
 
-    protected void rellenoDeDatosAlbaran(int codAlbaran, int codCliente, String fecha) {
+    private void rellenoDeDatosAlbaran(int codAlbaran, int codCliente, String fecha) {
         TFnumPedido.setText(String.valueOf(numAlbaran));
         TFCodAlbaran.setText(String.valueOf(codAlbaran));
         TFCodClie.setText(String.valueOf(codCliente));
@@ -107,7 +107,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         TFDate.setText(fecha);
     }
 
-    protected void cargaDeDatosClientes(int codigoCliente) {
+    private void cargaDeDatosClientes(int codigoCliente) {
         ArrayList<Cliente> arClientes = new ArrayList<>();
         arClientes = objConClientes.mostrarDatosClientes(codigoCliente);
 
@@ -123,43 +123,38 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
 
     }
 
-    protected void rellenoDeDatosAlbaran(String nombreComercial, int CodPostal, String dir, String localidad, int telef) {
+    private void rellenoDeDatosAlbaran(String nombreComercial, int CodPostal, String dir, String localidad, int telef) {
         TFNombreC.setText(nombreComercial);
         TFDir.setText(dir + " - " + localidad + " , " + String.valueOf(CodPostal));
         TFTel.setText(String.valueOf(telef));
     }
 
-    protected void cargaDeDatosArticulos(int numAlbaran) {
+    private void cargaDeDatosArticulos(int numAlbaran) {
         String[] nombreTablas = {"CODIGO ARTICULO", "DESCRIPCIÓN PRODUCTO", "CANTIDAD", "CANTIDAD-ENVIAR"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         dftAlbaran = new DefaultTableModel(null, nombreTablas);
         tablaAlbaran.setModel(dftAlbaran);
 
-        Object[] fila = new Object[nombreTablas.length];
+        Object[] columna = new Object[nombreTablas.length];
 
         ArrayList<LineaAlbaran> arLineaPedido = new ArrayList<>();
         arLineaPedido = objConLineaAlbaran.mostrarLineaAlbaran(numAlbaran);
 
         for (int i = 0; i < arLineaPedido.size(); i++) {
-            fila[0] = arLineaPedido.get(i).getCodArticulo();
-            fila[1] = objConArticulos.mostrarNombreArticulo(arLineaPedido.get(i).getCodArticulo());
-            fila[2] = arLineaPedido.get(i).getCantidad();
+            columna[0] = arLineaPedido.get(i).getCodArticulo();
+            columna[1] = objConArticulos.mostrarNombreArticulo(arLineaPedido.get(i).getCodArticulo());
+            columna[2] = arLineaPedido.get(i).getCantidad();
             precioUnitario = arLineaPedido.get(i).getPrecioUnitario();
             iva = arLineaPedido.get(i).getIva();
 
-            dftAlbaran.addRow(fila);
+            dftAlbaran.addRow(columna);
         }
     }
 
-    protected int generarCodigoPedido() {
-        int numero;
+    private int generarCodigoPedido() {
         int codigoPedido = objConPedidos.codigoPedidos();
-        if (codigoPedido != 0) {
-            generacionDeCodigo objGenCod = new generacionDeCodigo();
-            numero = objGenCod.generarCod(codigoPedido);
-        } else {
-            numero = 1;
-        }
-        return numero;
+        int numero = objGenCod.generarCod(codigoPedido);
+
+        return numero = (codigoPedido != 0 ? numero : 1);
     }
 
     @SuppressWarnings("unchecked")
@@ -405,7 +400,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         // BOTON ENVIAR
         int numeroAlbaran = Integer.parseInt(TFCodAlbaran.getText());
         int numPedido = generarCodigoPedido();
-        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> parametros = new HashMap<>();
 
         for (int i = 0; i < tablaAlbaran.getRowCount(); i++) {
             int codArticulo = Integer.parseInt(tablaAlbaran.getValueAt(i, 0).toString());
@@ -437,7 +432,6 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
                 }
                 // LUEGO RESTAMOS LA CANTIDAD ELEGIDA DEL STOCK
                 objConArticulos.actualizarStock(cantidadEnviar, codArticulo);
-                params.put("codAlbaran", numeroAlbaran);
             }
         }
         JOptionPane.showMessageDialog(this, "Sus articulos han sido enviados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
@@ -448,7 +442,8 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
                 String ubicacion = "src/main/java/reportes/Albaran.jrxml";
 
                 JasperReport jasperReport = JasperCompileManager.compileReport(ubicacion);
-                JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, conn);
+                parametros.put("codAlbaran", numeroAlbaran);
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, conn);
 
                 int comprobacion = JOptionPane.showConfirmDialog(this, "¿Desea exportar el archivo a PDF?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION);
                 if (comprobacion == 0) {

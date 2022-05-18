@@ -4,7 +4,7 @@ import Modelos.Articulo;
 import Conexiones.Con_articulo;
 import Conexiones.Con_familia_articulo;
 import Utils.Comprobaciones;
-import Utils.generacionDeCodigo;
+import Utils.GenerarCodigo;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -16,28 +16,28 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Ven_articulo extends javax.swing.JInternalFrame {
 
-    protected Con_articulo objArticulo;
-    protected Con_familia_articulo objFamilias;
-    protected final Comprobaciones objComprobaciones;
-    protected generacionDeCodigo objGenCod;
+    private Con_articulo objArticulo;
+    private Con_familia_articulo objFamilias;
+    private Comprobaciones objComprobaciones;
+    private GenerarCodigo objGenCod;
 
-    protected DefaultTableModel art;
+    protected DefaultTableModel dtmArticulo;
 
     public Ven_articulo() {
         initComponents();
         objArticulo = new Con_articulo();
         objFamilias = new Con_familia_articulo();
         objComprobaciones = new Comprobaciones();
-        objGenCod = new generacionDeCodigo();
-        
+        objGenCod = new GenerarCodigo();
 
         bloquearBotones(false);
-        cargaDeDatosArticulos("");
         TFCodigo.setEnabled(false);
         TFFamilia.setEnabled(false);
+        cargaDeDatosArticulos("");
+
     }
 
-    public void bloquearBotones(boolean bloquear) {
+    private void bloquearBotones(boolean bloquear) {
         botonCancelar.setEnabled(bloquear);
         botonGuardar.setEnabled(bloquear);
         botonActualizar.setEnabled(bloquear);
@@ -49,7 +49,7 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
         TFIva.setEnabled(bloquear);
     }
 
-    public void limpiarDatos() {
+    private void limpiarDatos() {
         TFCodigo.setText("");
         TFNombre.setText("");
         TFPrecio.setText("");
@@ -58,37 +58,37 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
         TFStock.setText("");
     }
 
-    protected void generarCodigoArticulo() {
+    private void generarCodigoArticulo() {
         int codigoArticulo = objArticulo.codigoArticulos();
         int numero = objGenCod.generarCod(codigoArticulo);
-        
-        TFCodigo.setText(codigoArticulo != 0 ? String.valueOf(numero): "1");
+
+        TFCodigo.setText(codigoArticulo != 0 ? String.valueOf(numero) : "1");
     }
 
-    protected void cargaDeDatosArticulos(String buscar) {
+    private void cargaDeDatosArticulos(String buscar) {
 
         String[] nombreTablas = {"Codigo", "Producto", "Categoria", "Precio", "IVA", "Stock"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
-        art = new DefaultTableModel(null, nombreTablas);
-        tablaArticulos.setModel(art);
+        dtmArticulo = new DefaultTableModel(null, nombreTablas);
+        tablaArticulos.setModel(dtmArticulo);
 
-        Object[] fila = new Object[nombreTablas.length];
+        Object[] columna = new Object[nombreTablas.length];
 
-        ArrayList<Articulo> artArry = new ArrayList<>();
-        artArry = objArticulo.mostrarArticulosYBusqueda(buscar);
+        ArrayList<Articulo> arArticulo = new ArrayList<>();
+        arArticulo = objArticulo.mostrarArticulosYBusqueda(buscar);
 
-        for (int i = 0; i < artArry.size(); i++) {
-            fila[0] = artArry.get(i).getCod_articulo();
-            fila[1] = artArry.get(i).getNombre_producto();
-            fila[2] = objArticulo.mostrarFamiliaArticulos(artArry.get(i).getFamilia()); // SUBCONSULTA
+        for (int i = 0; i < arArticulo.size(); i++) {
+            columna[0] = arArticulo.get(i).getCod_articulo();
+            columna[1] = arArticulo.get(i).getNombre_producto();
+            columna[2] = objArticulo.mostrarFamiliaArticulos(arArticulo.get(i).getFamilia()); // SUBCONSULTA
 
-            fila[3] = artArry.get(i).getPrecio_compra();
-            fila[4] = artArry.get(i).getIVA();
-            fila[5] = artArry.get(i).getStock();
-            art.addRow(fila);
+            columna[3] = arArticulo.get(i).getPrecio_compra();
+            columna[4] = arArticulo.get(i).getIVA();
+            columna[5] = arArticulo.get(i).getStock();
+            dtmArticulo.addRow(columna);
         }
     }
 
-    protected boolean comprobacionCampos() {
+    private boolean comprobacionCampos() {
         boolean comprobacion = true;
         if (objComprobaciones.comprobacionJTextField(TFNombre)) {
             comprobacion = false;
@@ -466,15 +466,14 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
 
     private void botonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarActionPerformed
         // BOTON ACTUALIZAR //
-        int codigoUser = Integer.parseInt(TFCodigo.getText());
+        int codigoUser = Integer.parseInt(TFCodigo.getText()),
+                categoriaFamilia = objArticulo.mostrarNombreFamilia(TFFamilia.getText());
         String nombreArt = TFNombre.getText(),
                 stockArt = TFStock.getText();
-        double iva = objComprobaciones.conversor(TFIva.getText());
-        double precioArt = objComprobaciones.conversor(TFPrecio.getText());
-        int categoriaFamilia = objArticulo.mostrarNombreFamilia(TFFamilia.getText());
+        double iva = objComprobaciones.conversor(TFIva.getText()),
+                precioArt = objComprobaciones.conversor(TFPrecio.getText());
 
         boolean comprobacion = objArticulo.actualizarArticulos(codigoUser, nombreArt, categoriaFamilia, precioArt, iva, stockArt);
-
         if (comprobacion != true) {
             JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             cargaDeDatosArticulos("");
@@ -513,16 +512,14 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
         // BOTON GUARDAR //
         if (comprobacionCampos()) {
-            int codArticulo = Integer.parseInt(TFCodigo.getText());
+            int codArticulo = Integer.parseInt(TFCodigo.getText()),
+                    stock = Integer.parseInt(TFStock.getText()),
+                    categoria = objArticulo.mostrarNombreFamilia(TFFamilia.getText());
             String nombreProc = TFNombre.getText();
-
-            double precioArticuloFinal = objComprobaciones.conversor(TFPrecio.getText());
-            double iva = objComprobaciones.conversor(TFIva.getText());
-            int stock = Integer.parseInt(TFStock.getText());
-            int categoria = objArticulo.mostrarNombreFamilia(TFFamilia.getText());
+            double precioArticuloFinal = objComprobaciones.conversor(TFPrecio.getText()),
+                    iva = objComprobaciones.conversor(TFIva.getText());
 
             boolean comprobacion = objArticulo.ingresoDeArticulos(codArticulo, nombreProc, categoria, precioArticuloFinal, iva, stock);
-
             if (comprobacion == true) {
                 JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Información", JOptionPane.INFORMATION_MESSAGE);
                 cargaDeDatosArticulos("");
@@ -548,7 +545,7 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
         Ven_principal.escritorio.add(objFamilia).setVisible(true);
     }//GEN-LAST:event_botonFamiliaActionPerformed
 
-    
+
     private void TFNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFNombreKeyReleased
         TFNombre.setBorder(new LineBorder(Color.gray));
     }//GEN-LAST:event_TFNombreKeyReleased
@@ -570,11 +567,11 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_TFPrecioKeyTyped
 
     private void TFIvaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFIvaKeyTyped
-       objComprobaciones.comprobacionNumeroDecimal(evt);
+        objComprobaciones.comprobacionNumeroDecimal(evt);
     }//GEN-LAST:event_TFIvaKeyTyped
 
     private void TFStockKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFStockKeyTyped
-         objComprobaciones.comprobacionNumeroEntero(evt);
+        objComprobaciones.comprobacionNumeroEntero(evt);
     }//GEN-LAST:event_TFStockKeyTyped
 
 

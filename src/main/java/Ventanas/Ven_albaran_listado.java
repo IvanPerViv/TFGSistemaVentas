@@ -10,9 +10,9 @@ import javax.swing.table.DefaultTableModel;
 
 public class Ven_albaran_listado extends javax.swing.JInternalFrame {
 
-    protected DefaultTableModel dftAlbaran;
-    protected Con_albaran objAlbaran;
-    protected Con_pedido objConPedidos;
+    private DefaultTableModel dtmAlbaran;
+    private Con_albaran objAlbaran;
+    private Con_pedido objConPedidos;
 
     public Ven_albaran_listado() {
         initComponents();
@@ -22,44 +22,44 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
         cargaDeDatosAlbaran("");
     }
 
-    protected void cargaDeDatosAlbaran(String buscar) {
+    private void cargaDeDatosAlbaran(String buscar) {
         String[] nombreTablas = {"CÓDIGO ALBARÁN", "CÓDIGO PEDIDO", "NOMBRE CLIENTE", "FECHA", "ESTADO"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
-        dftAlbaran = new DefaultTableModel(null, nombreTablas);
-        tablaPedidos.setModel(dftAlbaran);
+        dtmAlbaran = new DefaultTableModel(null, nombreTablas);
+        tablaPedidos.setModel(dtmAlbaran);
 
         ArrayList<Albaran> arAlbaran = new ArrayList<>();
         arAlbaran = objAlbaran.mostrarAlbaran(buscar);
 
-        Object[] fila = new Object[nombreTablas.length];
+        Object[] columna = new Object[nombreTablas.length];
         for (int i = 0; i < arAlbaran.size(); i++) {
-            fila[0] = arAlbaran.get(i).getCodAlbaran();
-            fila[1] = arAlbaran.get(i).getNumPedido();
-            fila[2] = objConPedidos.mostrarNombreCliente(arAlbaran.get(i).getCodCliente()); //SUBCONSULTA
-            fila[3] = arAlbaran.get(i).getFecha();
-            fila[4] = arAlbaran.get(i).getEstado();
-            dftAlbaran.addRow(fila);
+            columna[0] = arAlbaran.get(i).getCodAlbaran();
+            columna[1] = arAlbaran.get(i).getNumPedido();
+            columna[2] = objConPedidos.mostrarNombreCliente(arAlbaran.get(i).getCodCliente()); //SUBCONSULTA
+            columna[3] = arAlbaran.get(i).getFecha();
+            columna[4] = arAlbaran.get(i).getEstado();
+            dtmAlbaran.addRow(columna);
         }
     }
 
-    protected void cargaDeDatosNumPedidos(int buscar) {
+    private void cargaDeDatosNumPedidos(int buscar) {
         ArrayList<Pedido> arPedidos = new ArrayList<>();
         arPedidos = objConPedidos.busquedaNumPedido(buscar);
 
-        Object[] fila = new Object[3];
+        Object[] columna = new Object[3];
         for (int i = 0; i < arPedidos.size(); i++) {
-            fila[0] = arPedidos.get(i).getNum_pedido();
-            fila[1] = objConPedidos.mostrarNombreCliente(arPedidos.get(i).getCod_cliente());
-            fila[2] = arPedidos.get(i).getFecha_pedido();
-            dftAlbaran.addRow(fila);
+            columna[0] = arPedidos.get(i).getNum_pedido();
+            columna[1] = objConPedidos.mostrarNombreCliente(arPedidos.get(i).getCod_cliente());
+            columna[2] = arPedidos.get(i).getFecha_pedido();
+            dtmAlbaran.addRow(columna);
         }
     }
 
-    public void limpiezaTabla() {
-        DefaultTableModel tablaTemporal = (DefaultTableModel) tablaPedidos.getModel();
-        int filas = tablaPedidos.getRowCount();
+    private void limpiezaTabla() {
+        DefaultTableModel dtmListadoPedidos = (DefaultTableModel) tablaPedidos.getModel();
+        int numeroDeFila = tablaPedidos.getRowCount();
         int contador = 0;
-        while (filas > contador) {
-            tablaTemporal.removeRow(0);
+        while (numeroDeFila > contador) {
+            dtmListadoPedidos.removeRow(0);
             contador++;
         }
     }

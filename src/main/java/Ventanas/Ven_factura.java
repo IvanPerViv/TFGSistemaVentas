@@ -6,7 +6,7 @@ import Conexiones.Con_pedido_linea;
 import Conexiones.Conexion;
 import Modelos.LineaPedido;
 import Utils.Comprobaciones;
-import Utils.generacionDeCodigo;
+import Utils.GenerarCodigo;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,18 +30,18 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class Ven_factura extends javax.swing.JInternalFrame {
 
-    protected generacionDeCodigo objGenCod;
-    protected Con_factura objConFactura;
-    protected Conexion con;
-    protected Con_pedido_linea objConPedidoLinea;
-    protected Con_factura_linea objConFacturaLinea;
-    protected Comprobaciones objComprobaciones;
+    private GenerarCodigo objGenCod;
+    private Con_factura objConFactura;
+    private Conexion con;
+    private Con_pedido_linea objConPedidoLinea;
+    private Con_factura_linea objConFacturaLinea;
+    private Comprobaciones objComprobaciones;
 
-    public static DefaultTableModel datosAlbaranes;
+    public static DefaultTableModel dtmFactura;
 
     public Ven_factura() {
         initComponents();
-        objGenCod = new generacionDeCodigo();
+        objGenCod = new GenerarCodigo();
         objConFactura = new Con_factura();
         con = new Conexion();
         objConPedidoLinea = new Con_pedido_linea();
@@ -55,13 +55,13 @@ public class Ven_factura extends javax.swing.JInternalFrame {
         AreaObs.setEnabled(false);
     }
 
-    protected void cargaDatosTabla() {
+    private void cargaDatosTabla() {
         String[] nombreTablas = {"CÓDIGO ALBARÁN", "NOMBRE CLIENTE", "CÓDIGO PEDIDO", "FECHA"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
-        datosAlbaranes = new DefaultTableModel(null, nombreTablas);
-        tablaAlbaranes.setModel(datosAlbaranes);
+        dtmFactura = new DefaultTableModel(null, nombreTablas);
+        tablaAlbaranes.setModel(dtmFactura);
     }
 
-    protected void bloquearCampos(boolean bloquear) {
+    private void bloquearCampos(boolean bloquear) {
         TFNumFactura.setEnabled(bloquear);
 
         //Cliente
@@ -71,7 +71,7 @@ public class Ven_factura extends javax.swing.JInternalFrame {
         TFTel.setEnabled(bloquear);
     }
 
-    protected void bloquearBotones(boolean bloquear) {
+    private void bloquearBotones(boolean bloquear) {
         botonLimpiar.setEnabled(bloquear);
 
         fecha.setEnabled(bloquear);
@@ -80,7 +80,7 @@ public class Ven_factura extends javax.swing.JInternalFrame {
         botonEliminarProc.setEnabled(bloquear);
     }
 
-    protected void limpiar() {
+    private void limpiar() {
         bloquearBotones(true);
         TFNumFactura.setText("");
         TFCodClie.setText("");
@@ -94,24 +94,24 @@ public class Ven_factura extends javax.swing.JInternalFrame {
         TFTotal.setText("");
     }
 
-    protected void limpiarTabla() {
-        DefaultTableModel tablaTemporal = (DefaultTableModel) tablaAlbaranes.getModel();
+    private void limpiarTabla() {
+        DefaultTableModel dtmAlbaran = (DefaultTableModel) tablaAlbaranes.getModel();
         int filas = tablaAlbaranes.getRowCount();
         int contador = 0;
         while (filas > contador) {
-            tablaTemporal.removeRow(0);
+            dtmAlbaran.removeRow(0);
             contador++;
         }
     }
 
-    protected void generarNumeroFactura() {
+    private void generarNumeroFactura() {
          int codFactura = objConFactura.codigoFactura();
          int numero = objGenCod.generarCod(codFactura);
         
         TFNumFactura.setText(codFactura != 0 ? String.valueOf(numero): "1");
     }
 
-    protected void calcularPedido() {
+    private void calcularPedido() {
         int codPedido = 0;
         double precio = 0.0, cantidad = 0.0, totalArticulo = 0.0, subtotal = 0.0, sumaIva = 0.0, totalIva = 0.0, precioTotal = 0.0, precioConIva = 0.0;
         ArrayList<LineaPedido> arLineaPedidos = new ArrayList<>();
@@ -138,12 +138,12 @@ public class Ven_factura extends javax.swing.JInternalFrame {
         TFTotal.setText(Double.toString(Math.rint(precioTotal)));
     }
 
-    public double calcularIva(double cantidad, double iva) {
+    private double calcularIva(double cantidad, double iva) {
         double total;
         return total = (cantidad * iva) / 100;
     }
 
-    protected boolean comprobacionCampos() {
+    private boolean comprobacionCampos() {
         boolean comprobacion = true;
         if (objComprobaciones.ValidarCamposNumeros(TFSubtotal)) {
             comprobacion = false;
@@ -589,9 +589,9 @@ public class Ven_factura extends javax.swing.JInternalFrame {
     private void botonEliminarProcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarProcActionPerformed
         // BOTON ELIMINAR ALBARAN
         DefaultTableModel modelo = (DefaultTableModel) tablaAlbaranes.getModel();
-        int fila = tablaAlbaranes.getSelectedRow();
-        if (fila >= 0) {
-            modelo.removeRow(fila);
+        int filaSelecionada = tablaAlbaranes.getSelectedRow();
+        if (filaSelecionada >= 0) {
+            modelo.removeRow(filaSelecionada);
         } else {
             JOptionPane.showMessageDialog(this, "No has selecionado ninguna fila.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }

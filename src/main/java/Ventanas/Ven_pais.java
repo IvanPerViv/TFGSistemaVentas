@@ -3,7 +3,7 @@ package Ventanas;
 import Conexiones.Con_localidad_prov_pais;
 import Modelos.Pais;
 import Utils.Comprobaciones;
-import Utils.generacionDeCodigo;
+import Utils.GenerarCodigo;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -12,15 +12,15 @@ import javax.swing.table.DefaultTableModel;
 
 public class Ven_pais extends javax.swing.JInternalFrame {
 
-    protected Con_localidad_prov_pais objPais;
-    protected generacionDeCodigo objGenCod;
-    protected final Comprobaciones objComprobaciones;
-    protected DefaultTableModel datosPais;
+    private Con_localidad_prov_pais objPais;
+    private GenerarCodigo objGenCod;
+    private Comprobaciones objComprobaciones;
+    private DefaultTableModel datosPais;
 
     public Ven_pais() {
         initComponents();
         objPais = new Con_localidad_prov_pais();
-        objGenCod = new generacionDeCodigo();
+        objGenCod = new GenerarCodigo();
         objComprobaciones = new Comprobaciones();
 
         cargarDatosPais("");
@@ -28,7 +28,7 @@ public class Ven_pais extends javax.swing.JInternalFrame {
         bloquear(false);
     }
 
-    protected void bloquear(boolean blockeo) {
+    private void bloquear(boolean blockeo) {
         botonEliminar.setEnabled(blockeo);
         botonActualizar.setEnabled(blockeo);
         botonGuardar1.setEnabled(blockeo);
@@ -36,36 +36,36 @@ public class Ven_pais extends javax.swing.JInternalFrame {
         TFPais.setEnabled(blockeo);
     }
 
-    protected void limpiarDatos() {
+    private void limpiarDatos() {
         TFPais.setText("");
     }
 
-    protected void generarCodigoPais() {
+    private void generarCodigoPais() {
         int codPais = objPais.codigoPais();
         int numero = objGenCod.generarCod(codPais);
 
         TFCodPais.setText(codPais != 0 ? String.valueOf(numero) : "1");
     }
 
-    protected void cargarDatosPais(String buscar) {
+    private void cargarDatosPais(String buscar) {
         String[] nombreTablas = {"Cod", "Pais"}; //Cargamos en un array el nombre que tendran nuestras columnas.
         datosPais = new DefaultTableModel(null, nombreTablas);
         tablaPais.setModel(datosPais);
 
-        Object[] fila = new Object[nombreTablas.length];
+        Object[] columna = new Object[nombreTablas.length];
 
         ArrayList<Pais> clieArray = new ArrayList<Pais>();
         clieArray = objPais.MostrarPais(buscar);
 
         for (int i = 0; i < clieArray.size(); i++) {
-            fila[0] = clieArray.get(i).getCod();
-            fila[1] = clieArray.get(i).getPais();
+            columna[0] = clieArray.get(i).getCod();
+            columna[1] = clieArray.get(i).getPais();
 
-            datosPais.addRow(fila);
+            datosPais.addRow(columna);
         }
     }
 
-    protected boolean comprobacionCampos() {
+    private boolean comprobacionCampos() {
         boolean comprobacion = true;
         if (objComprobaciones.comprobacionJTextField(TFPais)) {
             comprobacion = false;
@@ -311,9 +311,8 @@ public class Ven_pais extends javax.swing.JInternalFrame {
 
     private void botonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarActionPerformed
         // Boton eliminar 
-        int codPais = Integer.parseInt(TFCodPais.getText());
-
-        int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea eliminar el registro?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        int codPais = Integer.parseInt(TFCodPais.getText()),
+                seleccion = JOptionPane.showConfirmDialog(this, "¿Desea eliminar el registro?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
         if (seleccion == 0) {
             objPais.eliminarPais(codPais);
             cargarDatosPais("");
@@ -327,7 +326,6 @@ public class Ven_pais extends javax.swing.JInternalFrame {
         String pais = TFPais.getText();
 
         boolean comprobacion = objPais.actualizarPais(codPais, pais);
-
         if (comprobacion != true) {
             JOptionPane.showMessageDialog(this, "Datos actualizados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             cargarDatosPais("");
@@ -342,8 +340,8 @@ public class Ven_pais extends javax.swing.JInternalFrame {
         if (comprobacionCampos()) {
             int codPais = Integer.parseInt(TFCodPais.getText());
             String pais = TFPais.getText();
+            
             boolean comprobacion = objPais.ingresoPais(codPais, pais);
-
             if (comprobacion == true) {
                 JOptionPane.showMessageDialog(this, "Datos guardados con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
                 cargarDatosPais("");

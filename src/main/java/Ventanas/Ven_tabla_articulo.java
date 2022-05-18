@@ -7,36 +7,35 @@ import javax.swing.table.DefaultTableModel;
 
 public class Ven_tabla_articulo extends javax.swing.JInternalFrame {
 
-    protected DefaultTableModel mostrarClientes;
-    protected final String DATOVACIO = "";
-    protected Con_articulo objConexionClientes;
+    private DefaultTableModel mostrarClientes;
+    private Con_articulo objConexionClientes;
 
     public Ven_tabla_articulo() {
         initComponents();
         objConexionClientes = new Con_articulo();
         
-        cargaDeDatosArticulos(DATOVACIO);
+        cargaDeDatosArticulos("");
     }
 
-    protected void cargaDeDatosArticulos(String buscar) {
+    private void cargaDeDatosArticulos(String buscar) {
 
         String[] nombreTablas = {"CÓDIGO", "PRODUCTO", "FAMILIA", "PRECIO", "IVA", "STOCK"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
         DefaultTableModel art = new DefaultTableModel(null, nombreTablas);
         tablaArt.setModel(art);
 
-        Object[] fila = new Object[nombreTablas.length];
+        Object[] columna = new Object[nombreTablas.length];
 
-        ArrayList<Articulo> artArry = new ArrayList<Articulo>();
-        artArry = objConexionClientes.mostrarArticulosYBusqueda(buscar);
+        ArrayList<Articulo> arArticulo = new ArrayList<Articulo>();
+        arArticulo = objConexionClientes.mostrarArticulosYBusqueda(buscar);
 
-        for (int i = 0; i < artArry.size(); i++) {
-            fila[0] = artArry.get(i).getCod_articulo();
-            fila[1] = artArry.get(i).getNombre_producto();
-            fila[2] = objConexionClientes.mostrarFamiliaArticulos(artArry.get(i).getFamilia()); // CONSULTA NOMBRE DE LA FAMILIA
-            fila[3] = artArry.get(i).getPrecio_compra();
-            fila[4] = artArry.get(i).getIVA();
-            fila[5] = artArry.get(i).getStock();
-            art.addRow(fila);
+        for (int i = 0; i < arArticulo.size(); i++) {
+            columna[0] = arArticulo.get(i).getCod_articulo();
+            columna[1] = arArticulo.get(i).getNombre_producto();
+            columna[2] = objConexionClientes.mostrarFamiliaArticulos(arArticulo.get(i).getFamilia()); // CONSULTA NOMBRE DE LA FAMILIA
+            columna[3] = arArticulo.get(i).getPrecio_compra();
+            columna[4] = arArticulo.get(i).getIVA();
+            columna[5] = arArticulo.get(i).getStock();
+            art.addRow(columna);
         }
     }
 
@@ -141,13 +140,13 @@ public class Ven_tabla_articulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_TFBuscarKeyReleased
 
     private void tablaArtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaArtMouseClicked
-        int fila = tablaArt.getSelectedRow();
+        int numFila = tablaArt.getSelectedRow();
         if (evt.getClickCount() == 1) {
-            Ven_pedido.TFCodProd.setText(tablaArt.getValueAt(fila, 0).toString());
-            Ven_pedido.TFNombreProc.setText(tablaArt.getValueAt(fila, 1).toString());
-            Ven_pedido.TFPrecio.setText(tablaArt.getValueAt(fila, 3).toString());
-            Ven_pedido.TFIva.setText(tablaArt.getValueAt(fila, 4).toString());
-            Ven_pedido.TFStock.setText(tablaArt.getValueAt(fila, 5).toString());
+            Ven_pedido.TFCodProd.setText(tablaArt.getValueAt(numFila, 0).toString());
+            Ven_pedido.TFNombreProc.setText(tablaArt.getValueAt(numFila, 1).toString());
+            Ven_pedido.TFPrecio.setText(tablaArt.getValueAt(numFila, 3).toString());
+            Ven_pedido.TFIva.setText(tablaArt.getValueAt(numFila, 4).toString());
+            Ven_pedido.TFStock.setText(tablaArt.getValueAt(numFila, 5).toString());
 
             dispose();
         }
