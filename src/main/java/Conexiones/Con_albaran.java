@@ -21,7 +21,7 @@ public class Con_albaran {
         String query = "INSERT INTO `albaran`(`cod_albaran`, `cod_cliente`, `num_pedido`, `fecha`, `estado`) VALUES (?,?,?,?,?)";
         int comprobacion = 0;
 
-        try (PreparedStatement pst = con.prepareStatement(query)) {
+        try ( PreparedStatement pst = con.prepareStatement(query)) {
             pst.setInt(1, codAlbaran);
             pst.setInt(2, codCliente);
             pst.setInt(3, numPedido);
@@ -39,8 +39,8 @@ public class Con_albaran {
         ArrayList<Albaran> arAlbaran = new ArrayList<>();
 
         String query = "SELECT * FROM `albaran` where concat(`cod_albaran`, `cod_cliente`, `num_pedido`, `fecha`, `estado`) like'%" + buscar + "%'";
-        try (PreparedStatement pst = con.prepareStatement(query)) {
-            try (ResultSet rs = pst.executeQuery()) {
+        try ( PreparedStatement pst = con.prepareStatement(query)) {
+            try ( ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     int cod_albaran = rs.getInt(1);
                     int cod_cliente = rs.getInt(2);
@@ -56,13 +56,35 @@ public class Con_albaran {
         }
         return arAlbaran;
     }
-    
+
     public ArrayList mostrarPorCodCliente(int buscar) {
         ArrayList<Albaran> arAlbaran = new ArrayList<>();
-        String query = "SELECT * FROM `albaran` where cod_cliente =" + buscar ;
-        
-        try (PreparedStatement pst = con.prepareStatement(query)) {
-            try (ResultSet rs = pst.executeQuery()) {
+        String query = "SELECT * FROM `albaran` where cod_cliente =" + buscar;
+
+        try ( PreparedStatement pst = con.prepareStatement(query)) {
+            try ( ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    int cod_albaran = rs.getInt(1);
+                    int cod_cliente = rs.getInt(2);
+                    int num_pedido = rs.getInt(3);
+                    java.sql.Date fecha = rs.getDate(4);
+                    String estado = rs.getString(5);
+
+                    arAlbaran.add(new Albaran(cod_albaran, cod_cliente, num_pedido, fecha, estado));
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("¡Error al ejecutar la consulta!" + ex.toString());
+        }
+        return arAlbaran;
+    }
+
+    public ArrayList mostrarFecha(String buscar) {
+        ArrayList<Albaran> arAlbaran = new ArrayList<>();
+        String query = "SELECT * FROM `albaran` WHERE fecha =" + buscar;
+
+        try ( PreparedStatement pst = con.prepareStatement(query)) {
+            try ( ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     int cod_albaran = rs.getInt(1);
                     int cod_cliente = rs.getInt(2);
@@ -82,8 +104,8 @@ public class Con_albaran {
     public int codigoAlbaran() {
         String query = "select max(cod_albaran) from `albaran`";
         int codigo = 0;
-        try (PreparedStatement pst = con.prepareStatement(query)) {
-            try (ResultSet rs = pst.executeQuery()) {
+        try ( PreparedStatement pst = con.prepareStatement(query)) {
+            try ( ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
                     codigo = rs.getInt(1);
                 }
@@ -99,7 +121,7 @@ public class Con_albaran {
         String query = "UPDATE `albaran` set estado ='" + estado
                 + "' WHERE cod_albaran='" + codAlbaran + "'";
 
-        try (PreparedStatement pst = con.prepareStatement(query)) {
+        try ( PreparedStatement pst = con.prepareStatement(query)) {
             pst.executeUpdate();
         } catch (SQLException ex) {
             System.err.println("¡Error al ejecutar la consulta!" + ex.toString());

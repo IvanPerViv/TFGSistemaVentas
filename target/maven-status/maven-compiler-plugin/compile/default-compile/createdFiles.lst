@@ -23,7 +23,6 @@ Ventanas\Ven_pedido$2.class
 Ventanas\Ven_pais$5.class
 Ventanas\Ven_factura$7.class
 Ventanas\Ven_principal$2.class
-Utils\generacionDeCodigo.class
 Ventanas\Ven_tema.class
 Ventanas\Ven_localidad$7.class
 Ventanas\Ven_albaran_listado$3.class
@@ -31,6 +30,7 @@ Ventanas\Ven_factura$1.class
 Ventanas\Ven_cliente_tabla_localidad$2.class
 Ventanas\Ven_principal$3.class
 Ventanas\Ven_articulo$1.class
+Utils\CargaBBDD.class
 Ventanas\Ven_pedido$3.class
 Conexiones\Con_cliente.class
 Utils\Icono.class
@@ -109,7 +109,6 @@ Ventanas\Ven_articulo$8.class
 Ventanas\Ven_cliente$4.class
 Conexiones\Con_pedido_linea.class
 Ventanas\Ven_pais$6.class
-Utils\cargaBaseDatos.class
 Ventanas\Ven_cliente$3.class
 Ventanas\Ven_tema$1.class
 Modelos\LineaFactura.class
@@ -142,6 +141,7 @@ Ventanas\Ven_albaran.class
 Conexiones\Con_usuario.class
 Conexiones\Con_albaran_linea.class
 Ventanas\Ven_cliente$7.class
+Utils\GenerarCodigo.class
 Ventanas\Ven_localidad.class
 Ventanas\Ven_pedido$6.class
 Ventanas\Ven_login$1.class

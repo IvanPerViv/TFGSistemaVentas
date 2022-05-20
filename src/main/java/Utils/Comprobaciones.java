@@ -26,8 +26,8 @@ public class Comprobaciones extends javax.swing.JFrame {
 
     public boolean comprobacionVentanaAbierta(JInternalFrame frame) {
         JInternalFrame[] ventansActivas = escritorio.getAllFrames();
-        
-        for(JInternalFrame jif : ventansActivas){
+
+        for (JInternalFrame jif : ventansActivas) {
             if (frame.getClass().isInstance(jif)) {
                 JOptionPane.showMessageDialog(this, "La ventana '" + frame.getTitle() + "' esta en uso.", "Información", JOptionPane.INFORMATION_MESSAGE);
                 return true;
@@ -36,7 +36,7 @@ public class Comprobaciones extends javax.swing.JFrame {
         return false;
     }
 
-    public boolean comprobacionJTextField(JTextField campo) {
+    public boolean validacionJTextFieldNormal(JTextField campo) {
         boolean comprobacion = false;
         if (campo.getText().isEmpty()) {
             campo.setBorder(new LineBorder(Color.red));
@@ -45,9 +45,10 @@ public class Comprobaciones extends javax.swing.JFrame {
         return comprobacion;
     }
 
-    public boolean comprobacionJTextFieldSinPintar(JTextField campo) {
+    public boolean validacionJTextField(JTextField campo) {
         boolean comprobacion = false;
-        if (campo.getText().isEmpty()) {
+        if (campo.getText().length() == 0) {
+            campo.setBorder(new LineBorder(Color.red));
             comprobacion = true;
         }
         return comprobacion;
@@ -92,7 +93,7 @@ public class Comprobaciones extends javax.swing.JFrame {
             evt.consume();
         }
     }
-    
+
     public void comprobacionNumeroEntero(KeyEvent evt) {
         char caracter = evt.getKeyChar();
         if (caracter < '0' || caracter > '9') {

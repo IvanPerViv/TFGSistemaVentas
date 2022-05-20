@@ -451,8 +451,10 @@ public class Ven_pedido_listado extends javax.swing.JInternalFrame {
 
     private void BuscarNumPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarNumPedidoActionPerformed
         // BOTON BUSCAR   
-        limpiezaTabla();
-        cargaDeDatosNumPedidos(Integer.parseInt(TFnumPedido.getText()));
+        if (mostrarNumPedido.isSelected() == true) {
+            limpiezaTabla();
+            cargaDeDatosNumPedidos(Integer.parseInt(TFnumPedido.getText()));
+        }
     }//GEN-LAST:event_BuscarNumPedidoActionPerformed
 
     private void buscarPorPalabrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarPorPalabrasActionPerformed

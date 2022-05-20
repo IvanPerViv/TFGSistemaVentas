@@ -87,7 +87,7 @@ public class Ven_localidad extends javax.swing.JInternalFrame {
 
     private boolean comprobacionCampos() {
         boolean comprobacion = true;
-        if (objComprobaciones.comprobacionJTextField(TFCiudad)) {
+        if (objComprobaciones.validacionJTextFieldNormal(TFCiudad)) {
             comprobacion = false;
         }
         return comprobacion;

@@ -90,16 +90,18 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
 
     private boolean comprobacionCampos() {
         boolean comprobacion = true;
-        if (objComprobaciones.comprobacionJTextField(TFNombre)) {
+        if (objComprobaciones.validacionJTextFieldNormal(TFNombre)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField(TFPrecio)) {
+        if (objComprobaciones.validacionJTextFieldNormal(TFPrecio)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField(TFIva)) {
+        if (objComprobaciones.validacionJTextFieldNormal(TFIva)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField(TFStock)) {
+        if (objComprobaciones.validacionJTextFieldNormal(TFStock)) {
+            comprobacion = false;
+        }if (objComprobaciones.validacionJTextField(TFFamilia)) {
             comprobacion = false;
         }
         return comprobacion;

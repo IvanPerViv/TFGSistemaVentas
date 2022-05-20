@@ -82,7 +82,7 @@ public class Ven_prov extends javax.swing.JInternalFrame {
 
     private boolean comprobacionCampos() {
         boolean comprobacion = true;
-        if (objComprobaciones.comprobacionJTextField(TFprov)) {
+        if (objComprobaciones.validacionJTextFieldNormal(TFprov)) {
             comprobacion = false;
         }
         return comprobacion;

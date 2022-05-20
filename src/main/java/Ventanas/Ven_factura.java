@@ -7,6 +7,7 @@ import Conexiones.Conexion;
 import Modelos.LineaPedido;
 import Utils.Comprobaciones;
 import Utils.GenerarCodigo;
+import java.awt.Color;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -105,10 +107,10 @@ public class Ven_factura extends javax.swing.JInternalFrame {
     }
 
     private void generarNumeroFactura() {
-         int codFactura = objConFactura.codigoFactura();
-         int numero = objGenCod.generarCod(codFactura);
-        
-        TFNumFactura.setText(codFactura != 0 ? String.valueOf(numero): "1");
+        int codFactura = objConFactura.codigoFactura();
+        int numero = objGenCod.generarCod(codFactura);
+
+        TFNumFactura.setText(codFactura != 0 ? String.valueOf(numero) : "1");
     }
 
     private void calcularPedido() {
@@ -143,17 +145,40 @@ public class Ven_factura extends javax.swing.JInternalFrame {
         return total = (cantidad * iva) / 100;
     }
 
-    private boolean comprobacionCampos() {
+    private boolean comprobacionCamposCliente() {
         boolean comprobacion = true;
-        if (objComprobaciones.ValidarCamposNumeros(TFSubtotal)) {
+        if (objComprobaciones.validacionJTextField(TFCodClie)) {
             comprobacion = false;
         }
-        if (objComprobaciones.ValidarCamposNumeros(TFTotal)) {
+        if (objComprobaciones.validacionJTextField(TFNombreC)) {
             comprobacion = false;
         }
-        if (fecha.getDate() == null) {
+        if (objComprobaciones.validacionJTextField(TFDir)) {
             comprobacion = false;
         }
+        if (objComprobaciones.validacionJTextField(TFTel)) {
+            comprobacion = false;
+        }
+
+        return comprobacion;
+    }
+
+    private boolean comprobacionCamposGlobales() {
+        boolean comprobacion = true;
+        if (objComprobaciones.ValidarCamposNumeros(TFSubtotal) && objComprobaciones.ValidarCamposNumeros(TFTotal)) {
+            botonCalculo.setBorder(new LineBorder(Color.red));
+            comprobacion = false;
+        }
+        try {
+            if (fecha.getDate() == null) {
+                comprobacion = false;
+                JOptionPane.showMessageDialog(this, "Rellene el campo 'Fecha'.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (NullPointerException ex) {
+            System.err.println(ex.toString());
+        }
+
+        comprobacionCamposCliente();
         return comprobacion;
     }
 
@@ -576,13 +601,13 @@ public class Ven_factura extends javax.swing.JInternalFrame {
 
     private void botonAgregarProcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarProcActionPerformed
         // BOTON AGREGAR ALBARAN
-        try {
+        if (comprobacionCamposCliente()) {
             int codigoCliente = Integer.parseInt(TFCodClie.getText());
             Ven_tabla_albaran objTablaAlbaranes = new Ven_tabla_albaran(codigoCliente);
             Ven_principal.escritorio.add(objTablaAlbaranes).setVisible(true);
-
-        } catch (NumberFormatException nfe) {
+        } else {
             JOptionPane.showMessageDialog(this, "Introduce los datos del cliente.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+
         }
     }//GEN-LAST:event_botonAgregarProcActionPerformed
 
@@ -599,7 +624,7 @@ public class Ven_factura extends javax.swing.JInternalFrame {
 
     private void botonRealizarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRealizarFacturaActionPerformed
         // BOTON REALIZAR FACTURA
-        if (comprobacionCampos()) {
+        if (comprobacionCamposGlobales()) {
             int filaSeleccion = tablaAlbaranes.getRowCount();
             double subTotal = Double.parseDouble(TFSubtotal.getText());
             double total = Double.parseDouble(TFTotal.getText());
@@ -627,7 +652,7 @@ public class Ven_factura extends javax.swing.JInternalFrame {
                 }
                 if (comprobacionFactura == true && comprobacionFactura2 == true) {
                     JOptionPane.showMessageDialog(this, "Su pedido ha sido reservado con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-                      
+
                     int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea generar un informe?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     if (seleccion == 0) {
                         try {
@@ -642,7 +667,7 @@ public class Ven_factura extends javax.swing.JInternalFrame {
                             if (comprobacion == 0) {
                                 //EXPORTAR A PDF.
                                 String nombreArchivoPDF = JOptionPane.showInputDialog("Introduzca el nombre para el PDF: ");
-                                JasperExportManager.exportReportToPdfFile(jasperPrint, "reportes_PDF/" + nombreArchivoPDF+".pdf");
+                                JasperExportManager.exportReportToPdfFile(jasperPrint, "reportes_PDF/" + nombreArchivoPDF + ".pdf");
                                 JasperViewer.viewReport(jasperPrint, false);
                             } else {
                                 JasperViewer.viewReport(jasperPrint, false);
@@ -662,6 +687,7 @@ public class Ven_factura extends javax.swing.JInternalFrame {
 
     private void botonCalculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCalculoActionPerformed
         calcularPedido();
+        botonCalculo.setBorder(new LineBorder(Color.GRAY));
     }//GEN-LAST:event_botonCalculoActionPerformed
 
 

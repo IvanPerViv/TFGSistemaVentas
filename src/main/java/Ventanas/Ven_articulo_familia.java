@@ -4,8 +4,11 @@ import Conexiones.Con_articulo;
 import Conexiones.Con_familia_articulo;
 import Modelos.FamiliaArticulo;
 import Utils.GenerarCodigo;
+import static Ventanas.Ven_articulo.TFFamilia;
+import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 public class Ven_articulo_familia extends javax.swing.JInternalFrame {
@@ -356,6 +359,7 @@ public class Ven_articulo_familia extends javax.swing.JInternalFrame {
         // boton enviar informacion
         int fila = tablaFamilias.getSelectedRow();
         Ven_articulo.TFFamilia.setText(tablaFamilias.getValueAt(fila, 1).toString());
+        TFFamilia.setBorder(new LineBorder(Color.gray));
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

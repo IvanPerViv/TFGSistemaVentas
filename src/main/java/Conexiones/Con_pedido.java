@@ -126,7 +126,7 @@ public class Con_pedido {
     }
     
     public int mostrarCodCliente(String buscar) {
-        String query = "SELECT cod_cliente FROM `clientes` WHERE nombre_comercial LIKE '" + buscar + "'";
+        String query = "SELECT cod_cliente FROM `clientes` WHERE nombre_comercial LIKE '%" + buscar + "%'";
         int resultado = 0;
         try (PreparedStatement pst = con.prepareStatement(query)) {
             try (ResultSet rs = pst.executeQuery()) {

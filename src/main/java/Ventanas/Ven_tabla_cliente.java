@@ -3,7 +3,12 @@ package Ventanas;
 import Conexiones.Con_cliente;
 import Conexiones.Con_localidad_prov_pais;
 import Modelos.Cliente;
+import static Ventanas.Ven_pedido.*;
+import static Ventanas.Ven_factura.*;
+import java.awt.Color;
 import java.util.ArrayList;
+import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
@@ -148,6 +153,21 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
         cargaDeDatosClientes(TFBuscar.getText());
     }//GEN-LAST:event_TFBuscarKeyReleased
 
+    private void pintarCamposValidosVenPedidos() {
+        Ven_pedido.TFCodClie.setBorder(new LineBorder(Color.gray));
+        Ven_pedido.TFNombreC.setBorder(new LineBorder(Color.gray));
+        Ven_pedido.TFDir.setBorder(new LineBorder(Color.gray));
+        Ven_pedido.TFTel.setBorder(new LineBorder(Color.gray));
+    }
+
+    private void pintarCamposValidosVenFactura() {
+        Ven_factura.TFCodClie.setBorder(new LineBorder(Color.gray));
+        Ven_factura.TFNombreC.setBorder(new LineBorder(Color.gray));
+        Ven_factura.TFDir.setBorder(new LineBorder(Color.gray));
+        Ven_factura.TFTel.setBorder(new LineBorder(Color.gray));
+    }
+
+
     private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
         int fila = tablaClientes.getSelectedRow();
         if (evt.getClickCount() == 1) {
@@ -157,12 +177,16 @@ public class Ven_tabla_cliente extends javax.swing.JInternalFrame {
                     Ven_pedido.TFNombreC.setText(tablaClientes.getValueAt(fila, 2).toString());
                     Ven_pedido.TFDir.setText(tablaClientes.getValueAt(fila, 5).toString() + " , " + tablaClientes.getValueAt(fila, 6).toString() + " " + tablaClientes.getValueAt(fila, 4).toString());
                     Ven_pedido.TFTel.setText(tablaClientes.getValueAt(fila, 7).toString());
+
+                    pintarCamposValidosVenPedidos();
                     break;
                 case "Ven_factura":
                     Ven_factura.TFCodClie.setText(tablaClientes.getValueAt(fila, 0).toString());
                     Ven_factura.TFNombreC.setText(tablaClientes.getValueAt(fila, 2).toString());
                     Ven_factura.TFDir.setText(tablaClientes.getValueAt(fila, 5).toString() + " , " + tablaClientes.getValueAt(fila, 6).toString() + " " + tablaClientes.getValueAt(fila, 4).toString());
                     Ven_factura.TFTel.setText(tablaClientes.getValueAt(fila, 7).toString());
+
+                    pintarCamposValidosVenFactura();
                     break;
             }
         }

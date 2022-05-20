@@ -3,7 +3,10 @@ package Ventanas;
 import Conexiones.Con_localidad_prov_pais;
 import Modelos.Localidad;
 import Utils.GenerarCodigo;
+import static Ventanas.Ven_cliente.TFCiudad;
+import java.awt.Color;
 import java.util.ArrayList;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -164,6 +167,7 @@ public class Ven_cliente_tabla_localidad extends javax.swing.JInternalFrame {
         int filaSelecionada = tablaLocalidades.getSelectedRow();
         if (evt.getClickCount() == 1) {
             Ven_cliente.TFCiudad.setText(tablaLocalidades.getValueAt(filaSelecionada, 1).toString());
+             TFCiudad.setBorder(new LineBorder(Color.GRAY));
         }
         dispose();
     }//GEN-LAST:event_tablaLocalidadesMouseClicked

@@ -2,7 +2,11 @@ package Ventanas;
 
 import Conexiones.Con_articulo;
 import Modelos.Articulo;
+import static Ventanas.Ven_pedido.*;
+import java.awt.Color;
 import java.util.ArrayList;
+import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 public class Ven_tabla_articulo extends javax.swing.JInternalFrame {
@@ -37,6 +41,14 @@ public class Ven_tabla_articulo extends javax.swing.JInternalFrame {
             columna[5] = arArticulo.get(i).getStock();
             art.addRow(columna);
         }
+    }
+    
+    private void pintarCamposValidos (JTextField campo01,JTextField campo02,JTextField campo03,JTextField campo04,JTextField campo05 ){
+         campo01.setBorder(new LineBorder(Color.gray));
+         campo02.setBorder(new LineBorder(Color.gray));
+         campo03.setBorder(new LineBorder(Color.gray));
+         campo04.setBorder(new LineBorder(Color.gray));
+         campo05.setBorder(new LineBorder(Color.gray));
     }
 
     @SuppressWarnings("unchecked")
@@ -147,7 +159,8 @@ public class Ven_tabla_articulo extends javax.swing.JInternalFrame {
             Ven_pedido.TFPrecio.setText(tablaArt.getValueAt(numFila, 3).toString());
             Ven_pedido.TFIva.setText(tablaArt.getValueAt(numFila, 4).toString());
             Ven_pedido.TFStock.setText(tablaArt.getValueAt(numFila, 5).toString());
-
+            
+            pintarCamposValidos(TFCodProd,TFNombreProc,TFPrecio,TFIva,TFStock);
             dispose();
         }
     }//GEN-LAST:event_tablaArtMouseClicked

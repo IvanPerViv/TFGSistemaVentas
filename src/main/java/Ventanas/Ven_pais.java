@@ -67,7 +67,7 @@ public class Ven_pais extends javax.swing.JInternalFrame {
 
     private boolean comprobacionCampos() {
         boolean comprobacion = true;
-        if (objComprobaciones.comprobacionJTextField(TFPais)) {
+        if (objComprobaciones.validacionJTextFieldNormal(TFPais)) {
             comprobacion = false;
         }
         return comprobacion;

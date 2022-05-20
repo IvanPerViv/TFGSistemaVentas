@@ -1,10 +1,14 @@
 package Ventanas;
 
 import Conexiones.Con_albaran;
+import Conexiones.Con_cliente;
 import Conexiones.Con_pedido;
 import Modelos.Albaran;
+import Modelos.Cliente;
 import Modelos.Pedido;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -42,6 +46,10 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
     }
 
     private void cargaDeDatosNumPedidos(int buscar) {
+        String[] nombreTablas = {"CÓDIGO ALBARÁN", "CÓDIGO PEDIDO", "NOMBRE CLIENTE", "FECHA", "ESTADO"}; //Cargamos en un array el nombre que tendran nuestras  columnas.
+        dtmAlbaran = new DefaultTableModel(null, nombreTablas);
+        tablaPedidos.setModel(dtmAlbaran);
+
         ArrayList<Pedido> arPedidos = new ArrayList<>();
         arPedidos = objConPedidos.busquedaNumPedido(buscar);
 
@@ -50,6 +58,17 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
             columna[0] = arPedidos.get(i).getNum_pedido();
             columna[1] = objConPedidos.mostrarNombreCliente(arPedidos.get(i).getCod_cliente());
             columna[2] = arPedidos.get(i).getFecha_pedido();
+            dtmAlbaran.addRow(columna);
+        }
+    }
+
+    private void cargaDeDatosCliente(int buscar) {
+        ArrayList<Cliente> arCliente = new ArrayList<>();
+        arCliente = objAlbaran.mostrarPorCodCliente(buscar);
+
+        Object[] columna = new Object[1];
+        for (int i = 0; i < arCliente.size(); i++) {
+            columna[0] = arCliente.get(i).getNombreComercial();
             dtmAlbaran.addRow(columna);
         }
     }
@@ -71,16 +90,15 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
         botonGroup = new javax.swing.ButtonGroup();
         informacion = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        TFBuscar = new javax.swing.JTextField();
         buscadorPedidos = new javax.swing.JScrollPane();
         tablaPedidos = new javax.swing.JTable();
         botonEliminar = new javax.swing.JButton();
         botonVerDetalles = new javax.swing.JButton();
         mostrarNumPedido = new javax.swing.JRadioButton();
-        TFnumPedido = new javax.swing.JTextField();
-        BuscarNumPedido = new javax.swing.JButton();
-        buscarPorPalabras = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
+        fecha = new com.toedter.calendar.JDateChooser();
+        mostrarFecha = new javax.swing.JRadioButton();
+        BuscarNumPedido1 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -89,12 +107,6 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
 
         informacion.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         informacion.setText("LISTADO DE ALBARÁNES");
-
-        TFBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                TFBuscarKeyReleased(evt);
-            }
-        });
 
         tablaPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -123,20 +135,28 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
         });
 
         botonGroup.add(mostrarNumPedido);
-        mostrarNumPedido.setText("Mostrar  por Nº Pedido:");
-
-        BuscarNumPedido.setText("BUSCAR");
-        BuscarNumPedido.addActionListener(new java.awt.event.ActionListener() {
+        mostrarNumPedido.setText("Mostrar 'Todo'");
+        mostrarNumPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BuscarNumPedidoActionPerformed(evt);
+                mostrarNumPedidoActionPerformed(evt);
             }
         });
 
-        botonGroup.add(buscarPorPalabras);
-        buscarPorPalabras.setSelected(true);
-        buscarPorPalabras.setText("Buscar por 'Cliente':");
-
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_albaran/icons8-test-aprobado-80.png"))); // NOI18N
+
+        fecha.setDateFormatString("dd/MM/yyyy");
+        fecha.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+
+        botonGroup.add(mostrarFecha);
+        mostrarFecha.setSelected(true);
+        mostrarFecha.setText("Mostrar por Fecha");
+
+        BuscarNumPedido1.setText("BUSCAR");
+        BuscarNumPedido1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarNumPedido1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -145,22 +165,18 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(mostrarNumPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(buscarPorPalabras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGap(15, 15, 15)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(BuscarNumPedido))
-                                .addComponent(TFBuscar)))
-                        .addComponent(buscadorPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buscadorPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(informacion, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(mostrarFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(mostrarNumPedido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGap(15, 15, 15)
+                            .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(BuscarNumPedido1))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
@@ -177,22 +193,26 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(informacion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(TFnumPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(mostrarNumPedido)
-                            .addComponent(BuscarNumPedido))
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(buscarPorPalabras)
-                            .addComponent(TFBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(informacion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(5, 5, 5)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(fecha, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(mostrarFecha, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(BuscarNumPedido1)))
+                        .addGap(15, 15, 15)
+                        .addComponent(mostrarNumPedido)
+                        .addGap(15, 15, 15)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(botonVerDetalles)
@@ -217,35 +237,43 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
                 Ven_albaran objAlbaraan = new Ven_albaran(codAlbaran);
                 Ven_principal.escritorio.add(objAlbaraan).setVisible(true);
                 dispose();
-            } else{
+            } else {
                 JOptionPane.showMessageDialog(this, "Su Albarán ha sido enviado.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        
+
     }//GEN-LAST:event_botonVerDetallesActionPerformed
 
-    private void BuscarNumPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarNumPedidoActionPerformed
-        limpiezaTabla();
-        cargaDeDatosNumPedidos(Integer.parseInt(TFnumPedido.getText()));
-    }//GEN-LAST:event_BuscarNumPedidoActionPerformed
+    private void BuscarNumPedido1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarNumPedido1ActionPerformed
+        Date date = fecha.getDate();
+        long fechaConversion = date.getTime();
+        java.sql.Date fechaDate = new java.sql.Date(fechaConversion);  
+        SimpleDateFormat formatofecha = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaString = formatofecha.format(date);
 
-    private void TFBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFBuscarKeyReleased
-        cargaDeDatosAlbaran(TFnumPedido.getText());
-    }//GEN-LAST:event_TFBuscarKeyReleased
+        cargaDeDatosAlbaran(fechaString);
+        
+    }//GEN-LAST:event_BuscarNumPedido1ActionPerformed
+
+    private void mostrarNumPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarNumPedidoActionPerformed
+        if (mostrarNumPedido.isSelected()) {
+            limpiezaTabla();
+            cargaDeDatosAlbaran("");
+        }
+    }//GEN-LAST:event_mostrarNumPedidoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BuscarNumPedido;
-    private javax.swing.JTextField TFBuscar;
-    private javax.swing.JTextField TFnumPedido;
+    private javax.swing.JButton BuscarNumPedido1;
     private javax.swing.JButton botonEliminar;
     private javax.swing.ButtonGroup botonGroup;
     private javax.swing.JButton botonVerDetalles;
     private javax.swing.JScrollPane buscadorPedidos;
-    private javax.swing.JRadioButton buscarPorPalabras;
+    private com.toedter.calendar.JDateChooser fecha;
     private javax.swing.JLabel informacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JRadioButton mostrarFecha;
     private javax.swing.JRadioButton mostrarNumPedido;
     private javax.swing.JTable tablaPedidos;
     // End of variables declaration//GEN-END:variables

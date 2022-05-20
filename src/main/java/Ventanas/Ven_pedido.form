@@ -52,7 +52,7 @@
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="informacion4" pref="138" max="32767" attributes="0"/>
-                                  <Component id="fecha" max="32767" attributes="0"/>
+                                  <Component id="ffFecha" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="panel_observaciones" max="32767" attributes="0"/>
@@ -89,7 +89,7 @@
                   <Group type="102" attributes="0">
                       <Component id="informacion4" min="-2" pref="30" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      <Component id="fecha" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="ffFecha" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
@@ -859,7 +859,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonRealizarPedidoActionPerformed"/>
       </Events>
     </Component>
-    <Component class="com.toedter.calendar.JDateChooser" name="fecha">
+    <Component class="com.toedter.calendar.JDateChooser" name="ffFecha">
       <Properties>
         <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">

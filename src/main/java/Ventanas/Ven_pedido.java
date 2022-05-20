@@ -4,8 +4,10 @@ import Conexiones.Con_pedido;
 import Conexiones.Con_pedido_linea;
 import Utils.Comprobaciones;
 import Utils.GenerarCodigo;
+import java.awt.Color;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -52,7 +54,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
     private void bloquearBotones(boolean bloquear) {
         botonLimpiar.setEnabled(bloquear);
 
-        fecha.setEnabled(bloquear);
+        ffFecha.setEnabled(bloquear);
         BotonBuscarCliente.setEnabled(bloquear);
         botonBuscarProducto.setEnabled(bloquear);
         botonAgregarProc.setEnabled(bloquear);
@@ -148,33 +150,51 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
         }
     }
 
-    private boolean comprobacionCampos() {
+    private boolean comprobacionCamposGlobales() {
         boolean comprobacion = true;
-        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFNombreC)) {
+        if (objComprobaciones.validacionJTextField(TFCodClie)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFDir)) {
+        if (objComprobaciones.validacionJTextField(TFNombreC)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFTel)) {
+        if (objComprobaciones.validacionJTextField(TFDir)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFNombreProc)) {
+        if (objComprobaciones.validacionJTextField(TFTel)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFPrecio)) {
+        try {
+            if (ffFecha.getDate() == null) {
+                comprobacion = false;
+                JOptionPane.showMessageDialog(this, "Rellene el campo 'Fecha'.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (NullPointerException ex) {
+            System.err.println(ex.toString());
+        }
+
+        comprobacionCamposProductos();
+        return comprobacion;
+    }
+
+    private boolean comprobacionCamposProductos() {
+        boolean comprobacion = true;
+        if (objComprobaciones.validacionJTextField(TFCodProd)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFIva)) {
+        if (objComprobaciones.validacionJTextField(TFNombreProc)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFStock)) {
+        if (objComprobaciones.validacionJTextField(TFPrecio)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextFieldSinPintar(TFCantidad)) {
+        if (objComprobaciones.validacionJTextField(TFIva)) {
             comprobacion = false;
         }
-        if (fecha.getDate() == null) {
+        if (objComprobaciones.validacionJTextField(TFStock)) {
+            comprobacion = false;
+        }
+        if (objComprobaciones.validacionJTextField(TFCantidad)) {
             comprobacion = false;
         }
         return comprobacion;
@@ -230,7 +250,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
         TFnumPedido = new javax.swing.JTextField();
         informacion4 = new javax.swing.JLabel();
         botonRealizarPedido = new javax.swing.JButton();
-        fecha = new com.toedter.calendar.JDateChooser();
+        ffFecha = new com.toedter.calendar.JDateChooser();
 
         setClosable(true);
         setIconifiable(true);
@@ -615,8 +635,8 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
             }
         });
 
-        fecha.setDateFormatString("dd/MM/yyyy");
-        fecha.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        ffFecha.setDateFormatString("dd/MM/yyyy");
+        ffFecha.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -643,7 +663,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(informacion4, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                                    .addComponent(fecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(ffFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addComponent(panel_observaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -670,7 +690,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(informacion4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(ffFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(5, 5, 5)
                 .addComponent(PANEL_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
@@ -727,7 +747,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
         // Agregar Datos       
         int numVerificacionArticulo = objComprobaciones.verificacionCodigoPedido(TFNombreProc.getText(), tablaPedidos);
 
-        if (comprobacionCampos()) {
+        if (comprobacionCamposProductos()) {
             if (numVerificacionArticulo == 0) { // VERIFICACION DE QUE EL ARTICULO NO SEA EL MISMO.
                 DefaultTableModel modelo = (DefaultTableModel) tablaPedidos.getModel();
                 String[] pedidos = {
@@ -743,7 +763,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "El articulo ha sido ingresado, \neliminelo para poder modificarlo.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Rellene los campos.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Rellene el campo 'Producto'.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
         }
 
 
@@ -763,12 +783,12 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
 
     private void botonRealizarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRealizarPedidoActionPerformed
         // Boton realizar pedido //
-        int Seleccionada = tablaPedidos.getRowCount();
-        if (Seleccionada == 0) {
+        if (comprobacionCamposGlobales()) {
             JOptionPane.showMessageDialog(this, "No existe ningun dato.\nRellene los datos correspondientes.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+
         } else {
             int numPedido = Integer.parseInt(TFnumPedido.getText());
-            Date date = fecha.getDate();
+            Date date = ffFecha.getDate();
             long fechaConversion = date.getTime();
             java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
 
@@ -777,7 +797,6 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
             String area = AreaObs.getText();
 
             boolean comprobacionPedido = objConPedidos.ingresoPedidos(numPedido, codigoCliente, fechaDate, estado, area);
-
             for (int i = 0; i < tablaPedidos.getRowCount(); i++) {
                 int codArticulo = Integer.parseInt(tablaPedidos.getValueAt(i, 0).toString());
                 String Producto = tablaPedidos.getValueAt(i, 1).toString();
@@ -791,12 +810,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Su pedido ha sido reservado con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        limpiar();
-        limpiarArticulos();
-        limpiarTabla();
-        bloquearBotones(false);
-        bloquearCampos(false);
-
+        dispose();
     }//GEN-LAST:event_botonRealizarPedidoActionPerformed
 
     private void TFCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFCantidadKeyTyped
@@ -805,6 +819,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
 
     private void TFCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFCantidadKeyReleased
         comprobarStock();
+        TFCantidad.setBorder(new LineBorder(Color.gray));
     }//GEN-LAST:event_TFCantidadKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -832,7 +847,7 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
     private javax.swing.JButton botonLimpiar;
     private javax.swing.JButton botonNuevo;
     private javax.swing.JButton botonRealizarPedido;
-    private com.toedter.calendar.JDateChooser fecha;
+    private com.toedter.calendar.JDateChooser ffFecha;
     private javax.swing.JLabel informacion2;
     private javax.swing.JLabel informacion4;
     private javax.swing.JLabel jLabel1;

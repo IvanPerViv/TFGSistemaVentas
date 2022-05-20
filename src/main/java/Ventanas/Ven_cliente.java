@@ -98,25 +98,28 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
 
     private boolean comprobacionCampos() {
         boolean comprobacion = true;
-        if (objComprobaciones.comprobacionJTextField(TFNif)) {
+        if (objComprobaciones.validacionJTextFieldNormal(TFNif)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField(TFNombre)) {
+        if (objComprobaciones.validacionJTextFieldNormal(TFNombre)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField(TFNombreComercial)) {
+        if (objComprobaciones.validacionJTextFieldNormal(TFNombreComercial)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField(TFDir)) {
+        if (objComprobaciones.validacionJTextFieldNormal(TFDir)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField(TFCp)) {
+        if (objComprobaciones.validacionJTextFieldNormal(TFCp)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField(TFTelef)) {
+        if (objComprobaciones.validacionJTextFieldNormal(TFTelef)) {
             comprobacion = false;
         }
-        if (objComprobaciones.comprobacionJTextField(TFEmail)) {
+        if (objComprobaciones.validacionJTextFieldNormal(TFEmail)) {
+            comprobacion = false;
+        }
+        if (objComprobaciones.validacionJTextField(TFCiudad)) {
             comprobacion = false;
         }
         return comprobacion;
