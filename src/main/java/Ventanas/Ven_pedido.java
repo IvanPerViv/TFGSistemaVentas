@@ -173,7 +173,6 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
             System.err.println(ex.toString());
         }
 
-        comprobacionCamposProductos();
         return comprobacion;
     }
 
@@ -783,34 +782,39 @@ public class Ven_pedido extends javax.swing.JInternalFrame {
 
     private void botonRealizarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRealizarPedidoActionPerformed
         // Boton realizar pedido //
-        if (comprobacionCamposGlobales()) {
+        int Seleccionada = tablaPedidos.getRowCount();
+        if (Seleccionada == 0) {
             JOptionPane.showMessageDialog(this, "No existe ningun dato.\nRellene los datos correspondientes.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-
         } else {
-            int numPedido = Integer.parseInt(TFnumPedido.getText());
-            Date date = ffFecha.getDate();
-            long fechaConversion = date.getTime();
-            java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
+            if (comprobacionCamposGlobales()) {
+                int numPedido = Integer.parseInt(TFnumPedido.getText());
+                Date date = ffFecha.getDate();
+                long fechaConversion = date.getTime();
+                java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
 
-            int codigoCliente = Integer.parseInt(TFCodClie.getText());
-            String estado = "Pendiente";
-            String area = AreaObs.getText();
+                int codigoCliente = Integer.parseInt(TFCodClie.getText());
+                String estado = "Pendiente";
+                String area = AreaObs.getText();
 
-            boolean comprobacionPedido = objConPedidos.ingresoPedidos(numPedido, codigoCliente, fechaDate, estado, area);
-            for (int i = 0; i < tablaPedidos.getRowCount(); i++) {
-                int codArticulo = Integer.parseInt(tablaPedidos.getValueAt(i, 0).toString());
-                String Producto = tablaPedidos.getValueAt(i, 1).toString();
-                int cantidad = Integer.parseInt(tablaPedidos.getValueAt(i, 2).toString());
-                double precioUnitario = Double.parseDouble(tablaPedidos.getValueAt(i, 3).toString());
-                double iva = Double.parseDouble(tablaPedidos.getValueAt(i, 4).toString());
-                objPedidoLinea.ingresoLineasPedidos(numPedido, codArticulo, cantidad, precioUnitario, iva); //TAABLA N:N
-            }
+                boolean comprobacionPedido = objConPedidos.ingresoPedidos(numPedido, codigoCliente, fechaDate, estado, area);
+                for (int i = 0; i < tablaPedidos.getRowCount(); i++) {
+                    int codArticulo = Integer.parseInt(tablaPedidos.getValueAt(i, 0).toString());
+                    String Producto = tablaPedidos.getValueAt(i, 1).toString();
+                    int cantidad = Integer.parseInt(tablaPedidos.getValueAt(i, 2).toString());
+                    double precioUnitario = Double.parseDouble(tablaPedidos.getValueAt(i, 3).toString());
+                    double iva = Double.parseDouble(tablaPedidos.getValueAt(i, 4).toString());
+                    objPedidoLinea.ingresoLineasPedidos(numPedido, codArticulo, cantidad, precioUnitario, iva); //TAABLA N:N
+                }
 
-            if (comprobacionPedido == true) {
-                JOptionPane.showMessageDialog(this, "Su pedido ha sido reservado con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+                if (comprobacionPedido == true) {
+                    JOptionPane.showMessageDialog(this, "Su pedido ha sido reservado con exito.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+
+                }
             }
         }
-        dispose();
+
+
     }//GEN-LAST:event_botonRealizarPedidoActionPerformed
 
     private void TFCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFCantidadKeyTyped
