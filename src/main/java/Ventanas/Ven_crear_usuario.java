@@ -84,7 +84,6 @@ public class Ven_crear_usuario extends JInternalFrame {
         botonGuardar = new javax.swing.JButton();
         botonActualizar = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
-        txtSeparacion1 = new javax.swing.JLabel();
         PANEL_detalle_trabajador = new javax.swing.JPanel();
         TFCodigo = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
@@ -109,9 +108,11 @@ public class Ven_crear_usuario extends JInternalFrame {
         setClosable(true);
         setTitle("Trabajadores");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/iconCliente.png"))); // NOI18N
+        setMaximumSize(null);
+        setMinimumSize(null);
 
-        barraHerramientasClientes.setFloatable(false);
         barraHerramientasClientes.setRollover(true);
+        barraHerramientasClientes.setBorderPainted(false);
         barraHerramientasClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         botonNuevo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
@@ -179,9 +180,6 @@ public class Ven_crear_usuario extends JInternalFrame {
         });
         barraHerramientasClientes.add(botonActualizar);
         barraHerramientasClientes.add(jSeparator3);
-
-        txtSeparacion1.setText("                                                                ");
-        barraHerramientasClientes.add(txtSeparacion1);
 
         PANEL_detalle_trabajador.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TRABAJADORES", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
         PANEL_detalle_trabajador.setMaximumSize(null);
@@ -360,7 +358,7 @@ public class Ven_crear_usuario extends JInternalFrame {
                     .addComponent(TFBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
-                .addComponent(buscadorArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buscadorArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
 
@@ -491,6 +489,5 @@ public class Ven_crear_usuario extends JInternalFrame {
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JTable tablaArticulos;
-    private javax.swing.JLabel txtSeparacion1;
     // End of variables declaration//GEN-END:variables
 }

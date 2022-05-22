@@ -185,6 +185,7 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Albaran");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/iconAlbaranes.png"))); // NOI18N
+        setMinimumSize(null);
 
         PANEL_cliente.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CLIENTE", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
 
@@ -303,7 +304,6 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         TFnumPedido.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         TFnumPedido.setBorder(null);
         TFnumPedido.setFocusable(false);
-        TFnumPedido.setOpaque(false);
 
         informacion4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         informacion4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -313,7 +313,6 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         TFDate.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         TFDate.setBorder(null);
         TFDate.setFocusable(false);
-        TFDate.setOpaque(false);
 
         informacion3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         informacion3.setText("Nº ALBARÁN");
@@ -331,7 +330,6 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         TFCodAlbaran.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         TFCodAlbaran.setBorder(null);
         TFCodAlbaran.setFocusable(false);
-        TFCodAlbaran.setOpaque(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -400,67 +398,79 @@ public final class Ven_albaran extends javax.swing.JInternalFrame {
         // BOTON ENVIAR
         int numeroAlbaran = Integer.parseInt(TFCodAlbaran.getText());
         int numPedido = generarCodigoPedido();
+        int cantidadFinal = 0;
         Map<String, Object> parametros = new HashMap<>();
 
-        for (int i = 0; i < tablaAlbaran.getRowCount(); i++) {
-            int codArticulo = Integer.parseInt(tablaAlbaran.getValueAt(i, 0).toString());
-            int producto = objConArticulos.mostrarCodigoArticulo(tablaAlbaran.getValueAt(i, 1).toString());
-            int cantidadPedida = Integer.parseInt(tablaAlbaran.getValueAt(i, 2).toString());
-            int cantidadEnviar = Integer.parseInt(tablaAlbaran.getValueAt(i, 3).toString());
+        try {
+            for (int i = 0; i < tablaAlbaran.getRowCount(); i++) {
+                int codArticulo = Integer.parseInt(tablaAlbaran.getValueAt(i, 0).toString());
+                int producto = objConArticulos.mostrarCodigoArticulo(tablaAlbaran.getValueAt(i, 1).toString());
+                int cantidadPedida = Integer.parseInt(tablaAlbaran.getValueAt(i, 2).toString());
+                int cantidadEnviar = Integer.parseInt(tablaAlbaran.getValueAt(i, 3).toString());
 
-            int cantidadFinal = cantidadPedida - cantidadEnviar;
-            if (cantidadPedida >= cantidadEnviar) {
-                //UPDATE DE LOS ARTICULOS RESTANTES A ENVIAR
-                objConLineaAlbaran.actualizarLineaAlbaran(cantidadEnviar, numeroAlbaran, codArticulo);
+                cantidadFinal = cantidadPedida - cantidadEnviar;
+                if (cantidadPedida >= cantidadEnviar) {
+                    //UPDATE DE LOS ARTICULOS RESTANTES A ENVIAR
+                    objConLineaAlbaran.actualizarLineaAlbaran(cantidadEnviar, numeroAlbaran, codArticulo);
 
-                try {
-                    SimpleDateFormat a = new SimpleDateFormat("dd-MM-yyyy");
-                    Date date = a.parse(TFDate.getText());
-                    long fechaConversion = date.getTime();
-                    java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
+                    try {
+                        SimpleDateFormat a = new SimpleDateFormat("dd-MM-yyyy");
+                        Date date = a.parse(TFDate.getText());
+                        long fechaConversion = date.getTime();
+                        java.sql.Date fechaDate = new java.sql.Date(fechaConversion);
 
-                    if (cantidadFinal > 0) {
-                        //CREAMOS UN NUEVO PEDIDO
-                        objConPedidos.ingresoPedidos(numPedido, Integer.parseInt(TFCodClie.getText()), fechaDate, "Pendiente", "");
-                        // Nueva Linea de PEDIDO
-                        objConPedidoLinea.ingresoLineasPedidos(numPedido, codArticulo, cantidadFinal, precioUnitario, iva);
+                        if (cantidadFinal > 0) {
+                            //CREAMOS UN NUEVO PEDIDO
+                            objConPedidos.ingresoPedidos(numPedido, Integer.parseInt(TFCodClie.getText()), fechaDate, "Pendiente", "");
+                            // Nueva Linea de PEDIDO
+                            objConPedidoLinea.ingresoLineasPedidos(numPedido, codArticulo, cantidadFinal, precioUnitario, iva);
+                        }
+
+                    } catch (ParseException ex) {
+                        Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     //ACTUALIZAMOS ALBARAN
                     objConAlbaran.actualizarEstadoAlbaran(numeroAlbaran, "Enviado");
-                } catch (ParseException ex) {
-                    Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                // LUEGO RESTAMOS LA CANTIDAD ELEGIDA DEL STOCK
-                objConArticulos.actualizarStock(cantidadEnviar, codArticulo);
-            }
-        }
-        JOptionPane.showMessageDialog(this, "Sus articulos han sido enviados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
-        int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea generar un informe e imprimirlo?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-        if (seleccion == 0) {
-            try {
-                Connection conn = con.conexion();
-                String ubicacion = "src/main/java/reportes/Albaran.jrxml";
-
-                JasperReport jasperReport = JasperCompileManager.compileReport(ubicacion);
-                parametros.put("codAlbaran", numeroAlbaran);
-                JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, conn);
-
-                int comprobacion = JOptionPane.showConfirmDialog(this, "¿Desea exportar el archivo a PDF?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION);
-                if (comprobacion == 0) {
-                    //EXPORTAR A PDF.
-                    String nombreArchivoPDF = JOptionPane.showInputDialog("Introduzca el nombre para el PDF: ");
-
-                    JasperExportManager.exportReportToPdfFile(jasperPrint, "reportes_PDF/" + nombreArchivoPDF + ".pdf");
-                    JasperViewer.viewReport(jasperPrint, false);
+                    // LUEGO RESTAMOS LA CANTIDAD ELEGIDA DEL STOCK
+                    objConArticulos.actualizarStock(cantidadEnviar, codArticulo);
                 } else {
-                    JasperViewer.viewReport(jasperPrint, false);
+                    JOptionPane.showMessageDialog(this, "El numero debe de ser menor que la cantidad pedida.", "Aviso del Sistema.", JOptionPane.ERROR_MESSAGE);
                 }
-                con.desconexion();
-            } catch (JRException | NumberFormatException ex) {
-                Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
             }
+            if (cantidadFinal >= 0) {
+                JOptionPane.showMessageDialog(this, "Sus articulos han sido enviados.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+                int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea generar un informe e imprimirlo?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                if (seleccion == 0) {
+                    try {
+                        Connection conn = con.conexion();
+                        String ubicacion = "src/main/java/reportes/Albaran.jrxml";
+
+                        JasperReport jasperReport = JasperCompileManager.compileReport(ubicacion);
+                        parametros.put("codAlbaran", numeroAlbaran);
+                        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, conn);
+
+                        int comprobacion = JOptionPane.showConfirmDialog(this, "¿Desea exportar el archivo a PDF?", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION);
+                        if (comprobacion == 0) {
+                            //EXPORTAR A PDF.
+                            String nombreArchivoPDF = JOptionPane.showInputDialog("Introduzca el nombre para el PDF: ");
+
+                            JasperExportManager.exportReportToPdfFile(jasperPrint, "reportes_PDF/" + nombreArchivoPDF + ".pdf");
+                            JasperViewer.viewReport(jasperPrint, false);
+                        } else {
+                            JasperViewer.viewReport(jasperPrint, false);
+                        }
+                        con.desconexion();
+                        dispose();
+                    } catch (JRException | NumberFormatException ex) {
+                        Logger.getLogger(Ven_albaran.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        } catch (NumberFormatException | NullPointerException ex) {
+            JOptionPane.showMessageDialog(this, "Debe introducir un campo númerico.", "Aviso del Sistema.", JOptionPane.ERROR_MESSAGE);
         }
-        dispose();
+
+
     }//GEN-LAST:event_botonEnviarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

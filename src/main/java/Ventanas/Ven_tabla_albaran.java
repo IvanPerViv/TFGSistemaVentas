@@ -39,7 +39,13 @@ public class Ven_tabla_albaran extends javax.swing.JInternalFrame {
             columna[1] = objConPedidos.mostrarNombreCliente(arAlbaran.get(i).getCodCliente()); //SUBCONSULTA PARA SABER EL NOMBRE DEL CLIENTE
             columna[2] = arAlbaran.get(i).getNumPedido();
             columna[3] = arAlbaran.get(i).getFecha();
-            dtm.addRow(columna);
+            String estado = arAlbaran.get(i).getEstado();
+            
+            //Comprobacion para que NO se repita la facturaciones de albaranes.
+            if (!estado.contains("Facturado")) {
+                dtm.addRow(columna);
+            }
+
         }
     }
 
@@ -116,7 +122,7 @@ public class Ven_tabla_albaran extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int cantidadFilas = tablaAlbaranes.getSelectedRowCount(); //SABER CUANTAS FILAS ESTAN SELECIONADAS
         int filaSeleccionda = tablaAlbaranes.getSelectedRow(); // Fila SELECCIONADA
-        
+
         if (cantidadFilas == 1) {
             int codigo = Integer.parseInt(tablaAlbaranes.getValueAt(filaSeleccionda, 0).toString());
             String codCliente = tablaAlbaranes.getValueAt(filaSeleccionda, 1).toString();
@@ -127,7 +133,7 @@ public class Ven_tabla_albaran extends javax.swing.JInternalFrame {
             Ven_factura.dtmFactura.addRow(fila);
         } else {
             int[] cantidadDeFilas = tablaAlbaranes.getSelectedRows();
-            
+
             for (int i = 0; i < cantidadDeFilas.length; i++) {
                 int codigo = Integer.parseInt(tablaAlbaranes.getValueAt(i, 0).toString());
                 String codCliente = tablaAlbaranes.getValueAt(i, 1).toString();

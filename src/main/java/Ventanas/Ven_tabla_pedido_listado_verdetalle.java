@@ -156,7 +156,6 @@ public class Ven_tabla_pedido_listado_verdetalle extends javax.swing.JInternalFr
         TFFactura.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         TFFactura.setBorder(null);
         TFFactura.setEnabled(false);
-        TFFactura.setOpaque(false);
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel3.setText("Cod. Cliente");
@@ -165,7 +164,6 @@ public class Ven_tabla_pedido_listado_verdetalle extends javax.swing.JInternalFr
         TFCodCliente.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         TFCodCliente.setBorder(null);
         TFCodCliente.setEnabled(false);
-        TFCodCliente.setOpaque(false);
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -175,7 +173,6 @@ public class Ven_tabla_pedido_listado_verdetalle extends javax.swing.JInternalFr
         TFFecha.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         TFFecha.setBorder(null);
         TFFecha.setEnabled(false);
-        TFFecha.setOpaque(false);
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -185,7 +182,6 @@ public class Ven_tabla_pedido_listado_verdetalle extends javax.swing.JInternalFr
         TFSubtotal.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         TFSubtotal.setBorder(null);
         TFSubtotal.setEnabled(false);
-        TFSubtotal.setOpaque(false);
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -196,7 +192,6 @@ public class Ven_tabla_pedido_listado_verdetalle extends javax.swing.JInternalFr
         TFTotal.setBorder(null);
         TFTotal.setDisabledTextColor(new java.awt.Color(0, 51, 153));
         TFTotal.setEnabled(false);
-        TFTotal.setOpaque(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -251,12 +246,12 @@ public class Ven_tabla_pedido_listado_verdetalle extends javax.swing.JInternalFr
                     .addComponent(TFCodCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TFFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
-                .addComponent(buscadorPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buscadorPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(TFSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

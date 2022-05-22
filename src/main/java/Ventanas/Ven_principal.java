@@ -408,7 +408,7 @@ public class Ven_principal extends javax.swing.JFrame {
     }//GEN-LAST:event_i_CrearUserActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        Ven_tema vConfTemas = new Ven_tema();
+        Ven_temas vConfTemas = new Ven_temas();
         mostarVentana(vConfTemas);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 

@@ -92,8 +92,9 @@ public class Ven_articulo_familia extends javax.swing.JInternalFrame {
         setClosable(true);
         setTitle("Familia Producto");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/iconArticulos.png"))); // NOI18N
+        setMaximumSize(null);
+        setMinimumSize(null);
 
-        barraHerramientasClientes.setFloatable(false);
         barraHerramientasClientes.setRollover(true);
         barraHerramientasClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
@@ -264,7 +265,7 @@ public class Ven_articulo_familia extends javax.swing.JInternalFrame {
                     .addComponent(TFBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addComponent(buscadorArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buscadorArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
                 .addGroup(Panel_buscar_FamiliaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(informacion2, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)

@@ -119,7 +119,6 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
         botonActualizar = new javax.swing.JButton();
         botonEliminar = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
-        txtSeparacion1 = new javax.swing.JLabel();
         PANEL_detalle_cliente = new javax.swing.JPanel();
         txtCodigo = new javax.swing.JLabel();
         TFCodigo = new javax.swing.JTextField();
@@ -147,10 +146,10 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
         setMaximumSize(null);
         setMinimumSize(null);
         setNormalBounds(new java.awt.Rectangle(0, 0, 99, 0));
-        setPreferredSize(new java.awt.Dimension(518, 578));
+        setPreferredSize(new java.awt.Dimension(518, 552));
 
-        barraHerramientasClientes.setFloatable(false);
         barraHerramientasClientes.setRollover(true);
+        barraHerramientasClientes.setBorderPainted(false);
         barraHerramientasClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         botonNuevo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
@@ -234,9 +233,6 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
         });
         barraHerramientasClientes.add(botonEliminar);
         barraHerramientasClientes.add(jSeparator3);
-
-        txtSeparacion1.setText("                                                                ");
-        barraHerramientasClientes.add(txtSeparacion1);
 
         PANEL_detalle_cliente.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detalle Articulos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
         PANEL_detalle_cliente.setMaximumSize(null);
@@ -332,7 +328,7 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
                             .addGap(15, 15, 15)
                             .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(TFStock)
-                                .addComponent(txtStock, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)))))
+                                .addComponent(txtStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addGap(15, 15, 15))
         );
         PANEL_detalle_clienteLayout.setVerticalGroup(
@@ -420,7 +416,7 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
                     .addComponent(TFBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
-                .addComponent(buscadorArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buscadorArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
 
@@ -429,7 +425,7 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(PANEL_buscar_cliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(PANEL_detalle_cliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -444,7 +440,7 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
                 .addComponent(PANEL_detalle_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
                 .addComponent(PANEL_buscar_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -604,7 +600,6 @@ public class Ven_articulo extends javax.swing.JInternalFrame {
     private javax.swing.JLabel txtNombre;
     private javax.swing.JLabel txtPrecio;
     private javax.swing.JLabel txtPrecio1;
-    private javax.swing.JLabel txtSeparacion1;
     private javax.swing.JLabel txtStock;
     // End of variables declaration//GEN-END:variables
 }

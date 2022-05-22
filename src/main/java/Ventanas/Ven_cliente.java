@@ -138,7 +138,6 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
         botonEliminar = new javax.swing.JButton();
         txtSeparacion = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JToolBar.Separator();
-        txtSeparacion1 = new javax.swing.JLabel();
         PANEL_detalle_cliente = new javax.swing.JPanel();
         txtCodigo = new javax.swing.JLabel();
         TFCodigo = new javax.swing.JTextField();
@@ -171,10 +170,10 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/iconCliente.png"))); // NOI18N
         setMaximumSize(null);
         setMinimumSize(null);
-        setPreferredSize(new java.awt.Dimension(672, 618));
+        setPreferredSize(new java.awt.Dimension(672, 604));
 
-        barraHerramientasClientes.setFloatable(false);
         barraHerramientasClientes.setRollover(true);
+        barraHerramientasClientes.setBorderPainted(false);
         barraHerramientasClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         botonNuevo.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
@@ -259,9 +258,6 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
         barraHerramientasClientes.add(botonEliminar);
         barraHerramientasClientes.add(txtSeparacion);
         barraHerramientasClientes.add(jSeparator2);
-
-        txtSeparacion1.setText("                                                                ");
-        barraHerramientasClientes.add(txtSeparacion1);
 
         PANEL_detalle_cliente.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detalle Cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 14))); // NOI18N
 
@@ -372,7 +368,7 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
                                     .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
                                 .addGap(15, 15, 15)
                                 .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(TFEmail)
+                                    .addComponent(TFEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
                                     .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addComponent(TFNombreComercial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(15, 15, 15)
@@ -387,7 +383,7 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
                             .addGroup(PANEL_detalle_clienteLayout.createSequentialGroup()
                                 .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(PANEL_detalle_clienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+                                        .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(TFCodigo))
                                     .addComponent(TFNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -502,7 +498,7 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
                     .addComponent(TFBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buscadorClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buscadorClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
 
@@ -526,7 +522,7 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
                 .addComponent(PANEL_detalle_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(PANEL_buscar_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -710,7 +706,6 @@ public class Ven_cliente extends javax.swing.JInternalFrame {
     private javax.swing.JLabel txtNombre;
     private javax.swing.JLabel txtNombre1;
     private javax.swing.JLabel txtSeparacion;
-    private javax.swing.JLabel txtSeparacion1;
     private javax.swing.JLabel txtTelefono;
     // End of variables declaration//GEN-END:variables
 }

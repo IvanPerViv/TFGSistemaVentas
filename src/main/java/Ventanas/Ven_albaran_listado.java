@@ -92,7 +92,6 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
         jSeparator1 = new javax.swing.JSeparator();
         buscadorPedidos = new javax.swing.JScrollPane();
         tablaPedidos = new javax.swing.JTable();
-        botonEliminar = new javax.swing.JButton();
         botonVerDetalles = new javax.swing.JButton();
         mostrarNumPedido = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
@@ -122,9 +121,6 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
         tablaPedidos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         tablaPedidos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         buscadorPedidos.setViewportView(tablaPedidos);
-
-        botonEliminar.setText("ELIMINAR");
-        botonEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         botonVerDetalles.setText("VER DETALLES");
         botonVerDetalles.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -179,15 +175,13 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
                             .addComponent(BuscarNumPedido1))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(botonEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(botonVerDetalles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 15, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
-                        .addGap(26, 26, 26))))
+                        .addGap(26, 26, 26))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(botonVerDetalles)
+                        .addGap(15, 15, 15))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,11 +208,8 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
                         .addComponent(mostrarNumPedido)
                         .addGap(15, 15, 15)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(botonVerDetalles)
-                        .addGap(15, 15, 15)
-                        .addComponent(botonEliminar))
-                    .addComponent(buscadorPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buscadorPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonVerDetalles))
                 .addGap(15, 15, 15))
         );
 
@@ -233,12 +224,12 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
         } else {
             int codAlbaran = Integer.parseInt(tablaPedidos.getValueAt(filaSelecionada, 0).toString());
             String estado = tablaPedidos.getValueAt(filaSelecionada, 4).toString();
-            if (!estado.equals("Enviado")) {
+            if (!estado.equals("Enviado") && !estado.equals("Facturado")) {
                 Ven_albaran objAlbaraan = new Ven_albaran(codAlbaran);
                 Ven_principal.escritorio.add(objAlbaraan).setVisible(true);
                 dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Su Albarán ha sido enviado.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Su Albarán ha sido '"+estado+"'.", "Aviso del Sistema.", JOptionPane.INFORMATION_MESSAGE);
             }
         }
 
@@ -265,7 +256,6 @@ public class Ven_albaran_listado extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BuscarNumPedido1;
-    private javax.swing.JButton botonEliminar;
     private javax.swing.ButtonGroup botonGroup;
     private javax.swing.JButton botonVerDetalles;
     private javax.swing.JScrollPane buscadorPedidos;

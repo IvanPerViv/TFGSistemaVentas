@@ -23,7 +23,6 @@ Ventanas\Ven_pedido$2.class
 Ventanas\Ven_pais$5.class
 Ventanas\Ven_factura$7.class
 Ventanas\Ven_principal$2.class
-Ventanas\Ven_tema.class
 Ventanas\Ven_localidad$7.class
 Ventanas\Ven_albaran_listado$3.class
 Ventanas\Ven_factura$1.class
@@ -110,7 +109,6 @@ Ventanas\Ven_cliente$4.class
 Conexiones\Con_pedido_linea.class
 Ventanas\Ven_pais$6.class
 Ventanas\Ven_cliente$3.class
-Ventanas\Ven_tema$1.class
 Modelos\LineaFactura.class
 Conexiones\Con_localidad_prov_pais.class
 Ventanas\Ven_pedido_listado$7.class

@@ -51,6 +51,12 @@
             <version>3.0.10</version>
             <type>pom</type>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.jtattoo/JTattoo -->
+        <dependency>
+            <groupId>com.jtattoo</groupId>
+            <artifactId>JTattoo</artifactId>
+            <version>1.6.7</version>
+        </dependency>
 
     </dependencies>
 </project>

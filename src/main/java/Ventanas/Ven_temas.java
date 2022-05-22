@@ -2,35 +2,35 @@ package Ventanas;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
  * @author Iván Pérez
  */
-public class Ven_tema extends javax.swing.JInternalFrame {
+public class Ven_temas extends javax.swing.JInternalFrame {
 
-    public Ven_tema() {
+    public Ven_temas() {
         initComponents();
     }
 
     private void cambiarDeTema(String tema) {
         try {
             switch (tema) {
-                case "modoClaro":
+                case "modoClaro" -> {
                     UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatLightLaf());
                     dispose();
-                    break;
-                case "modoOscuro":
+                }
+                case "modoOscuro" -> {
                     UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatDarkLaf());
                     dispose();
-                    break;
-                case "modoWindows":
+                }
+                case "modoWindows" -> {
                     UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
                     dispose();
-                    break;
-
+                }
             }
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException ex) {
             System.out.println(ex.getMessage());
         }
     }
@@ -42,9 +42,9 @@ public class Ven_tema extends javax.swing.JInternalFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
+        jTemaClaro = new javax.swing.JRadioButton();
+        jTemaOscuro = new javax.swing.JRadioButton();
+        jTemaWindows = new javax.swing.JRadioButton();
         panelDefecto = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         titulo = new javax.swing.JLabel();
@@ -69,23 +69,22 @@ public class Ven_tema extends javax.swing.JInternalFrame {
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/VI_icon/icons8-ajustes-16.png"))); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Selección de tema");
+        jLabel1.setText("Selección de Temas.");
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Tema Claro (Defecto)");
-        jRadioButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buttonGroup1.add(jTemaClaro);
+        jTemaClaro.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTemaClaro.setText("Claro (Defecto)");
+        jTemaClaro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jRadioButton2.setText("Tema oscuro");
-        jRadioButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buttonGroup1.add(jTemaOscuro);
+        jTemaOscuro.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTemaOscuro.setText("Oscuro");
+        jTemaOscuro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        buttonGroup1.add(jRadioButton3);
-        jRadioButton3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jRadioButton3.setText("Windows");
-        jRadioButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        buttonGroup1.add(jTemaWindows);
+        jTemaWindows.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTemaWindows.setText("Windows");
+        jTemaWindows.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         panelDefecto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         panelDefecto.setForeground(new java.awt.Color(40, 43, 53));
@@ -142,7 +141,7 @@ public class Ven_tema extends javax.swing.JInternalFrame {
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39)
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -284,54 +283,53 @@ public class Ven_tema extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(panelDefecto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addComponent(jRadioButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(30, 30, 30)
-                                        .addComponent(panelOscuro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(30, 30, 30)
-                                        .addComponent(panelOscuro2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(56, 56, 56)
-                                        .addComponent(jRadioButton2)
-                                        .addGap(92, 92, 92)
-                                        .addComponent(jRadioButton3))))))
+                                    .addComponent(panelDefecto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(30, 30, 30)
+                                .addComponent(panelOscuro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addComponent(panelOscuro2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(206, 206, 206)
+                                    .addComponent(botonAplicar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(15, 15, 15))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(236, 236, 236)
-                        .addComponent(botonAplicar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(30, 30, 30))
+                        .addGap(20, 20, 20)
+                        .addComponent(jTemaClaro)
+                        .addGap(95, 95, 95)
+                        .addComponent(jTemaOscuro)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTemaWindows)
+                        .addGap(73, 73, 73))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(15, 15, 15)
                 .addComponent(jLabel1)
-                .addGap(25, 25, 25)
+                .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelOscuro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelDefecto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelOscuro2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton3))
-                .addGap(18, 18, 18)
+                    .addComponent(jTemaClaro)
+                    .addComponent(jTemaOscuro)
+                    .addComponent(jTemaWindows))
+                .addGap(15, 15, 15)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botonAplicar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -351,13 +349,13 @@ public class Ven_tema extends javax.swing.JInternalFrame {
     private void botonAplicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAplicarActionPerformed
         int seleccion = JOptionPane.showConfirmDialog(this, "Importante, cierre antes TODAS la ventanas para continuar.", "Aviso del Sistema.", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (seleccion == 0) {
-            if (jRadioButton1.isSelected()) {
+            if (jTemaClaro.isSelected()) {
                 cambiarDeTema("modoClaro");
             }
-            if (jRadioButton2.isSelected()) {
+            if (jTemaOscuro.isSelected()) {
                 cambiarDeTema("modoOscuro");
             }
-            if (jRadioButton3.isSelected()) {
+            if (jTemaWindows.isSelected()) {
                 cambiarDeTema("modoWindows");
             }
         }
@@ -378,10 +376,10 @@ public class Ven_tema extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel20;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JRadioButton jTemaClaro;
+    private javax.swing.JRadioButton jTemaOscuro;
+    private javax.swing.JRadioButton jTemaWindows;
     private javax.swing.JPanel panelDefecto;
     private javax.swing.JPanel panelOscuro;
     private javax.swing.JPanel panelOscuro2;
